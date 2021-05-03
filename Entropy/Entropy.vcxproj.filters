@@ -66,6 +66,9 @@
     <ClCompile Include="GraphicUtil.cpp">
       <Filter>Fichiers sources\util</Filter>
     </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Fichiers sources\entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
