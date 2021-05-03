@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\component">
+      <UniqueIdentifier>{fac630e3-ec73-4c28-9e8f-30b1b81be0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\entity">
+      <UniqueIdentifier>{3a24c985-be43-4872-9cbc-adf57cef3318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\util">
+      <UniqueIdentifier>{152fd8ae-406c-4577-adef-97567a3d6cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\math">
+      <UniqueIdentifier>{15ab9961-da69-4eea-b6a2-9f490461394b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\entity">
+      <UniqueIdentifier>{032419f4-192a-4a24-a1a1-4c3f19f4b64a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\component">
+      <UniqueIdentifier>{42daea56-cb60-45b8-a2b4-03c68c9bb688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\math">
+      <UniqueIdentifier>{c8f2a34a-9852-4c2d-b001-cb7125f0dc99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\util">
+      <UniqueIdentifier>{b75e93d2-6598-4c6f-80ef-5912a8d5c73d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entropy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Sandbox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Fichiers sources\component</Filter>
+    </ClCompile>
+    <ClCompile Include="GravityComponent.cpp">
+      <Filter>Fichiers sources\component</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyComponent.cpp">
+      <Filter>Fichiers sources\component</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Fichiers sources\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Fichiers sources\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Fichiers sources\math</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicUtil.cpp">
+      <Filter>Fichiers sources\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Config.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Sandbox.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Fichiers d%27en-tête\component</Filter>
+    </ClInclude>
+    <ClInclude Include="GravityComponent.h">
+      <Filter>Fichiers d%27en-tête\component</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyComponent.h">
+      <Filter>Fichiers d%27en-tête\component</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Fichiers d%27en-tête\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Fichiers d%27en-tête\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicUtil.h">
+      <Filter>Fichiers d%27en-tête\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Fichiers d%27en-tête\math</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
