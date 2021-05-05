@@ -27,7 +27,6 @@
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="GraphicUtil.cpp" />
     <ClCompile Include="GravityComponent.cpp" />
-    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />

@@ -75,9 +75,6 @@
     <ClCompile Include="Circle.cpp">
       <Filter>Fichiers sources\entity</Filter>
     </ClCompile>
-    <ClCompile Include="QuadTree.cpp">
-      <Filter>Fichiers sources\quadtree</Filter>
-    </ClCompile>
     <ClCompile Include="AABB.cpp">
       <Filter>Fichiers sources\quadtree</Filter>
     </ClCompile>

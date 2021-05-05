@@ -104,7 +104,7 @@ void Sandbox::OnIdle()
 void Sandbox::OnLoop()
 {
     int now = glutGet(GLUT_ELAPSED_TIME);
-    float elapsed = static_cast<float>((now - m_lastLoopTime) / CLOCKS_PER_SEC);
+    float elapsed = static_cast<float>(now - m_lastLoopTime) / CLOCKS_PER_SEC;
     m_lastLoopTime = now;
 
     glClear(GL_COLOR_BUFFER_BIT);
