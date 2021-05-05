@@ -5,6 +5,7 @@ class Vector2
 public:
 	static const float EPSILON;
 	static const float EPSILON_SQ;
+	static const Vector2 ZERO;
 
 	float m_x;
 	float m_y;
@@ -27,6 +28,7 @@ public:
 	Vector2 operator-(const Vector2& other) const;
 	Vector2 operator*(float coef) const;
 	Vector2 operator/(float coef) const;
+
 	void operator+=(const Vector2& other);
 	void operator-=(const Vector2& other);
 	void operator*=(float coef);

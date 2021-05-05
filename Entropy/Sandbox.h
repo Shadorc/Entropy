@@ -9,7 +9,7 @@ private:
 	std::vector<Entity*> m_entities;
 	bool m_updating;
 	float m_fps;
-	float m_lastLoopTime;
+	int m_lastLoopTime;
 
 protected:
 	static Sandbox* instance;

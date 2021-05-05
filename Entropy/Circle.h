@@ -10,7 +10,6 @@ private:
 public:
 	Circle(float x, float y, float radius);
 
-	float GetRadius() const;
-
 	void Paint() const;
+	AABB GetAABB() const override;
 };

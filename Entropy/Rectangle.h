@@ -14,5 +14,6 @@ namespace entity
 		Rectangle(float x, float y, float width, float height);
 
 		void Paint() const override;
+		AABB GetAABB() const override;
 	};
 }

@@ -37,6 +37,12 @@
     <Filter Include="Fichiers sources\util">
       <UniqueIdentifier>{b75e93d2-6598-4c6f-80ef-5912a8d5c73d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\quadtree">
+      <UniqueIdentifier>{7956838d-018e-4a4c-a7d9-396da3714cca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\quadtree">
+      <UniqueIdentifier>{270a158b-2f38-443c-beaf-793a70b2e15d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entropy.cpp">
@@ -69,6 +75,15 @@
     <ClCompile Include="Circle.cpp">
       <Filter>Fichiers sources\entity</Filter>
     </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>Fichiers sources\quadtree</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Fichiers sources\quadtree</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -100,6 +115,18 @@
     </ClInclude>
     <ClInclude Include="Circle.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="AABBObject.h">
+      <Filter>Fichiers d%27en-tête\quadtree</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Fichiers d%27en-tête\quadtree</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Fichiers d%27en-tête\quadtree</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

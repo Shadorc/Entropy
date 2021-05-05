@@ -5,20 +5,18 @@
 
 Sandbox* Sandbox::instance = nullptr;
 
-Sandbox::Sandbox()
+Sandbox::Sandbox():
+    m_fps(0),
+    m_lastLoopTime(0),
+    m_updating(false)
 {
     instance = this;
-}
-
-std::vector<Entity*> Sandbox::GetEntities() const
-{
-	return m_entities;
 }
 
 void Sandbox::Start()
 {
 	m_updating = true;
-    m_lastLoopTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME));
+    m_lastLoopTime = glutGet(GLUT_ELAPSED_TIME);
 
     glutDisplayFunc(&OnLoopWrapper);
     glutVisibilityFunc(&OnVisibleWrapper);
@@ -44,17 +42,23 @@ void Sandbox::Update(float delta)
 	}
 }
 
+char fps[32];
 void Sandbox::Repaint() const
 {
+    glColor3f(1.0f, 1.0f, 0.0f);
     for (Entity* entity : m_entities)
     {
         entity->Paint();
     }
     
     glColor3f(0.0f, 1.0f, 0.0f);
-    char fps[32];
     sprintf_s(fps, "%.1f", m_fps);
     DisplayText(5, 20, 3.5f, fps);
+}
+
+std::vector<Entity*> Sandbox::GetEntities() const
+{
+    return m_entities;
 }
 
 void Sandbox::AddEntity(Entity* entity)
@@ -99,8 +103,8 @@ void Sandbox::OnIdle()
 
 void Sandbox::OnLoop()
 {
-    float now = static_cast<float>(glutGet(GLUT_ELAPSED_TIME));
-    float elapsed = (now - m_lastLoopTime) / CLOCKS_PER_SEC;
+    int now = glutGet(GLUT_ELAPSED_TIME);
+    float elapsed = static_cast<float>((now - m_lastLoopTime) / CLOCKS_PER_SEC);
     m_lastLoopTime = now;
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -111,7 +115,10 @@ void Sandbox::OnLoop()
     glutSwapBuffers();
 }
 
-/* Static functions which are passed to Glut function callbacks */
+/* 
+ * Static functions which are passed to Glut function callbacks 
+ */
+
 void Sandbox::OnIdleWrapper()
 {
     instance->OnIdle();

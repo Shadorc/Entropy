@@ -4,6 +4,7 @@
 
 const float Vector2::EPSILON = (float) pow(10, -4);
 const float Vector2::EPSILON_SQ = (float) pow(EPSILON, 2);
+const Vector2 Vector2::ZERO = Vector2(0, 0);
 
 Vector2::Vector2() :
 	Vector2(0, 0)

@@ -15,11 +15,18 @@ void entity::Rectangle::Paint() const
     float helfWidth = m_width / WIDTH;
     float halfHeight = m_height / HEIGHT;
 
-    glColor3f(1.0f, 1.0f, 0.0f);
     glBegin(GL_POLYGON);
     glVertex2f(pos.m_x - helfWidth, pos.m_y - halfHeight);
     glVertex2f(pos.m_x + helfWidth, pos.m_y - halfHeight);
     glVertex2f(pos.m_x + helfWidth, pos.m_y + halfHeight);
     glVertex2f(pos.m_x - helfWidth, pos.m_y + halfHeight);
     glEnd();
+}
+
+AABB entity::Rectangle::GetAABB() const
+{
+    return AABB(
+        Vector2(m_position->m_x - m_width / 2.f, m_position->m_y - m_height / 2.f),
+        Vector2(m_position->m_x + m_width / 2.f, m_position->m_y + m_height / 2.f)
+    );
 }

@@ -19,24 +19,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="GraphicUtil.cpp" />
     <ClCompile Include="GravityComponent.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
+    <ClInclude Include="AABBObject.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GraphicUtil.h" />
     <ClInclude Include="GravityComponent.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Sandbox.h" />

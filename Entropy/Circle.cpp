@@ -18,7 +18,6 @@ void Circle::Paint() const
     const float radiusX = m_radius / WIDTH;
     const float radiusY = m_radius / HEIGHT;
 
-    glColor3f(1.0f, 1.0f, 0.0f);
     glBegin(GL_LINE_LOOP);
     for (int i = 0; i < segments; i++)
     {
@@ -30,7 +29,10 @@ void Circle::Paint() const
     glEnd();
 }
 
-float Circle::GetRadius() const
+AABB Circle::GetAABB() const
 {
-	return m_radius;
+    return AABB(
+        Vector2(m_position->m_x - m_radius, m_position->m_y - m_radius),
+        Vector2(m_position->m_x + m_radius, m_position->m_y + m_radius)
+    );
 }

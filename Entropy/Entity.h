@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Vector2.h"
+#include "AABBObject.h"
 #include <vector>
 
 class Component;
 class RigidBodyComponent;
 class GravityComponent;
-class Entity
+class Entity: public AABBObject
 {
 protected:
 	const unsigned int m_id;
