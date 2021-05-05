@@ -1,6 +1,4 @@
 #include "Component.h"
-#include "GravityComponent.h"
-#include "RigidBodyComponent.h"
 #include "Entity.h"
 
 static int id = 0;
@@ -37,32 +35,6 @@ Vector2* Entity::GetPosition() const
 Vector2* Entity::GetVelocity() const
 {
 	return m_velocity;
-}
-
-RigidBodyComponent* Entity::GetRigidBodyComponent() const
-{
-	for (Component* component : m_components)
-	{
-		RigidBodyComponent* rigidbody = dynamic_cast<RigidBodyComponent*>(component);
-		if (rigidbody != nullptr)
-		{
-			return rigidbody;
-		}
-	}
-	return nullptr;
-}
-
-GravityComponent* Entity::GetGravityComponent() const
-{
-	for (Component* component : m_components)
-	{
-		GravityComponent* gravity = dynamic_cast<GravityComponent*>(component);
-		if (gravity != nullptr)
-		{
-			return gravity;
-		}
-	}
-	return nullptr;
 }
 
 void Entity::Update(float delta)

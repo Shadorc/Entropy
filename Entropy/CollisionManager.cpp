@@ -1,5 +1,6 @@
 #include "Sandbox.h"
 #include "CollisionManager.h"
+#include "RigidBodyComponent.h"
 #include <algorithm>
 #include <limits>
 
@@ -29,7 +30,7 @@ void CollisionManager::CheckCollisions(float delta)
 {
     for (const Entity* entity : m_sandbox->GetEntities()) {
         // Do not check for static object
-        RigidBodyComponent* rigidBodyComponent = entity->GetRigidBodyComponent();
+        RigidBodyComponent* rigidBodyComponent = entity->GetComponent<RigidBodyComponent>();
         if (rigidBodyComponent == nullptr) {
             continue;
         }

@@ -5,8 +5,6 @@
 #include <vector>
 
 class Component;
-class RigidBodyComponent;
-class GravityComponent;
 class Entity: public AABBObject
 {
 protected:
@@ -22,8 +20,19 @@ public:
 	Vector2* GetPosition() const;
 	Vector2* GetVelocity() const;
 
-	RigidBodyComponent* GetRigidBodyComponent() const;
-	GravityComponent* GetGravityComponent() const;
+	template<typename T>
+	T* GetComponent() const
+	{
+		for (Component* itr : m_components)
+		{
+			T* component = dynamic_cast<T*>(itr);
+			if (component != nullptr)
+			{
+				return component;
+			}
+		}
+		return nullptr;
+	}
 
 	void AddComponent(Component* component);
 	virtual void Update(float delta);
