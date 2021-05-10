@@ -70,7 +70,7 @@ float Vector2::Distance(const Vector2& other) const
 
 float Vector2::DistanceSq(const Vector2& other) const
 {
-	return (float) (pow(m_x - other.m_x, 2) + pow(m_y - other.m_y, 2));
+	return (float) (pow(static_cast<double>(m_x) - other.m_x, 2) + pow(static_cast<double>(m_y) - other.m_y, 2));
 }
 
 Vector2 Vector2::operator+(const Vector2& other) const

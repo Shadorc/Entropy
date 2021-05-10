@@ -22,8 +22,8 @@ void entity::Circle::Paint() const
 {
     const int segments = 20;
     const Vector2 pos = m_position->ToNormalizedSpace();
-    const float radiusX = m_radius / WIDTH;
-    const float radiusY = m_radius / HEIGHT;
+    const float radiusX = m_radius * 2.0f / WIDTH;
+    const float radiusY = m_radius * 2.0f / HEIGHT;
 
     glBegin(GL_LINE_LOOP);
     for (int i = 0; i < segments; i++)
