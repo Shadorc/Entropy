@@ -44,7 +44,7 @@ AABB entity::Circle::GetAABB() const
     );
 }
 
-bool entity::Circle::Intersects(Vector2* point) const
+bool entity::Circle::Intersects(const Vector2* point) const
 {
     return m_position->DistanceSq(*point) <= pow(m_radius, 2);
 }
@@ -54,7 +54,7 @@ bool entity::Circle::Intersects(const entity::Rectangle* rectangle) const
     return rectangle->Intersects(this);
 }
 
-bool entity::Circle::Intersects(const Circle* circle) const
+bool entity::Circle::Intersects(const entity::Circle* circle) const
 {
     float deltaX = m_position->m_x - circle->m_position->m_x;
     float deltaY = m_position->m_y - circle->m_position->m_y;

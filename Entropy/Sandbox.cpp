@@ -1,16 +1,24 @@
+#include "CollisionManager.h"
+#include "Entity.h"
 #include "Sandbox.h"
-#include "GraphicUtil.cpp"
 #include <GL/glut.h>
 #include <ctime>
+#include "GraphicUtil.h"
 
 Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
     m_fps(0),
     m_lastLoopTime(0),
-    m_updating(false)
+    m_updating(false),
+    m_collisionManager(new CollisionManager(this))
 {
     instance = this;
+}
+
+Sandbox::~Sandbox()
+{
+    delete m_collisionManager;
 }
 
 void Sandbox::Start()
@@ -40,6 +48,8 @@ void Sandbox::Update(float delta)
 	{
 		entity->Update(delta);
 	}
+
+    m_collisionManager->Update(delta);
 }
 
 char fps[32];

@@ -18,7 +18,7 @@ namespace entity
 			void Paint() const;
 			AABB GetAABB() const override;
 
-			bool Intersects(Vector2* point) const;
+			bool Intersects(const Vector2* point) const;
 			bool Intersects(const Rectangle* rectangle) const;
 			bool Intersects(const Circle* rectangle) const;
 

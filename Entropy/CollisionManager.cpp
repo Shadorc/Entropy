@@ -1,15 +1,15 @@
-#include "AABB.h"
 #include "Sandbox.h"
+#include "Entity.h"
 #include "CollisionManager.h"
 #include "RigidBodyComponent.h"
+#include "Config.h"
 #include <algorithm>
-#include <limits>
 
 CollisionManager::CollisionManager(const Sandbox* sandbox) :
 	m_sandbox(sandbox),
 	m_quadTree(nullptr)
 {
-
+    SetRootSize(WIDTH, HEIGHT);
 }
 
 void CollisionManager::Update(float delta)
@@ -50,19 +50,19 @@ void CollisionManager::CheckCollisions(float delta)
 
             AABB md = other->GetAABB().MinkowskiDifference(entity->GetAABB());
 
-            /* TODO
             // Check for discrete AABB collision and then check for full collision
             if (md.GetTopLeft()->m_x <= 0 && md.GetBottomRight()->m_x >= 0
                 && md.GetTopLeft()->m_y <= 0 && md.GetBottomRight()->m_y >= 0
-                && entity.getHitboxShape().intersects(other.getHitboxShape())) {
+                && entity->Intersects(other)) {
 
-                Vector2 penetrationVector = entity->GetHitboxShape().penetrationVector(other.getHitboxShape());
+                Vector2 penetrationVector = entity->ComputePenetrationVector(other);
                 if (penetrationVector == Vector2::ZERO) {
-                    penetrationVector = md.closestPointOnBoundsToPoint(Vector.ZERO);
+                    penetrationVector = md.ClosestPointOnBoundsToPoint(Vector2::ZERO);
                 }
                 *entity->GetPosition() += penetrationVector;
 
-                Vector2 tangent = penetrationVector.Normalize().Tangent();
+                penetrationVector.Normalize();
+                Vector2 tangent = penetrationVector.Tangent();
                 *entity->GetVelocity() = tangent * entity->GetVelocity()->Dot(tangent);
                 *other->GetVelocity() = tangent * other->GetVelocity()->Dot(tangent);
             }
@@ -70,18 +70,18 @@ void CollisionManager::CheckCollisions(float delta)
             else {
                 Vector2 relativeMotion = (*entity->GetVelocity() - *other->GetVelocity()) * delta;
 
-                float intersectFraction = md.getRayIntersectionFraction(Vector2::ZERO, relativeMotion);
-                if (intersectFraction < std::numeric_limits<float>::max())
+                float intersectFraction = md.ComputeRayIntersectionFraction(Vector2::ZERO, relativeMotion);
+                if (intersectFraction < FLOAT_INFINITY)
                 {
                     *entity->GetPosition() += *entity->GetVelocity() * (delta * intersectFraction);
                     *other->GetPosition() += *other->GetVelocity() * (delta * intersectFraction);
 
-                    Vector2 tangent = relativeMotion.Normalize().Tangent();
+                    relativeMotion.Normalize();
+                    Vector2 tangent = relativeMotion.Tangent();
                     *entity->GetVelocity() = tangent * entity->GetVelocity()->Dot(tangent);
                     *other->GetVelocity() = tangent * other->GetVelocity()->Dot(tangent);
                 }
             }
-            */
         }
     }
 }

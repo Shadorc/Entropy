@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Common.h"
+#include "AABB.h"
 #include "QuadTree.h"
 
-class Sandbox;
 class CollisionManager
 {
 private:

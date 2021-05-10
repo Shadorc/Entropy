@@ -47,14 +47,14 @@ void Entity::Update(float delta)
 	}
 }
 
-bool Entity::Intersects(Entity* other) const
+bool Entity::Intersects(const Entity* other) const
 {
-	entity::Rectangle* rectangle = dynamic_cast<entity:: Rectangle* > (other);
+	const entity::Rectangle* rectangle = dynamic_cast<const entity:: Rectangle* > (other);
 	if (rectangle != nullptr) {
 		return Intersects(rectangle);
 	}
 
-	entity::Circle* circle = dynamic_cast<entity::Circle*>(other);
+	const entity::Circle* circle = dynamic_cast<const entity::Circle*>(other);
 	if (circle != nullptr) {
 		return Intersects(circle);
 	}
@@ -69,14 +69,14 @@ bool Entity::Intersects(Entity* other) const
 	return false;
 }
 
-Vector2 Entity::ComputePenetrationVector(Entity* other) const
+Vector2 Entity::ComputePenetrationVector(const Entity* other) const
 {
-	entity::Rectangle* rectangle = dynamic_cast<entity::Rectangle*>(other);
+	const entity::Rectangle* rectangle = dynamic_cast<const entity::Rectangle*>(other);
 	if (rectangle != nullptr)
 	{
 		return ComputePenetrationVector(rectangle);
 	}
-	entity::Circle* circle = dynamic_cast<entity::Circle*>(other);
+	const entity::Circle* circle = dynamic_cast<const entity::Circle*>(other);
 	if (circle != nullptr)
 	{
 		return ComputePenetrationVector(circle);

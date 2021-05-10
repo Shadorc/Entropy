@@ -35,7 +35,7 @@ AABB entity::Rectangle::GetAABB() const
     );
 }
 
-bool entity::Rectangle::Intersects(Vector2* point) const
+bool entity::Rectangle::Intersects(const Vector2* point) const
 {
     return point->m_x >= this->m_position->m_x - m_width / 2.0f
         && point->m_x <= this->m_position->m_x + m_width / 2.0f

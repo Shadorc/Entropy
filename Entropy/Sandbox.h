@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Common.h"
 #include <vector>
-#include "Entity.h"
 
 class Sandbox
 {
@@ -10,12 +10,14 @@ private:
 	bool m_updating;
 	float m_fps;
 	int m_lastLoopTime;
+	CollisionManager* m_collisionManager;
 
 protected:
 	static Sandbox* instance;
 
 public:
 	Sandbox();
+	~Sandbox();
 
 	std::vector<Entity*> GetEntities() const;
 

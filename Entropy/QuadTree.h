@@ -5,7 +5,9 @@
 #define MAX_OBJECTS 5
 #define MAX_LEVELS 10
 
-enum Quadrant
+#define INT(a) static_cast<int>(a)
+
+enum class Quadrant
 {
 	BOTTOM_LEFT,
 	BOTTOM_RIGHT,
@@ -32,13 +34,13 @@ private:
 		const Vector2* topLeft = m_aabb->GetTopLeft();
 		const Vector2* bottomRight = m_aabb->GetBottomRight();
 
-		m_nodes[Quadrant::TOP_LEFT] = new QuadTree<T>(m_level + 1,
+		m_nodes[INT(Quadrant::TOP_LEFT)] = new QuadTree<T>(m_level + 1,
 			new AABB(*topLeft, *topLeft + Vector2(subWidth, subHeight)));
-		m_nodes[Quadrant::TOP_RIGHT] = new QuadTree<T>(m_level + 1,
+		m_nodes[INT(Quadrant::TOP_RIGHT)] = new QuadTree<T>(m_level + 1,
 			new AABB(*topLeft + Vector2(subWidth, 0), *bottomRight - Vector2(0, subHeight)));
-		m_nodes[Quadrant::BOTTOM_LEFT] = new QuadTree<T>(m_level + 1,
+		m_nodes[INT(Quadrant::BOTTOM_LEFT)] = new QuadTree<T>(m_level + 1,
 			new AABB(*topLeft + Vector2(0, subHeight), *bottomRight - Vector2(subWidth, 0)));
-		m_nodes[Quadrant::BOTTOM_RIGHT] = new QuadTree<T>(m_level + 1,
+		m_nodes[INT(Quadrant::BOTTOM_RIGHT)] = new QuadTree<T>(m_level + 1,
 			new AABB(*topLeft + Vector2(subWidth, subHeight), *bottomRight));
 	}
 
@@ -79,7 +81,7 @@ private:
 		}
 
 		if (quadrant != Quadrant::INVALID && m_nodes[0] != nullptr) {
-			m_nodes[quadrant]->Search(returnObjects, object);
+			m_nodes[INT(quadrant)]->Search(returnObjects, object);
 		}
 
 		returnObjects.insert(returnObjects.end(), m_objects.begin(), m_objects.end());
@@ -108,16 +110,16 @@ private:
 
 public:
 	QuadTree(AABB* aabb) :
-		m_level(0),
-		m_aabb(aabb),
-		m_nodes() // TODO
+		QuadTree(0, aabb)
 	{
 
 	}
+
 	QuadTree(int level, AABB* aabb) :
 		m_level(level),
 		m_aabb(aabb),
-		m_nodes() // TODO
+		m_nodes(), // TODO
+		m_objects()
 	{
 
 	}
@@ -131,14 +133,16 @@ public:
 	{
 		m_objects.clear();
 
-		for (int i = 0; i < Quadrant::SIZE; ++i)
+		for (int i = 0; i < INT(Quadrant::SIZE); ++i)
 		{
 			if (m_nodes[i] != nullptr)
 			{
 				m_nodes[i]->Clear();
+				delete m_nodes[i];
+				m_nodes[i] = nullptr;
 			}
 		}
-		delete[] &m_nodes;
+		//delete m_nodes;
 	}
 
 	void Insert(const T* object)
@@ -146,7 +150,7 @@ public:
 		if (m_nodes[0] != nullptr) {
 			Quadrant quadrant = GetQuadrant(object);
 			if (quadrant != Quadrant::INVALID) {
-				m_nodes[quadrant]->Insert(object);
+				m_nodes[INT(quadrant)]->Insert(object);
 				return;
 			}
 		}
@@ -162,7 +166,7 @@ public:
 			while (i < m_objects.size()) {
 				Quadrant quadrant = GetQuadrant(m_objects[i]);
 				if (quadrant != Quadrant::INVALID) {
-					m_nodes[quadrant]->Insert(m_objects[i]);
+					m_nodes[INT(quadrant)]->Insert(m_objects[i]);
 					m_objects.erase(m_objects.begin() + i);
 				}
 				else {

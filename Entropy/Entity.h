@@ -44,12 +44,12 @@ public:
 	virtual void Update(float delta);
 	virtual void Paint() const = 0;
 
-	bool Intersects(Entity* other) const;
-	virtual bool Intersects(Vector2* point) const = 0;
+	bool Intersects(const Entity* other) const;
+	virtual bool Intersects(const Vector2* point) const = 0;
 	virtual bool Intersects(const entity::Rectangle* rectangle) const = 0;
 	virtual bool Intersects(const entity::Circle* circle) const = 0;
 
-	Vector2 ComputePenetrationVector(Entity* other) const;
+	Vector2 ComputePenetrationVector(const Entity* other) const;
 	virtual Vector2 ComputePenetrationVector(const entity::Rectangle* rectangle) const = 0;
 	virtual Vector2 ComputePenetrationVector(const entity::Circle* circle) const = 0;
 
