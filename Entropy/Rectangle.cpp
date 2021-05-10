@@ -19,7 +19,7 @@ void entity::Rectangle::Paint() const
     float helfWidth = m_width / WIDTH;
     float halfHeight = m_height / HEIGHT;
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_LINE_LOOP);
     glVertex2f(pos.m_x - helfWidth, pos.m_y - halfHeight);
     glVertex2f(pos.m_x + helfWidth, pos.m_y - halfHeight);
     glVertex2f(pos.m_x + helfWidth, pos.m_y + halfHeight);
