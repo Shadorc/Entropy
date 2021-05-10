@@ -1,3 +1,5 @@
+#include "Circle.h"
+#include "Rectangle.h"
 #include "Component.h"
 #include "Entity.h"
 
@@ -43,6 +45,43 @@ void Entity::Update(float delta)
 	{
 		component->Update(delta);
 	}
+}
+
+bool Entity::Intersects(Entity* other) const
+{
+	entity::Rectangle* rectangle = dynamic_cast<entity:: Rectangle* > (other);
+	if (rectangle != nullptr) {
+		return Intersects(rectangle);
+	}
+
+	entity::Circle* circle = dynamic_cast<entity::Circle*>(other);
+	if (circle != nullptr) {
+		return Intersects(circle);
+	}
+
+	/* TODO
+	Line* line = dynamic_cast<Line*>(other);
+	if (line !m= nullptr) {
+		return Intersects(line);
+	}
+	*/
+
+	return false;
+}
+
+Vector2 Entity::ComputePenetrationVector(Entity* other) const
+{
+	entity::Rectangle* rectangle = dynamic_cast<entity::Rectangle*>(other);
+	if (rectangle != nullptr)
+	{
+		return ComputePenetrationVector(rectangle);
+	}
+	entity::Circle* circle = dynamic_cast<entity::Circle*>(other);
+	if (circle != nullptr)
+	{
+		return ComputePenetrationVector(circle);
+	}
+	return Vector2();
 }
 
 bool Entity::operator==(Entity& other) const

@@ -2,8 +2,9 @@
 
 #include "Entity.h"
 
-namespace entity 
+namespace entity
 {
+	class Circle;
 	class Rectangle : public Entity
 	{
 	private:
@@ -15,5 +16,12 @@ namespace entity
 
 		void Paint() const override;
 		AABB GetAABB() const override;
+
+		bool Intersects(Vector2* point) const;
+		bool Intersects(const Rectangle* rectangle) const;
+		bool Intersects(const Circle* circle) const;
+
+		Vector2 ComputePenetrationVector(const Rectangle* rectangle) const;
+		Vector2 ComputePenetrationVector(const Circle* circle) const;
 	};
 }

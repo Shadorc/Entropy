@@ -1,17 +1,23 @@
+#include "Rectangle.h"
 #include "Circle.h"
 #include "Config.h"
 #include <GL/glut.h>
 
 constexpr float TWICE_PI = 2.0f * 3.14159265f;
 
-Circle::Circle(float x, float y, float radius) :
+entity::Circle::Circle(float x, float y, float radius) :
 	Entity(x, y),
 	m_radius(radius)
 {
 
 }
 
-void Circle::Paint() const
+float entity::Circle::GetRadius() const
+{
+    return m_radius;
+}
+
+void entity::Circle::Paint() const
 {
     const int segments = 20;
     const Vector2 pos = m_position->ToNormalizedSpace();
@@ -29,10 +35,41 @@ void Circle::Paint() const
     glEnd();
 }
 
-AABB Circle::GetAABB() const
+AABB entity::Circle::GetAABB() const
 {
     return AABB(
         Vector2(m_position->m_x - m_radius, m_position->m_y - m_radius),
         Vector2(m_position->m_x + m_radius, m_position->m_y + m_radius)
     );
+}
+
+bool entity::Circle::Intersects(Vector2* point) const
+{
+    return m_position->DistanceSq(*point) <= pow(m_radius, 2);
+}
+
+bool entity::Circle::Intersects(const entity::Rectangle* rectangle) const
+{
+    return rectangle->Intersects(this);
+}
+
+bool entity::Circle::Intersects(const Circle* circle) const
+{
+    float deltaX = m_position->m_x - circle->m_position->m_x;
+    float deltaY = m_position->m_y - circle->m_position->m_y;
+    float radiusSum = m_radius + circle->m_radius;
+    return pow(deltaX, 2) + pow(deltaY, 2) <= pow(radiusSum, 2);
+}
+
+Vector2 entity::Circle::ComputePenetrationVector(const entity::Circle* circle) const
+{
+    float distance = m_position->Distance(*circle->m_position);
+    float overlap = distance - (m_radius + circle->m_radius);
+    // Multiply the norm by overlap, we don't use Vector2#normalize() because we already have calculated the distance
+    return (*circle->m_position - *m_position) / distance * overlap;
+}
+
+Vector2 entity::Circle::ComputePenetrationVector(const entity::Rectangle* rectangle) const
+{
+    return rectangle->ComputePenetrationVector(this) * -1;
 }

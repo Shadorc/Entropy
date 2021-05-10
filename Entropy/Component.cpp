@@ -1,3 +1,4 @@
+#include "Entity.h"
 #include "Component.h"
 
 Component::Component(const Entity* entity):
