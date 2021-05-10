@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vector2.h"
 #include "AABBObject.h"
+#include "Vector2.h"
 #include <vector>
 
 class Component;

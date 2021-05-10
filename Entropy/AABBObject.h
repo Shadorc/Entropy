@@ -1,7 +1,6 @@
 #pragma once
 
-#include "AABB.h"
-
+class AABB;
 class AABBObject
 {
 public:

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Entity.h"
 #include "Component.h"
 
+class Entity;
 class GravityComponent: public Component
 {
 public:

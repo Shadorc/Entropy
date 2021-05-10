@@ -1,3 +1,4 @@
+#include "Vector2.h"
 #include "AABB.h"
 
 AABB::AABB(Vector2 topLeft, Vector2 bottomRight) :

@@ -1,3 +1,4 @@
+#include "Entity.h"
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"
 

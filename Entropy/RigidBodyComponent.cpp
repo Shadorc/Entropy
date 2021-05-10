@@ -1,3 +1,4 @@
+#include "Entity.h"
 #include "RigidBodyComponent.h"
 
 RigidBodyComponent::RigidBodyComponent(const Entity* entity, float mass) :

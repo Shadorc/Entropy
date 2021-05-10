@@ -1,6 +1,5 @@
 #pragma once
 
-#include "AABB.h"
 #include <vector>
 
 #define MAX_OBJECTS 5
@@ -16,6 +15,7 @@ enum Quadrant
 	INVALID
 };
 
+class AABB;
 template<typename T>
 class QuadTree
 {
