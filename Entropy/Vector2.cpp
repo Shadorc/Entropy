@@ -1,6 +1,7 @@
 #include "Vector2.h"
 #include "Config.h"
 #include <math.h>
+#include <ostream>
 
 const float Vector2::EPSILON = (float) pow(10, -4);
 const float Vector2::EPSILON_SQ = (float) pow(EPSILON, 2);
@@ -120,6 +121,11 @@ void Vector2::operator/=(float coef)
 bool Vector2::operator==(const Vector2& other) const
 {
 	return m_x == other.m_x && m_y == other.m_y;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vector2& vector)
+{
+	return os << "{" << vector.m_x << ", " << vector.m_y << "}";
 }
 
 Vector2 Vector2::ToNormalizedSpace(float x, float y)
