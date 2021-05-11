@@ -119,7 +119,7 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h">
+    <ClInclude Include="precomp.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

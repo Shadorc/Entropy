@@ -11,6 +11,17 @@ entity::Rectangle::Rectangle(float x, float y, float width, float height):
     m_width(width),
     m_height(height)
 {
+
+}
+
+float entity::Rectangle::GetWidth() const
+{
+    return m_width;
+}
+
+float entity::Rectangle::GetHeight() const
+{
+    return m_height;
 }
 
 void entity::Rectangle::Paint() const
