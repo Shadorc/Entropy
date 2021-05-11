@@ -22,7 +22,7 @@ namespace entity
 			bool Intersects(const Rectangle* rectangle) const;
 			bool Intersects(const Circle* rectangle) const;
 
-			Vector2 ComputePenetrationVector(const Circle* circle) const;
 			Vector2 ComputePenetrationVector(const Rectangle* rectangle) const;
+			Vector2 ComputePenetrationVector(const Circle* circle) const;
 	};
 }

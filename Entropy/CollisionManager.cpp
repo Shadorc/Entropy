@@ -12,6 +12,11 @@ CollisionManager::CollisionManager(const Sandbox* sandbox) :
     SetRootSize(WIDTH, HEIGHT);
 }
 
+CollisionManager::~CollisionManager()
+{
+    delete m_quadTree;
+}
+
 void CollisionManager::Update(float delta)
 {
 	UpdateQuadTree();
@@ -88,11 +93,6 @@ void CollisionManager::CheckCollisions(float delta)
 
 void CollisionManager::SetRootSize(int width, int height)
 {
-	if (m_quadTree != nullptr)
-	{
-		m_quadTree->Clear();
-		delete m_quadTree;
-	}
-	
+    delete m_quadTree;
 	m_quadTree = new QuadTree<Entity>(new AABB(Vector2(), Vector2(width, height)));
 }

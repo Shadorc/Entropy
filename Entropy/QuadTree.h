@@ -52,19 +52,25 @@ private:
 		AABB aabb = object->GetAABB();
 		bool topQuadrant = aabb.GetY() + aabb.GetHeight() < middleY;
 		bool bottomQuadrant = aabb.GetY() > middleY;
-		if (aabb.GetX() + aabb.GetWidth() < middleX) {
-			if (topQuadrant) {
+		if (aabb.GetX() + aabb.GetWidth() < middleX) 
+		{
+			if (topQuadrant) 
+			{
 				return Quadrant::TOP_LEFT;
 			}
-			else if (bottomQuadrant) {
+			else if (bottomQuadrant) 
+			{
 				return Quadrant::BOTTOM_LEFT;
 			}
 		}
-		else if (aabb.GetX() > middleX) {
-			if (topQuadrant) {
+		else if (aabb.GetX() > middleX)
+		{
+			if (topQuadrant)
+			{
 				return Quadrant::TOP_RIGHT;
 			}
-			else if (bottomQuadrant) {
+			else if (bottomQuadrant)
+			{
 				return Quadrant::BOTTOM_RIGHT;
 			}
 		}
@@ -76,11 +82,13 @@ private:
 		Quadrant quadrant = GetQuadrant(object);
 
 		// If the object is between two or more nodes, we check collisions with all children in this node
-		if (quadrant == Quadrant::INVALID) {
+		if (quadrant == Quadrant::INVALID) 
+		{
 			return SearchChildren(returnObjects, object);
 		}
 
-		if (quadrant != Quadrant::INVALID && m_nodes[0] != nullptr) {
+		if (quadrant != Quadrant::INVALID && m_nodes[0] != nullptr)
+		{
 			m_nodes[INT(quadrant)]->Search(returnObjects, object);
 		}
 
@@ -107,7 +115,6 @@ private:
 		return returnObjects;
 	}
 
-
 public:
 	QuadTree(AABB* aabb) :
 		QuadTree(0, aabb)
@@ -123,6 +130,7 @@ public:
 	{
 
 	}
+
 	~QuadTree()
 	{
 		Clear();
@@ -142,14 +150,15 @@ public:
 				m_nodes[i] = nullptr;
 			}
 		}
-		//delete m_nodes;
 	}
 
 	void Insert(const T* object)
 	{
-		if (m_nodes[0] != nullptr) {
+		if (m_nodes[0] != nullptr)
+		{
 			Quadrant quadrant = GetQuadrant(object);
-			if (quadrant != Quadrant::INVALID) {
+			if (quadrant != Quadrant::INVALID)
+			{
 				m_nodes[INT(quadrant)]->Insert(object);
 				return;
 			}
@@ -157,19 +166,24 @@ public:
 
 		m_objects.push_back(object);
 
-		if (m_objects.size() > MAX_OBJECTS && m_level < MAX_LEVELS) {
-			if (m_nodes[0] == nullptr) {
+		if (m_objects.size() > MAX_OBJECTS && m_level < MAX_LEVELS)
+		{
+			if (m_nodes[0] == nullptr) 
+			{
 				Split();
 			}
 
 			int i = 0;
-			while (i < m_objects.size()) {
+			while (i < m_objects.size()) 
+			{
 				Quadrant quadrant = GetQuadrant(m_objects[i]);
-				if (quadrant != Quadrant::INVALID) {
+				if (quadrant != Quadrant::INVALID)
+				{
 					m_nodes[INT(quadrant)]->Insert(m_objects[i]);
 					m_objects.erase(m_objects.begin() + i);
 				}
-				else {
+				else
+				{
 					i++;
 				}
 			}

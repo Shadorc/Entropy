@@ -15,6 +15,7 @@ private:
 
 public:
 	CollisionManager(const Sandbox* sandbox);
+	~CollisionManager();
 
 	void Update(float delta);
 	void SetRootSize(int width, int height);

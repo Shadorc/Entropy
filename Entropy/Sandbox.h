@@ -6,11 +6,11 @@
 class Sandbox
 {
 private:
+	CollisionManager* m_collisionManager;
 	std::vector<Entity*> m_entities;
 	bool m_updating;
 	float m_fps;
 	int m_lastLoopTime;
-	CollisionManager* m_collisionManager;
 
 protected:
 	static Sandbox* instance;

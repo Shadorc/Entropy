@@ -8,10 +8,10 @@
 Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
+    m_collisionManager(new CollisionManager(this)),
     m_fps(0),
     m_lastLoopTime(0),
-    m_updating(false),
-    m_collisionManager(new CollisionManager(this))
+    m_updating(false)
 {
     instance = this;
 }
@@ -19,6 +19,7 @@ Sandbox::Sandbox():
 Sandbox::~Sandbox()
 {
     delete m_collisionManager;
+    instance = nullptr;
 }
 
 void Sandbox::Start()
