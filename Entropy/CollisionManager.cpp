@@ -66,10 +66,16 @@ void CollisionManager::CheckCollisions(float delta)
                 }
                 *entity->GetPosition() += penetrationVector;
 
-                penetrationVector.Normalize();
-                Vector2 tangent = penetrationVector.Tangent();
-                *entity->GetVelocity() = tangent * entity->GetVelocity()->Dot(tangent);
-                *other->GetVelocity() = tangent * other->GetVelocity()->Dot(tangent);
+                // See: https://en.wikipedia.org/wiki/Elastic_collision#two-dimensional
+                // Section: Two-dimensional collision with two moving objects
+                float m1 = 1; // TODO
+                float m2 = 1; // TODO
+                Vector2 v1 = *entity->GetVelocity();
+                Vector2 v2 = *other->GetVelocity();
+                Vector2 x1 = *entity->GetPosition();
+                Vector2 x2 = *other->GetPosition();
+                *entity->GetVelocity() = v1 - (x1 - x2) * (2.0f * m2) / (m1 + m2) * (v1 - v2).Dot(x1 - x2) / (x1 - x2).LengthSq();
+                *other->GetVelocity() = v2 - (x2 - x1) * (2.0f * m1) / (m1 + m2) * (v2 - v1).Dot(x2 - x1) / (x2 - x1).LengthSq();
             }
             // Swept AABB collision detection
             else {
