@@ -68,7 +68,7 @@ void CollisionManager::CheckCollisions(float delta)
 
                 // See: https://en.wikipedia.org/wiki/Elastic_collision#two-dimensional
                 // Section: Two-dimensional collision with two moving objects
-                float m1 = 1; // TODO
+                float m1 = rigidBodyComponent->GetMass();
                 float m2 = 1; // TODO
                 Vector2 v1 = *entity->GetVelocity();
                 Vector2 v2 = *other->GetVelocity();
