@@ -36,6 +36,7 @@
     <ClInclude Include="AABBObject.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="DebugMode.h" />
     <ClInclude Include="precomp.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Config.h" />

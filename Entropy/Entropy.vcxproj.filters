@@ -40,6 +40,9 @@
     <Filter Include="Fichiers sources\quadtree">
       <UniqueIdentifier>{270a158b-2f38-443c-beaf-793a70b2e15d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\debug">
+      <UniqueIdentifier>{a33d1f7f-b9ad-47fd-9db1-88224860a5c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entropy.cpp">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="precomp.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugMode.h">
+      <Filter>Fichiers d%27en-tête\debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,13 +5,20 @@
 #include <ctime>
 #include "GraphicUtil.h"
 
+#ifdef _DEBUG
+#include "DebugMode.h"
+#endif // _DEBUG
+
 Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
-    m_collisionManager(new CollisionManager(this)),
-    m_fps(0),
-    m_lastLoopTime(0),
-    m_updating(false)
+    m_collisionManager(new CollisionManager(this))
+    , m_fps(0)
+    , m_lastLoopTime(0)
+    , m_updating(false)
+#ifdef _DEBUG
+    , m_debugMask(0)
+#endif // _DEBUG
 {
     instance = this;
 }
@@ -30,6 +37,9 @@ void Sandbox::Start()
     glutDisplayFunc(&OnLoopWrapper);
     glutVisibilityFunc(&OnVisibleWrapper);
     glutKeyboardFunc(&OnKeyboardWrapper);
+#ifdef _DEBUG
+    glutSpecialFunc(&OnSpecialKeyboardWrapper);
+#endif // _DEBUG
 }
 
 void Sandbox::Stop()
@@ -39,6 +49,9 @@ void Sandbox::Stop()
     glutDisplayFunc(nullptr);
     glutVisibilityFunc(nullptr);
     glutKeyboardFunc(nullptr);
+#ifdef _DEBUG
+    glutSpecialFunc(nullptr);
+#endif // _DEBUG
     glutIdleFunc(nullptr);
 }
 
@@ -90,7 +103,7 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
 {
     switch (key)
     {
-    /* Exit on escape key press */
+    // Exit on escape key press
     case '\x1B':
     {
         exit(EXIT_SUCCESS);
@@ -98,6 +111,35 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
     }
     }
 }
+
+#ifdef _DEBUG
+void Sandbox::OnSpecialKeyboard(int key, int x, int y)
+{
+    switch (key)
+    {
+    case GLUT_KEY_F1:
+    {
+        m_debugMask ^= 1 << static_cast<int>(DebugMode::PERFORMANCE_INFO);
+        break;
+    }
+    case GLUT_KEY_F2:
+    {
+        m_debugMask ^= 1 << static_cast<int>(DebugMode::SHOW_QUADTREE);
+        break;
+    }
+    case GLUT_KEY_F3:
+    {
+        m_debugMask ^= 1 << static_cast<int>(DebugMode::SHOW_AABB);
+        break;
+    }
+    case GLUT_KEY_F4:
+    {
+        m_debugMask ^= 1 << static_cast<int>(DebugMode::SHOW_VELOCITY);
+        break;
+    }
+    }
+}
+#endif // _DEBUG
 
 void Sandbox::OnVisible(int visibility)
 {
@@ -149,3 +191,10 @@ void Sandbox::OnKeyboardWrapper(unsigned char key, int x, int y)
 {
     instance->OnKeyboard(key, x, y);
 }
+
+#ifdef _DEBUG
+void Sandbox::OnSpecialKeyboardWrapper(int key, int x, int y)
+{
+    instance->OnSpecialKeyboard(key, x, y);
+}
+#endif // _DEBUG

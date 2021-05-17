@@ -11,6 +11,9 @@ private:
 	bool m_updating;
 	float m_fps;
 	int m_lastLoopTime;
+#ifdef _DEBUG
+	int m_debugMask;
+#endif // _DEBUG
 
 protected:
 	static Sandbox* instance;
@@ -32,11 +35,17 @@ public:
 	void OnVisible(int visibility);
 	void OnLoop();
 	void OnKeyboard(unsigned char key, int x, int y);
+#ifdef _DEBUG
+	void OnSpecialKeyboard(int key, int x, int y);
+#endif // _DEBUG
 
 	/* Static functions which are passed to Glut function callbacks */
 	static void OnIdleWrapper();
 	static void OnVisibleWrapper(int visibility);
 	static void OnLoopWrapper();
 	static void OnKeyboardWrapper(unsigned char key, int x, int y);
+#ifdef _DEBUG
+	static void OnSpecialKeyboardWrapper(int key, int x, int y);
+#endif // _DEBUG
 };
 
