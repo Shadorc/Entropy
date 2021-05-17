@@ -66,7 +66,6 @@ void Sandbox::Update(float delta)
     m_collisionManager->Update(delta);
 }
 
-char fps[32];
 void Sandbox::Repaint() const
 {
     glColor3f(1.0f, 1.0f, 0.0f);
@@ -74,11 +73,37 @@ void Sandbox::Repaint() const
     {
         entity->Paint();
     }
-    
-    glColor3f(0.0f, 1.0f, 0.0f);
-    sprintf_s(fps, "%.1f", m_fps);
-    DisplayText(5, 20, 3.5f, fps);
+
+#ifdef _DEBUG
+    RepaintDebug();
+#endif // _DEBUG
 }
+
+#ifdef _DEBUG
+#define DEBUG_MODE_ENABLED(mode) m_debugMask & 1 << static_cast<int>(mode)
+void Sandbox::RepaintDebug() const
+{
+    static char fps[16];
+    if (DEBUG_MODE_ENABLED(DebugMode::PERFORMANCE_INFO))
+    {
+        glColor3f(0.0f, 1.0f, 0.0f);
+        sprintf_s(fps, "%.1f", m_fps);
+        DisplayText(5, 20, 3.5f, fps);
+    }
+
+    if (DEBUG_MODE_ENABLED(DebugMode::SHOW_QUADTREE))
+    {
+    }
+
+    if (DEBUG_MODE_ENABLED(DebugMode::SHOW_AABB))
+    {
+    }
+
+    if (DEBUG_MODE_ENABLED(DebugMode::SHOW_VELOCITY))
+    {
+    }
+}
+#endif // _DEBUG
 
 std::vector<Entity*> Sandbox::GetEntities() const
 {
@@ -113,28 +138,29 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
 }
 
 #ifdef _DEBUG
+#define ENABLE_DEBUG_MODE(mode) m_debugMask ^= 1 << static_cast<int>(mode)
 void Sandbox::OnSpecialKeyboard(int key, int x, int y)
 {
     switch (key)
     {
     case GLUT_KEY_F1:
     {
-        m_debugMask ^= 1 << static_cast<int>(DebugMode::PERFORMANCE_INFO);
+        ENABLE_DEBUG_MODE(DebugMode::PERFORMANCE_INFO);
         break;
     }
     case GLUT_KEY_F2:
     {
-        m_debugMask ^= 1 << static_cast<int>(DebugMode::SHOW_QUADTREE);
+        ENABLE_DEBUG_MODE(DebugMode::SHOW_QUADTREE);
         break;
     }
     case GLUT_KEY_F3:
     {
-        m_debugMask ^= 1 << static_cast<int>(DebugMode::SHOW_AABB);
+        ENABLE_DEBUG_MODE(DebugMode::SHOW_AABB);
         break;
     }
     case GLUT_KEY_F4:
     {
-        m_debugMask ^= 1 << static_cast<int>(DebugMode::SHOW_VELOCITY);
+        ENABLE_DEBUG_MODE(DebugMode::SHOW_VELOCITY);
         break;
     }
     }

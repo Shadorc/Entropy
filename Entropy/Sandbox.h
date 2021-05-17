@@ -15,6 +15,10 @@ private:
 	int m_debugMask;
 #endif // _DEBUG
 
+#ifdef _DEBUG
+	void RepaintDebug() const;
+#endif // _DEBUG
+
 protected:
 	static Sandbox* instance;
 
