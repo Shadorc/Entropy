@@ -1,6 +1,8 @@
 #include "Vector2.h"
 #include "AABB.h"
 #include <math.h>
+#include <limits>
+#include "MathUtil.h"
 
 AABB::AABB(Vector2 topLeft, Vector2 bottomRight):
 	AABB(new Vector2(topLeft), new Vector2(bottomRight))

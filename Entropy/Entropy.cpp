@@ -5,10 +5,9 @@
 #include "Config.h"
 #include "RigidBodyComponent.h"
 #include "GravityComponent.h"
+#include "MathUtil.h"
 #include <stdlib.h>
 #include <time.h>
-
-#define RAND_INT(max) rand() % max + 1
 
 int main(int argc, char** argv)
 {

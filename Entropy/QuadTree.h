@@ -1,11 +1,10 @@
 #pragma once
 
 #include <vector>
+#include "MathUtil.h"
 
 #define MAX_OBJECTS 5
 #define MAX_LEVELS 10
-
-#define INT(a) static_cast<int>(a)
 
 enum class Quadrant
 {

@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Vector2.h"
-#include <limits> 
-
-#define FLOAT_INFINITY std::numeric_limits<float>::infinity()
 
 class AABB
 {

@@ -7,8 +7,8 @@
 
 static void DrawText(float x, float y, float size, char* str)
 {
-	 // TODO: Do not allocate a vector2
-	 Vector2 nPosition = Vector2::ToNormalizedSpace(x, y);
+	// TODO: Do not allocate a vector2
+	Vector2 nPosition = Vector2::ToNormalizedSpace(x, y);
 	float scale = size / 10000.0f; // TODO: This is very arbitrary
 	glPushMatrix();
 	glTranslatef(nPosition.m_x, nPosition.m_y, 0);
