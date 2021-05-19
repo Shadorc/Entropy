@@ -25,7 +25,7 @@ private:
 	const int m_level;
 	std::vector<const T*> m_objects;
 	const AABB* m_aabb;
-	QuadTree<T>* m_nodes[4];
+	QuadTree<T>* m_nodes[INT(Quadrant::SIZE)];
 
 	void Split()
 	{
@@ -125,7 +125,7 @@ public:
 	QuadTree(int level, AABB* aabb) :
 		m_level(level),
 		m_aabb(aabb),
-		m_nodes(), // TODO
+		m_nodes(),
 		m_objects()
 	{
 
@@ -135,6 +135,16 @@ public:
 	{
 		Clear();
 		delete m_aabb;
+	}
+
+	const QuadTree<T>* GetNode(int i) const
+	{
+		return m_nodes[i];
+	}
+
+	const AABB* GetAABB() const
+	{
+		return m_aabb;
 	}
 
 	void Clear()

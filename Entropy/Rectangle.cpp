@@ -3,6 +3,7 @@
 #include "Rectangle.h"
 #include "Config.h"
 #include <GL/glut.h>
+#include "GraphicUtil.h"
 
 #define CLAMP(value, min, max) (value < min ? min : (value > max ? max : value))
 
@@ -26,16 +27,7 @@ float entity::Rectangle::GetHeight() const
 
 void entity::Rectangle::Paint() const
 {
-    const Vector2 pos = m_position->ToNormalizedSpace();
-    float helfWidth = m_width / WIDTH;
-    float halfHeight = m_height / HEIGHT;
-
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(pos.m_x - helfWidth, pos.m_y - halfHeight);
-    glVertex2f(pos.m_x + helfWidth, pos.m_y - halfHeight);
-    glVertex2f(pos.m_x + helfWidth, pos.m_y + halfHeight);
-    glVertex2f(pos.m_x - helfWidth, pos.m_y + halfHeight);
-    glEnd();
+    DrawRectangle(m_position->m_x, m_position->m_y, m_width, m_height);
 }
 
 AABB entity::Rectangle::GetAABB() const

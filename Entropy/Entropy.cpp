@@ -20,8 +20,13 @@ int main(int argc, char** argv)
 
 	Sandbox sandbox;
 
-	entity::Rectangle* floor = new entity::Rectangle(WIDTH / 2.0f, HEIGHT - 50.0f, WIDTH, 25.0f);
+	const int wallSize = 25;
+	entity::Rectangle* floor = new entity::Rectangle(WIDTH / 2.0f, HEIGHT - wallSize, WIDTH, wallSize);
 	sandbox.AddEntity(floor);
+	entity::Rectangle* leftWall = new entity::Rectangle(wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
+	sandbox.AddEntity(leftWall);
+	entity::Rectangle* rightWall = new entity::Rectangle(WIDTH - wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
+	sandbox.AddEntity(rightWall);
 
 	entity::Rectangle* rectangle = new entity::Rectangle(25.0f, 25.0f, 50.0f, 50.0f);
 	rectangle->AddComponent(new RigidBodyComponent(rectangle, 1));
@@ -31,7 +36,7 @@ int main(int argc, char** argv)
 	srand(time(NULL));
 	for (int i = 0; i < 100; ++i)
 	{
-		entity::Circle* circle = new entity::Circle(RAND_INT(WIDTH), RAND_INT(HEIGHT / 5.0f), 25.0f);
+		entity::Circle* circle = new entity::Circle(RAND_INT(WIDTH), RAND_INT(HEIGHT / 5.0f), 15.0f);
 		circle->AddComponent(new RigidBodyComponent(circle, 1));
 		circle->AddComponent(new GravityComponent(circle));
 		sandbox.AddEntity(circle);

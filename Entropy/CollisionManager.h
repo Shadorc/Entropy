@@ -17,6 +17,8 @@ public:
 	CollisionManager(const Sandbox* sandbox);
 	~CollisionManager();
 
+	const QuadTree<Entity>* GetRootQuadTree() const;
+
 	void Update(float delta);
 	void SetRootSize(int width, int height);
 };

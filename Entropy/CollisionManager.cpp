@@ -17,6 +17,11 @@ CollisionManager::~CollisionManager()
     delete m_quadTree;
 }
 
+const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
+{
+    return m_quadTree;
+}
+
 void CollisionManager::Update(float delta)
 {
 	UpdateQuadTree();
