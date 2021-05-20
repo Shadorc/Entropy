@@ -93,6 +93,7 @@ void Sandbox::RepaintDebug() const
 
     if (DEBUG_MODE_ENABLED(DebugMode::SHOW_QUADTREE))
     {
+        glColor3f(0.0f, 1.0f, 1.0f);
         DrawQuadTree(m_collisionManager->GetRootQuadTree());
     }
 

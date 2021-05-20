@@ -80,7 +80,11 @@ void CollisionManager::CheckCollisions(float delta)
                 Vector2 x1 = *entity->GetPosition();
                 Vector2 x2 = *other->GetPosition();
                 *entity->GetVelocity() -= (x1 - x2) * (2.0f * m2) / (m1 + m2) * (v1 - v2).Dot(x1 - x2) / (x1 - x2).LengthSq();
-                *other->GetVelocity() -= (x2 - x1) * (2.0f * m1) / (m1 + m2) * (v2 - v1).Dot(x2 - x1) / (x2 - x1).LengthSq();
+                // Do not change velocity of static objects
+                if (other->GetComponent<RigidBodyComponent>() != nullptr) 
+                {
+                    *other->GetVelocity() -= (x2 - x1) * (2.0f * m1) / (m1 + m2) * (v2 - v1).Dot(x2 - x1) / (x2 - x1).LengthSq();
+                }
             }
             // Swept AABB collision detection
             else {
@@ -96,7 +100,11 @@ void CollisionManager::CheckCollisions(float delta)
                     relativeMotion.Normalize();
                     Vector2 tangent = relativeMotion.Tangent();
                     *entity->GetVelocity() = tangent * entity->GetVelocity()->Dot(tangent);
-                    *other->GetVelocity() = tangent * other->GetVelocity()->Dot(tangent);
+                    // Do not change velocity of static objects
+                    if (other->GetComponent<RigidBodyComponent>() != nullptr)
+                    {
+                        *other->GetVelocity() = tangent * other->GetVelocity()->Dot(tangent);
+                    }
                 }
             }
         }
