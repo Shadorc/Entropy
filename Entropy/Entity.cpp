@@ -2,13 +2,15 @@
 #include "Rectangle.h"
 #include "Component.h"
 #include "Entity.h"
+#include "RigidBodyComponent.h"
 
 static int id = 0;
 
 Entity::Entity(float x, float y) :
 	m_id(id++),
 	m_position(new Vector2(x, y)),
-	m_velocity(new Vector2(0, 0))
+	m_velocity(new Vector2(0, 0)),
+	m_rigidBodyComponent(nullptr)
 {
 
 }
@@ -17,11 +19,22 @@ Entity::~Entity()
 {
 	delete m_position;
 	delete m_velocity;
+	delete m_rigidBodyComponent;
 	for (Component* component : m_components)
 	{
 		delete component;
 	}
 	m_components.clear();
+}
+
+// Cache RigidBody component
+RigidBodyComponent* Entity::GetRigidBodyComponent() const
+{
+	if (m_rigidBodyComponent == nullptr)
+	{
+		m_rigidBodyComponent = GetComponent<RigidBodyComponent>();
+	}
+	return m_rigidBodyComponent;
 }
 
 void Entity::AddComponent(Component* component)

@@ -7,7 +7,7 @@
 GravityComponent::GravityComponent(const Entity* entity): 
 	Component(entity)
 {
-	m_entity->GetComponent<RigidBodyComponent>()->AddForce(Vector2(0, GRAVITY));
+	m_entity->GetRigidBodyComponent()->AddForce(Vector2(0, GRAVITY));
 }
 
 void GravityComponent::Update(float delta)

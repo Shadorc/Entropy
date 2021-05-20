@@ -5,6 +5,7 @@
 #include <vector>
 
 class Component;
+class RigidBodyComponent;
 namespace entity 
 {
 	class Circle;
@@ -13,6 +14,10 @@ namespace entity
 
 class Entity: public AABBObject
 {
+private:
+	// Cached value
+	mutable RigidBodyComponent* m_rigidBodyComponent;
+
 protected:
 	const unsigned int m_id;
 	Vector2* m_position;
@@ -39,6 +44,7 @@ public:
 		}
 		return nullptr;
 	}
+	RigidBodyComponent* GetRigidBodyComponent() const;
 
 	void AddComponent(Component* component);
 	virtual void Update(float delta);
