@@ -177,9 +177,13 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
 void Sandbox::OnVisible(int visibility)
 {
     if (visibility == GLUT_VISIBLE)
+    {
         glutIdleFunc(&OnIdleWrapper);
+    }
     else
+    {
         glutIdleFunc(nullptr);
+    }
 }
 
 void Sandbox::OnIdle()

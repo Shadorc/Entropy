@@ -42,6 +42,11 @@ void Entity::AddComponent(Component* component)
 	m_components.push_back(component);
 }
 
+unsigned int Entity::GetId() const
+{
+	return m_id;
+}
+
 Vector2* Entity::GetPosition() const
 {
 	return m_position;

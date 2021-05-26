@@ -26,6 +26,6 @@ public:
 	bool IntersectsWith(const AABB& other) const;
 	AABB MinkowskiDifference(const AABB& other) const;
 	Vector2 ClosestPointOnBoundsToPoint(const Vector2& point) const;
-	float ComputeRayIntersectionFraction(const Vector2& origin, const Vector2 direction) const;
+	float ComputeRayIntersectionFraction(const Vector2& origin, const Vector2& direction) const;
 };
 

@@ -28,6 +28,7 @@ public:
 	Entity(float x, float y);
 	~Entity();
 
+	unsigned int GetId() const;
 	Vector2* GetPosition() const;
 	Vector2* GetVelocity() const;
 
