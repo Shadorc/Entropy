@@ -88,7 +88,6 @@ Vector2 AABB::ClosestPointOnBoundsToPoint(const Vector2& point) const
 	return boundsPoint;
 }
 
-#define MIN(a, b) a < b ? a : b
 float AABB::ComputeRayIntersectionFraction(const Vector2& origin, const Vector2& direction) const
 {
 	Vector2 end = origin + direction;

@@ -2,12 +2,12 @@
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"
 
-#define GRAVITY 91.4f
+const Vector2 GravityComponent::GRAVITY(0, 91.4f);
 
 GravityComponent::GravityComponent(const Entity* entity): 
 	Component(entity)
 {
-	m_entity->GetRigidBodyComponent()->AddForce(Vector2(0, GRAVITY));
+	m_entity->GetRigidBodyComponent()->AddForce(const_cast<Vector2&>(GRAVITY));
 }
 
 void GravityComponent::Update(float delta)

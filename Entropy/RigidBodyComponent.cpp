@@ -22,7 +22,7 @@ void RigidBodyComponent::Update(float delta)
 	auto it = m_forces.begin();
 	while (it != m_forces.end())
 	{
-		Force force = *it;
+		Force& force = *it;
 		forcesSum += force.vector;
 		if (force.isInstant)
 		{
@@ -49,14 +49,14 @@ void RigidBodyComponent::Update(float delta)
 	}
 }
 
-void RigidBodyComponent::AddForce(Vector2 force)
+void RigidBodyComponent::AddForce(Vector2& force)
 {
-	m_forces.push_back(Force{ force, false });
+	m_forces.emplace_back(force, false);
 }
 
-void RigidBodyComponent::AddInstantForce(Vector2 force)
+void RigidBodyComponent::AddInstantForce(Vector2& force)
 {
-	m_forces.push_back(Force{ force, true });
+	m_forces.emplace_back(force, true);
 }
 
 float RigidBodyComponent::GetMass() const

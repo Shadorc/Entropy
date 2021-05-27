@@ -4,10 +4,17 @@
 #include "Vector2.h"
 #include <vector>
 
-typedef struct force {
+struct Force {
 	Vector2 vector;
 	bool isInstant;
-} Force;
+
+	Force(Vector2& vector, bool isInstant)
+		: vector(vector)
+		, isInstant(isInstant)
+	{
+
+	}
+};
 
 class Entity;
 class RigidBodyComponent: public Component
@@ -21,8 +28,8 @@ public:
 	RigidBodyComponent(const Entity* entity, float mass);
 	~RigidBodyComponent();
 
-	void AddForce(Vector2 force);
-	void AddInstantForce(Vector2 force);
+	void AddForce(Vector2& force);
+	void AddInstantForce(Vector2& force);
 	void Update(float delta) override;
 
 	float GetMass() const;
