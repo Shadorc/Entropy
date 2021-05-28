@@ -58,7 +58,7 @@ void CollisionManager::CheckCollisions(float delta)
                 continue;
             }
 
-            AABB md = other->GetAABB().MinkowskiDifference(entity->GetAABB());
+            const AABB& md = other->GetAABB().MinkowskiDifference(entity->GetAABB());
 
             // Check for discrete AABB collision and then check for full collision
             if (md.GetTopLeft()->m_x <= 0 && md.GetBottomRight()->m_x >= 0
@@ -98,7 +98,7 @@ void CollisionManager::CheckCollisions(float delta)
 
                     // TODO: Two-dimensional collision with two moving objects
                     relativeMotion.Normalize();
-                    Vector2 tangent = relativeMotion.Tangent();
+                    const Vector2& tangent = relativeMotion.Tangent();
                     *entity->GetVelocity() = tangent * entity->GetVelocity()->Dot(tangent);
                     // Do not change velocity of static objects
                     if (other->GetRigidBodyComponent() != nullptr)

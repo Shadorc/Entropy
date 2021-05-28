@@ -21,7 +21,7 @@ float entity::Circle::GetRadius() const
 void entity::Circle::Paint() const
 {
     const int segments = 20;
-    const Vector2 pos = m_position->ToNormalizedSpace();
+    const Vector2& pos = m_position->ToNormalizedSpace();
     const float radiusX = m_radius * 2.0f / WIDTH;
     const float radiusY = m_radius * 2.0f / HEIGHT;
 

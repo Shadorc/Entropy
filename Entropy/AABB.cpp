@@ -54,7 +54,7 @@ const Vector2* AABB::GetBottomRight() const
 
 bool AABB::IntersectsWith(const AABB& other) const
 {
-	AABB md = other.MinkowskiDifference(*this);
+	const AABB& md = other.MinkowskiDifference(*this);
 	return md.m_topLeft->m_x <= 0 && md.m_bottomRight->m_x >= 0
 		&& md.m_topLeft->m_y <= 0 && md.m_bottomRight->m_y >= 0;
 }
@@ -73,17 +73,20 @@ Vector2 AABB::ClosestPointOnBoundsToPoint(const Vector2& point) const
 	if (abs(m_bottomRight->m_x - point.m_x) < minDist)
 	{
 		minDist = abs(m_bottomRight->m_x - point.m_x);
-		boundsPoint = Vector2(m_bottomRight->m_x, point.m_y);
+		boundsPoint.m_x = m_bottomRight->m_x;
+		boundsPoint.m_y = point.m_y;
 	}
 	if (abs(m_bottomRight->m_y - point.m_y) < minDist) 
 	{
 		minDist = abs(m_bottomRight->m_y - point.m_y);
-		boundsPoint = Vector2(point.m_x, m_bottomRight->m_y);
+		boundsPoint.m_x = point.m_x;
+		boundsPoint.m_y = m_bottomRight->m_y;
 	}
 	if (abs(m_topLeft->m_y - point.m_y) < minDist) 
 	{
 		minDist = abs(m_topLeft->m_y - point.m_y);
-		boundsPoint = Vector2(point.m_x, m_topLeft->m_y);
+		boundsPoint.m_x = point.m_x;
+		boundsPoint.m_y = m_topLeft->m_y;
 	}
 	return boundsPoint;
 }
