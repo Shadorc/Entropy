@@ -24,45 +24,45 @@ float entity::Rectangle::GetHeight() const
     return m_height;
 }
 
-void entity::Rectangle::Paint() const
-{
-    DrawRectangle(m_position->m_x, m_position->m_y, m_width, m_height);
-}
-
 AABB entity::Rectangle::GetAABB() const
 {
     return AABB(
-        Vector2(m_position->m_x - m_width / 2.f, m_position->m_y - m_height / 2.f),
-        Vector2(m_position->m_x + m_width / 2.f, m_position->m_y + m_height / 2.f)
+        Vector2(m_position->x - m_width / 2.f, m_position->y - m_height / 2.f),
+        Vector2(m_position->x + m_width / 2.f, m_position->y + m_height / 2.f)
     );
+}
+
+void entity::Rectangle::Paint() const
+{
+    DrawRectangle(m_position->x, m_position->y, m_width, m_height);
 }
 
 bool entity::Rectangle::Intersects(const Vector2* point) const
 {
-    return point->m_x >= m_position->m_x - m_width / 2.0f
-        && point->m_x <= m_position->m_x + m_width / 2.0f
-        && point->m_y >= m_position->m_y - m_height / 2.0f
-        && point->m_y <= m_position->m_y + m_height / 2.0f;
+    return point->x >= m_position->x - m_width / 2.0f
+        && point->x <= m_position->x + m_width / 2.0f
+        && point->y >= m_position->y - m_height / 2.0f
+        && point->y <= m_position->y + m_height / 2.0f;
 }
 
 bool entity::Rectangle::Intersects(const entity::Rectangle* rectangle) const
 {
-    return m_position->m_x - m_width / 2.0f < rectangle->m_position->m_x + rectangle->m_width / 2.0f
-        && m_position->m_x + m_width / 2.0f > rectangle->m_position->m_x - rectangle->m_width / 2.0f
-        && m_position->m_y - m_height / 2.0f < rectangle->m_position->m_y + rectangle->m_height / 2.0f
-        && m_position->m_y + m_height / 2.0f > rectangle->m_position->m_y - rectangle->m_height / 2.0f;
+    return m_position->x - m_width / 2.0f < rectangle->m_position->x + rectangle->m_width / 2.0f
+        && m_position->x + m_width / 2.0f > rectangle->m_position->x - rectangle->m_width / 2.0f
+        && m_position->y - m_height / 2.0f < rectangle->m_position->y + rectangle->m_height / 2.0f
+        && m_position->y + m_height / 2.0f > rectangle->m_position->y - rectangle->m_height / 2.0f;
 }
 
 bool entity::Rectangle::Intersects(const entity::Circle* circle) const
 {
-    float closestX = CLAMP(circle->GetPosition()->m_x,
-        this->m_position->m_x - m_width / 2.0f,
-        this->m_position->m_x + m_width/ 2.0f);
-    float closestY = CLAMP(circle->GetPosition()->m_y,
-        this->m_position->m_y - m_height / 2.0f,
-        this->m_position->m_y + m_height / 2.0f);
-    float distanceX = circle->GetPosition()->m_x - closestX;
-    float distanceY = circle->GetPosition()->m_y - closestY;
+    float closestX = CLAMP(circle->GetPosition()->x,
+        this->m_position->x - m_width / 2.0f,
+        this->m_position->x + m_width/ 2.0f);
+    float closestY = CLAMP(circle->GetPosition()->y,
+        this->m_position->y - m_height / 2.0f,
+        this->m_position->y + m_height / 2.0f);
+    float distanceX = circle->GetPosition()->x - closestX;
+    float distanceY = circle->GetPosition()->y - closestY;
     return pow(distanceX, 2) + pow(distanceY, 2) < pow(circle->GetRadius(), 2);
 }
 

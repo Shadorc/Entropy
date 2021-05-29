@@ -50,7 +50,7 @@ void CollisionManager::CheckCollisions(float delta)
 
         // Sort entities from the largest y coordinate to the lowest one
         std::sort(search.begin(), search.end(),
-            [](const Entity* a, const Entity* b) { return a->GetPosition()->m_y < b->GetPosition()->m_y; });
+            [](const Entity* a, const Entity* b) { return a->GetPosition()->y < b->GetPosition()->y; });
 
         for (const Entity* other : search) {
             // Do not check for self-collision
@@ -61,8 +61,8 @@ void CollisionManager::CheckCollisions(float delta)
             const AABB& md = other->GetAABB().MinkowskiDifference(entity->GetAABB());
 
             // Check for discrete AABB collision and then check for full collision
-            if (md.GetTopLeft()->m_x <= 0 && md.GetBottomRight()->m_x >= 0
-                && md.GetTopLeft()->m_y <= 0 && md.GetBottomRight()->m_y >= 0
+            if (md.GetTopLeft()->x <= 0 && md.GetBottomRight()->x >= 0
+                && md.GetTopLeft()->y <= 0 && md.GetBottomRight()->y >= 0
                 && entity->Intersects(other)) {
 
                 Vector2 penetrationVector = entity->ComputePenetrationVector(other);

@@ -7,8 +7,8 @@
 TEST(RectangleConstrucor, RectangleTest)
 {
 	entity::Rectangle rectangle(0, 0, 100, 100);
-	EXPECT_EQ(rectangle.GetPosition()->m_x, 0);
-	EXPECT_EQ(rectangle.GetPosition()->m_y, 0);
+	EXPECT_EQ(rectangle.GetPosition()->x, 0);
+	EXPECT_EQ(rectangle.GetPosition()->y, 0);
 	EXPECT_EQ(rectangle.GetWidth(), 100.0f);
 	EXPECT_EQ(rectangle.GetHeight(), 100.0f);
 }

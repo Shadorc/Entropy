@@ -14,9 +14,9 @@ namespace entity
 			Circle(float x, float y, float radius);
 
 			float GetRadius() const;
+			AABB GetAABB() const override;
 
 			void Paint() const;
-			AABB GetAABB() const override;
 
 			bool Intersects(const Vector2* point) const;
 			bool Intersects(const Rectangle* rectangle) const;

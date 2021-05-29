@@ -7,13 +7,13 @@ public:
 	static const float EPSILON_SQ;
 	static const Vector2 ZERO;
 
-	float m_x;
-	float m_y;
+	float x;
+	float y;
 
 	Vector2();
 	Vector2(float x, float y);
 
-	Vector2 ToNormalizedSpace();
+	Vector2 ToNormalizedSpace() const;
 	void Normalize();
 
 	float Dot(const Vector2& other) const;

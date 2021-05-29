@@ -31,6 +31,7 @@ public:
 	unsigned int GetId() const;
 	Vector2* GetPosition() const;
 	Vector2* GetVelocity() const;
+	virtual AABB GetAABB() const = 0;
 
 	template<typename T>
 	T* GetComponent() const

@@ -18,6 +18,14 @@ float entity::Circle::GetRadius() const
     return m_radius;
 }
 
+AABB entity::Circle::GetAABB() const
+{
+    return AABB(
+        Vector2(m_position->x - m_radius, m_position->y - m_radius),
+        Vector2(m_position->x + m_radius, m_position->y + m_radius)
+    );
+}
+
 void entity::Circle::Paint() const
 {
     const int segments = 20;
@@ -31,17 +39,9 @@ void entity::Circle::Paint() const
         float theta = TWICE_PI * i / segments;
         float x = radiusX * cosf(theta);
         float y = radiusY * sinf(theta);
-        glVertex2f(x + pos.m_x, y + pos.m_y);
+        glVertex2f(x + pos.x, y + pos.y);
     }
     glEnd();
-}
-
-AABB entity::Circle::GetAABB() const
-{
-    return AABB(
-        Vector2(m_position->m_x - m_radius, m_position->m_y - m_radius),
-        Vector2(m_position->m_x + m_radius, m_position->m_y + m_radius)
-    );
 }
 
 bool entity::Circle::Intersects(const Vector2* point) const
@@ -56,8 +56,8 @@ bool entity::Circle::Intersects(const entity::Rectangle* rectangle) const
 
 bool entity::Circle::Intersects(const entity::Circle* circle) const
 {
-    float deltaX = m_position->m_x - circle->m_position->m_x;
-    float deltaY = m_position->m_y - circle->m_position->m_y;
+    float deltaX = m_position->x - circle->m_position->x;
+    float deltaY = m_position->y - circle->m_position->y;
     float radiusSum = m_radius + circle->m_radius;
     return pow(deltaX, 2) + pow(deltaY, 2) <= pow(radiusSum, 2);
 }

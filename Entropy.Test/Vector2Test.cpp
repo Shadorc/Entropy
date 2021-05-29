@@ -4,15 +4,15 @@
 TEST(Vector2EmptyConstrucor, Vector2Test)
 {
 	Vector2 vector;
-	EXPECT_EQ(vector.m_x, 0);
-	EXPECT_EQ(vector.m_y, 0);
+	EXPECT_EQ(vector.x, 0);
+	EXPECT_EQ(vector.y, 0);
 }
 
 TEST(Vector2Construcor, Vector2Test)
 {
 	Vector2 vector(2, 1);
-	EXPECT_EQ(vector.m_x, 2);
-	EXPECT_EQ(vector.m_y, 1);
+	EXPECT_EQ(vector.x, 2);
+	EXPECT_EQ(vector.y, 1);
 }
 
 TEST(Vector2Dot, Vector2Test)

@@ -14,15 +14,15 @@ Vector2::Vector2() :
 }
 
 Vector2::Vector2(float x, float y) :
-	m_x(x),
-	m_y(y)
+	x(x),
+	y(y)
 {
 
 }
 
-Vector2 Vector2::ToNormalizedSpace()
+Vector2 Vector2::ToNormalizedSpace() const
 {
-	return Vector2::ToNormalizedSpace(m_x, m_y);
+	return Vector2::ToNormalizedSpace(x, y);
 }
 
 void Vector2::Normalize()
@@ -30,8 +30,8 @@ void Vector2::Normalize()
 	float length = Length();
 	if (length < EPSILON)
 	{
-		m_x = 0;
-		m_y = 0;
+		x = 0;
+		y = 0;
 	}
 	else
 	{
@@ -41,17 +41,17 @@ void Vector2::Normalize()
 
 float Vector2::Dot(const Vector2& other) const
 {
-	return m_x * other.m_x + m_y * other.m_y;
+	return x * other.x + y * other.y;
 }
 
 float Vector2::Cross(const Vector2& other) const 
 {
-	return m_x * other.m_y - m_y * other.m_x;
+	return x * other.y - y * other.x;
 }
 
 Vector2 Vector2::Tangent() const
 {
-	return Vector2(-m_y, m_x);
+	return Vector2(-y, x);
 }
 
 float Vector2::Length() const
@@ -71,61 +71,61 @@ float Vector2::Distance(const Vector2& other) const
 
 float Vector2::DistanceSq(const Vector2& other) const
 {
-	return (float) (pow(static_cast<double>(m_x) - other.m_x, 2) + pow(static_cast<double>(m_y) - other.m_y, 2));
+	return (float) (pow(static_cast<double>(x) - other.x, 2) + pow(static_cast<double>(y) - other.y, 2));
 }
 
 Vector2 Vector2::operator+(const Vector2& other) const
 {
-	return Vector2(m_x + other.m_x, m_y + other.m_y);
+	return Vector2(x + other.x, y + other.y);
 }
 
 Vector2 Vector2::operator-(const Vector2& other) const
 {
-	return Vector2(m_x - other.m_x, m_y - other.m_y);
+	return Vector2(x - other.x, y - other.y);
 }
 
 Vector2 Vector2::operator*(float coef) const
 {
-	return Vector2(m_x * coef, m_y * coef);
+	return Vector2(x * coef, y * coef);
 }
 
 Vector2 Vector2::operator/(float coef) const
 {
-	return Vector2(m_x / coef, m_y / coef);
+	return Vector2(x / coef, y / coef);
 }
 
 void Vector2::operator+=(const Vector2& other)
 {
-	m_x += other.m_x;
-	m_y += other.m_y;
+	x += other.x;
+	y += other.y;
 }
 
 void Vector2::operator-=(const Vector2& other)
 {
-	m_x -= other.m_x;
-	m_y -= other.m_y;
+	x -= other.x;
+	y -= other.y;
 }
 
 void Vector2::operator*=(float coef)
 {
-	m_x *= coef;
-	m_y *= coef;
+	x *= coef;
+	y *= coef;
 }
 
 void Vector2::operator/=(float coef)
 {
-	m_x /= coef;
-	m_y /= coef;
+	x /= coef;
+	y /= coef;
 }
 
 bool Vector2::operator==(const Vector2& other) const
 {
-	return m_x == other.m_x && m_y == other.m_y;
+	return x == other.x && y == other.y;
 }
 
 std::ostream& operator<<(std::ostream& os, const Vector2& vector)
 {
-	return os << "{" << vector.m_x << ", " << vector.m_y << "}";
+	return os << "{" << vector.x << ", " << vector.y << "}";
 }
 
 Vector2 Vector2::ToNormalizedSpace(float x, float y)

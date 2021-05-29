@@ -24,22 +24,22 @@ AABB::~AABB()
 
 float AABB::GetX() const
 {
-	return m_topLeft->m_x;
+	return m_topLeft->x;
 }
 
 float AABB::GetY() const
 {
-	return m_topLeft->m_y;
+	return m_topLeft->y;
 }
 
 float AABB::GetWidth() const
 {
-	return m_bottomRight->m_x - m_topLeft->m_x;
+	return m_bottomRight->x - m_topLeft->x;
 }
 
 float AABB::GetHeight() const
 {
-	return m_bottomRight->m_y - m_topLeft->m_y;
+	return m_bottomRight->y - m_topLeft->y;
 }
 
 const Vector2* AABB::GetTopLeft() const
@@ -55,8 +55,8 @@ const Vector2* AABB::GetBottomRight() const
 bool AABB::IntersectsWith(const AABB& other) const
 {
 	const AABB& md = other.MinkowskiDifference(*this);
-	return md.m_topLeft->m_x <= 0 && md.m_bottomRight->m_x >= 0
-		&& md.m_topLeft->m_y <= 0 && md.m_bottomRight->m_y >= 0;
+	return md.m_topLeft->x <= 0 && md.m_bottomRight->x >= 0
+		&& md.m_topLeft->y <= 0 && md.m_bottomRight->y >= 0;
 }
 
 AABB AABB::MinkowskiDifference(const AABB& other) const
@@ -68,25 +68,25 @@ AABB AABB::MinkowskiDifference(const AABB& other) const
 
 Vector2 AABB::ClosestPointOnBoundsToPoint(const Vector2& point) const
 {
-	float minDist = abs(point.m_x - m_topLeft->m_x);
-	Vector2 boundsPoint(m_topLeft->m_x, point.m_y);
-	if (abs(m_bottomRight->m_x - point.m_x) < minDist)
+	float minDist = abs(point.x - m_topLeft->x);
+	Vector2 boundsPoint(m_topLeft->x, point.y);
+	if (abs(m_bottomRight->x - point.x) < minDist)
 	{
-		minDist = abs(m_bottomRight->m_x - point.m_x);
-		boundsPoint.m_x = m_bottomRight->m_x;
-		boundsPoint.m_y = point.m_y;
+		minDist = abs(m_bottomRight->x - point.x);
+		boundsPoint.x = m_bottomRight->x;
+		boundsPoint.y = point.y;
 	}
-	if (abs(m_bottomRight->m_y - point.m_y) < minDist) 
+	if (abs(m_bottomRight->y - point.y) < minDist) 
 	{
-		minDist = abs(m_bottomRight->m_y - point.m_y);
-		boundsPoint.m_x = point.m_x;
-		boundsPoint.m_y = m_bottomRight->m_y;
+		minDist = abs(m_bottomRight->y - point.y);
+		boundsPoint.x = point.x;
+		boundsPoint.y = m_bottomRight->y;
 	}
-	if (abs(m_topLeft->m_y - point.m_y) < minDist) 
+	if (abs(m_topLeft->y - point.y) < minDist) 
 	{
-		minDist = abs(m_topLeft->m_y - point.m_y);
-		boundsPoint.m_x = point.m_x;
-		boundsPoint.m_y = m_topLeft->m_y;
+		minDist = abs(m_topLeft->y - point.y);
+		boundsPoint.x = point.x;
+		boundsPoint.y = m_topLeft->y;
 	}
 	return boundsPoint;
 }
@@ -95,13 +95,13 @@ float AABB::ComputeRayIntersectionFraction(const Vector2& origin, const Vector2&
 {
 	Vector2 end = origin + direction;
 	float intersection1 = ComputeRayIntersectionFractionOfFirstRay(origin, end,
-		Vector2(m_topLeft->m_x, m_topLeft->m_y), Vector2(m_topLeft->m_x, m_bottomRight->m_y));
+		Vector2(m_topLeft->x, m_topLeft->y), Vector2(m_topLeft->x, m_bottomRight->y));
 	float intersection2 = ComputeRayIntersectionFractionOfFirstRay(origin, end,
-		Vector2(m_topLeft->m_x, m_bottomRight->m_y), Vector2(m_bottomRight->m_x, m_bottomRight->m_y));
+		Vector2(m_topLeft->x, m_bottomRight->y), Vector2(m_bottomRight->x, m_bottomRight->y));
 	float intersection3 = ComputeRayIntersectionFractionOfFirstRay(origin, end,
-		Vector2(m_bottomRight->m_x, m_bottomRight->m_y), Vector2(m_bottomRight->m_x, m_topLeft->m_y));
+		Vector2(m_bottomRight->x, m_bottomRight->y), Vector2(m_bottomRight->x, m_topLeft->y));
 	float intersection4 = ComputeRayIntersectionFractionOfFirstRay(origin, end,
-		Vector2(m_bottomRight->m_x, m_topLeft->m_y), Vector2(m_topLeft->m_x, m_topLeft->m_y));
+		Vector2(m_bottomRight->x, m_topLeft->y), Vector2(m_topLeft->x, m_topLeft->y));
 	return MIN(MIN(intersection1, intersection2), MIN(intersection3, intersection4));
 }
 

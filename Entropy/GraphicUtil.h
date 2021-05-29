@@ -11,7 +11,7 @@ static void DrawText(float x, float y, float size, char* str)
 	Vector2 nPosition = Vector2::ToNormalizedSpace(x, y);
 	float scale = size / 10000.0f; // TODO: This is very arbitrary
 	glPushMatrix();
-	glTranslatef(nPosition.m_x, nPosition.m_y, 0);
+	glTranslatef(nPosition.x, nPosition.y, 0);
 	glScalef(scale, scale, 1);
 	for (char* p = str; *p; p++) {
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
@@ -26,10 +26,10 @@ static void DrawRectangle(float x, float y, float width, float height)
 	float nWidth = width / WIDTH;
 	float nHeight = height / HEIGHT;
 	glBegin(GL_LINE_LOOP);
-	glVertex2f(nPosition.m_x - nWidth, nPosition.m_y - nHeight);
-	glVertex2f(nPosition.m_x + nWidth, nPosition.m_y - nHeight);
-	glVertex2f(nPosition.m_x + nWidth, nPosition.m_y + nHeight);
-	glVertex2f(nPosition.m_x - nWidth, nPosition.m_y + nHeight);
+	glVertex2f(nPosition.x - nWidth, nPosition.y - nHeight);
+	glVertex2f(nPosition.x + nWidth, nPosition.y - nHeight);
+	glVertex2f(nPosition.x + nWidth, nPosition.y + nHeight);
+	glVertex2f(nPosition.x - nWidth, nPosition.y + nHeight);
 	glEnd();
 }
 

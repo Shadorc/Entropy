@@ -40,8 +40,8 @@ void RigidBodyComponent::Update(float delta)
 	float speedLengthSq = m_entity->GetVelocity()->LengthSq();
 	if (speedLengthSq < Vector2::EPSILON_SQ)
 	{
-		m_entity->GetVelocity()->m_x = 0;
-		m_entity->GetVelocity()->m_y = 0;
+		m_entity->GetVelocity()->x = 0;
+		m_entity->GetVelocity()->y = 0;
 	}
 	else
 	{

@@ -16,9 +16,9 @@ namespace entity
 
 		float GetWidth() const;
 		float GetHeight() const;
+		AABB GetAABB() const override;
 
 		void Paint() const override;
-		AABB GetAABB() const override;
 
 		bool Intersects(const Vector2* point) const;
 		bool Intersects(const Rectangle* rectangle) const;
