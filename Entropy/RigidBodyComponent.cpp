@@ -1,8 +1,9 @@
 #include "Entity.h"
 #include "RigidBodyComponent.h"
 
-RigidBodyComponent::RigidBodyComponent(const Entity* entity, float mass) :
+RigidBodyComponent::RigidBodyComponent(const Entity* entity, Type type, float mass) :
 	Component(entity),
+	m_type(type),
 	m_mass(mass),
 	m_acceleration(new Vector2())
 {
@@ -57,6 +58,11 @@ void RigidBodyComponent::AddForce(Vector2& force)
 void RigidBodyComponent::AddInstantForce(Vector2& force)
 {
 	m_forces.emplace_back(force, true);
+}
+
+Type RigidBodyComponent::GetType() const
+{
+	return m_type;
 }
 
 float RigidBodyComponent::GetMass() const
