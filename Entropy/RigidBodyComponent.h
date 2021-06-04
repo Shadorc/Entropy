@@ -37,7 +37,8 @@ private:
 	Vector2 m_acceleration;
 
 public:
-	RigidBodyComponent(Entity* entity, RigidbodyType type, float mass);
+	RigidBodyComponent(Entity* entity);
+	RigidBodyComponent(Entity* entity, RigidbodyType type);
 	~RigidBodyComponent();
 
 	void AddForce(Vector2& force);
@@ -47,5 +48,8 @@ public:
 	RigidbodyType GetType() const;
 	float GetMass() const;
 	float GetInvMass() const;
+	float GetRestitution() const;
+
+	bool IsStatic() const;
 };
 

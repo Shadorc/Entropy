@@ -1,5 +1,8 @@
 #pragma once
 
+#define WIDTH 720
+#define HEIGHT 720
+
 #include <math.h>
 #include <vector>
 #include <GL/glut.h>
@@ -13,11 +16,10 @@
 #include "CollisionManager.h"
 #include "CollisionResolver.h"
 #include "QuadTree.h"
-#include "Manifold.h"
+#include "Collision.h"
 #include "Component.h"
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"
 #include "Sandbox.h"
 #include "GraphicUtil.h"
 #include "MathUtil.h"
-#include "Config.h"

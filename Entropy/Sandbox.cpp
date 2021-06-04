@@ -51,15 +51,15 @@ void Sandbox::Stop()
     glutIdleFunc(nullptr);
 }
 
-void Sandbox::Update(float delta)
+void Sandbox::Update(float deltaTime)
 {
-	m_fps = 1.0f / delta;
+	m_fps = 1.0f / deltaTime;
 	for (Entity* entity : m_entities)
 	{
-		entity->Update(delta);
+		entity->Update(deltaTime);
 	}
 
-    m_collisionManager->Update(delta);
+    m_collisionManager->Update(deltaTime);
 }
 
 void Sandbox::Repaint() const

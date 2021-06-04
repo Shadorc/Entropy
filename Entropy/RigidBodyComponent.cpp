@@ -1,10 +1,16 @@
 #include "Precompiled.h"
 
-RigidBodyComponent::RigidBodyComponent(Entity* entity, RigidbodyType type, float mass)
+RigidBodyComponent::RigidBodyComponent(Entity* entity)
+	: RigidBodyComponent(entity, RigidbodyType::STATIC)
+{
+
+}
+
+RigidBodyComponent::RigidBodyComponent(Entity* entity, RigidbodyType type)
 	: Component(entity)
 	, m_type(type)
-	, m_mass(mass)
-	, m_invMass(1/mass)
+	, m_mass(1)
+	, m_invMass(1)
 	, m_acceleration()
 {
 
@@ -15,7 +21,7 @@ RigidBodyComponent::~RigidBodyComponent()
 	m_forces.clear();
 }
 
-void RigidBodyComponent::Update(float delta)
+void RigidBodyComponent::Update(float deltaTime)
 {
 	Vector2 forcesSum;
 
@@ -35,7 +41,7 @@ void RigidBodyComponent::Update(float delta)
 	}
 	
 	m_acceleration = forcesSum / m_mass;
-	m_entity->velocity += m_acceleration * delta;
+	m_entity->velocity += m_acceleration * deltaTime;
 
 	float speedLengthSq = m_entity->velocity.LengthSq();
 	if (speedLengthSq < Vector2::EPSILON_SQ)
@@ -44,7 +50,7 @@ void RigidBodyComponent::Update(float delta)
 	}
 	else
 	{
-		m_entity->position += m_entity->velocity * delta;
+		m_entity->position += m_entity->velocity * deltaTime;
 	}
 }
 
@@ -71,5 +77,15 @@ float RigidBodyComponent::GetMass() const
 float RigidBodyComponent::GetInvMass() const
 {
 	return m_invMass;
+}
+
+float RigidBodyComponent::GetRestitution() const
+{
+	return 0.2f;
+}
+
+bool RigidBodyComponent::IsStatic() const
+{
+	return m_type == RigidbodyType::STATIC;
 }
 

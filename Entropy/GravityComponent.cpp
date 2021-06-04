@@ -8,7 +8,7 @@ GravityComponent::GravityComponent(Entity* entity)
 	m_entity->GetRigidBodyComponent()->AddForce(const_cast<Vector2&>(GRAVITY));
 }
 
-void GravityComponent::Update(float delta)
+void GravityComponent::Update(float deltaTime)
 {
 
 }

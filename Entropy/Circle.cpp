@@ -22,6 +22,11 @@ AABB entity::Circle::GetAABB() const
     );
 }
 
+EntityType entity::Circle::GetType() const
+{
+    return EntityType::Circle;
+}
+
 void entity::Circle::Paint() const
 {
     const int segments = 20;
@@ -38,35 +43,4 @@ void entity::Circle::Paint() const
         glVertex2f(x + pos.x, y + pos.y);
     }
     glEnd();
-}
-
-bool entity::Circle::Intersects(const Vector2* point) const
-{
-    return position.DistanceSq(*point) <= pow(m_radius, 2);
-}
-
-bool entity::Circle::Intersects(const entity::Rectangle* rectangle) const
-{
-    return rectangle->Intersects(this);
-}
-
-bool entity::Circle::Intersects(const entity::Circle* circle) const
-{
-    float deltaX = position.x - circle->position.x;
-    float deltaY = position.y - circle->position.y;
-    float radiusSum = m_radius + circle->m_radius;
-    return pow(deltaX, 2) + pow(deltaY, 2) <= pow(radiusSum, 2);
-}
-
-Vector2 entity::Circle::ComputePenetrationVector(const entity::Circle* circle) const
-{
-    float distance = position.Distance(circle->position);
-    float overlap = distance - (m_radius + circle->m_radius);
-    // Multiply the norm by overlap, we don't use Vector2#normalize() because we already have calculated the distance
-    return (circle->position - position) / distance * overlap;
-}
-
-Vector2 entity::Circle::ComputePenetrationVector(const entity::Rectangle* rectangle) const
-{
-    return rectangle->ComputePenetrationVector(this) * -1;
 }

@@ -31,7 +31,7 @@ public:
 
 	void Start();
 	void Stop();
-	void Update(float delta);
+	void Update(float deltaTime);
 	void Repaint() const;
 	void AddEntity(Entity* entity);
 	void RemoveEntity(Entity* entity);

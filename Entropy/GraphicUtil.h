@@ -2,7 +2,6 @@
 
 #include "Vector2.h"
 #include <GL/glut.h>
-#include "Config.h"
 #include "QuadTree.h"
 #include <string>
 

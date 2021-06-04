@@ -11,7 +11,7 @@ private:
 	QuadTree<Entity>* m_quadTree;
 
 	void UpdateQuadTree();
-	void CheckCollisions(float delta);
+	void CheckCollisions(float deltaTime);
 
 public:
 	CollisionManager(const Sandbox* sandbox);
@@ -19,7 +19,7 @@ public:
 
 	const QuadTree<Entity>* GetRootQuadTree() const;
 
-	void Update(float delta);
+	void Update(float deltaTime);
 	void SetRootSize(int width, int height);
 };
 

@@ -1,10 +1,8 @@
-#include <algorithm>
-
 #include "Precompiled.h"
 
-CollisionManager::CollisionManager(const Sandbox* sandbox) :
-	m_sandbox(sandbox),
-	m_quadTree(nullptr)
+CollisionManager::CollisionManager(const Sandbox* sandbox) 
+    : m_sandbox(sandbox)
+    , m_quadTree(nullptr)
 {
     SetRootSize(WIDTH, HEIGHT);
 }
@@ -19,10 +17,10 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
     return m_quadTree;
 }
 
-void CollisionManager::Update(float delta)
+void CollisionManager::Update(float deltaTime)
 {
 	UpdateQuadTree();
-	CheckCollisions(delta);
+	CheckCollisions(deltaTime);
 }
 
 void CollisionManager::UpdateQuadTree()
@@ -33,16 +31,17 @@ void CollisionManager::UpdateQuadTree()
 		m_quadTree->Insert(object);
 	}
 }
-/*
-void CollisionManager::ResolveCollision(const Entity* entityA, const Entity* entityB)
-{
-    // Calculate relative velocity
-    const Vector2& rv = *entityB->velocity - *entityA->velocity;
 
-    // TODO 
-    Vector2 normal;
+void ResolveCollision(const Collision& manifold)
+{
+    Entity* entityA = manifold.entityA;
+    Entity* entityB = manifold.entityB;
+
+    // Calculate relative velocity
+    const Vector2& rv = entityB->velocity - entityA->velocity;
+
     // Calculate relative velocity in terms of the normal direction
-    float velAlongNormal = rv.Dot(normal);
+    float velAlongNormal = rv.Dot(manifold.normal);
 
     // Do not resolve if velocities are separating
     if (velAlongNormal > 0)
@@ -50,57 +49,63 @@ void CollisionManager::ResolveCollision(const Entity* entityA, const Entity* ent
         return;
     }
 
+    const RigidBodyComponent* rigidbodyA = entityA->GetRigidBodyComponent();
+    const RigidBodyComponent* rigidbodyB = entityB->GetRigidBodyComponent();
+
     // Calculate restitution
-    float e = MIN(entityA->GetRestitution(), entityB->GetRestitution());
+    float e = MIN(rigidbodyA->GetRestitution(), rigidbodyB->GetRestitution());
 
     // Calculate impulse scalar
-    float entityAMass = entityA->GetRigidBodyComponent()->GetMass();
-    float entityBMass = entityB->GetRigidBodyComponent()->GetMass();
-    float entityAInvMass = entityA->GetRigidBodyComponent()->GetInvMass();
-    float entityBInvMass = entityB->GetRigidBodyComponent()->GetInvMass();
+    float j = -(1 + e) * velAlongNormal / (rigidbodyA->GetInvMass() + rigidbodyB->GetInvMass());
 
-    float j = -(1 + e) * velAlongNormal / (entityAInvMass + entityBInvMass);
+    // Calculate impulse
+    const Vector2& impulse = manifold.normal * j;
 
-    // Apply impule
-    const Vector2& impulse = normal * j;
-
-    float massSum = entityAMass + entityBMass;
-    float ratioA = entityAMass / massSum;
-    *entityA->velocity -= impulse * ratioA;
-    float ratioB = entityBMass / massSum;
-    *entityB->velocity += impulse * ratioB;
+    //Apply impule
+    float massSum = rigidbodyA->GetMass() + rigidbodyB->GetMass();
+    if (!rigidbodyA->IsStatic())
+    {
+        float ratioA = rigidbodyA->GetMass() / massSum;
+        entityA->velocity -= impulse * ratioA;
+    }
+    if (!rigidbodyB->IsStatic())
+    {
+        float ratioB = rigidbodyB->GetMass() / massSum;
+        entityB->velocity += impulse * ratioB;
+    }
 }
 
-void PositionalCorrection(const Entity* entityA, const Entity* entityB)
+static const float percent = 0.8f; // Penetration percentage to correct
+static const float slop = 0.01f; // Penetration allowance
+void PositionalCorrection(const Collision& manifold)
 {
-    static const float percent = 0.4f; // Penetration percentage to correct
-    static const float slop = 0.05f; // Penetration allowance
-    float invMassA = entityA->GetRigidBodyComponent()->GetInvMass();
-    float invMassB = entityB->GetRigidBodyComponent()->GetInvMass();
-    const Vector2& correction = (std::max(penetration - slop, 0.0f) / (invMassA + invMassB)) * normal * percent;
-    *entityA->position -= correction * invMassA;
-    *entityB->position += correction * invMassB;
+    const RigidBodyComponent* rigidbodyA = manifold.entityA->GetRigidBodyComponent();
+    const RigidBodyComponent* rigidbodyB = manifold.entityB->GetRigidBodyComponent();
+    float invMassA = rigidbodyA->GetInvMass();
+    float invMassB = rigidbodyB->GetInvMass();
+    const Vector2& correction = (std::max(manifold.penetration - slop, 0.0f) / (invMassA + invMassB)) * manifold.normal * percent;
+    if (!rigidbodyA->IsStatic())
+    {
+        manifold.entityA->position -= correction * invMassA;
+    }
+    if (!rigidbodyB->IsStatic())
+    {
+        manifold.entityB->position += correction * invMassB;
+    }
 }
-*/
 
-void CollisionManager::CheckCollisions(float delta)
+void CollisionManager::CheckCollisions(float deltaTime)
 {
     for (Entity* entity : m_sandbox->GetEntities())
     {
         // Do not check for static object
         RigidBodyComponent* rigidbody = entity->GetRigidBodyComponent();
-        if (rigidbody == nullptr || rigidbody->GetType() == RigidbodyType::STATIC)
+        if (rigidbody == nullptr || rigidbody->IsStatic())
         {
             continue;
         }
 
-        std::vector<Entity*> search = m_quadTree->Search(entity);
-
-        // Sort entities from the largest y coordinate to the lowest one
-        std::sort(search.begin(), search.end(),
-            [](const Entity* a, const Entity* b) { return a->position.y < b->position.y; });
-
-        for (Entity* other : search)
+        for (Entity* other : m_quadTree->Search(entity))
         {
             // Do not check for self-collision
             if (entity == other)
@@ -114,61 +119,11 @@ void CollisionManager::CheckCollisions(float delta)
                 continue;
             }
 
-            const AABB& md = other->GetAABB().MinkowskiDifference(entity->GetAABB());
-
-            // Check for discrete AABB collision and then check for full collision
-            if (md.min.x <= 0 && md.max.x >= 0
-                && md.min.y <= 0 && md.max.y >= 0
-                && entity->Intersects(other))
+            const Collision& manifold = Solve(entity, other);
+            if (manifold.penetration != 0)
             {
-
-                Vector2 penetrationVector = entity->ComputePenetrationVector(other);
-                if (penetrationVector == Vector2::ZERO)
-                {
-                    penetrationVector = md.ClosestPointOnBoundsToPoint(Vector2::ZERO);
-                }
-                entity->position += penetrationVector;
-
-                // See: https://en.wikipedia.org/wiki/Elastic_collision#two-dimensional
-                // Section: Two-dimensional collision with two moving objects
-                const Vector2& x1 = entity->position;
-                const Vector2& x2 = other->position;
-                const Vector2& v1 = entity->velocity;
-                const Vector2& v2 = other->velocity;
-                if(otherRigidbody->GetType() == RigidbodyType::STATIC)
-                {
-                    entity->velocity -= (x1 - x2) * 2.0f * (v1 - v2).Dot(x1 - x2) / (x1 - x2).LengthSq();
-                }
-                else
-                {
-                    float m1 = rigidbody->GetMass();
-                    float m2 = otherRigidbody->GetMass();
-                    entity->velocity -= (x1 - x2) * (2.0f * m2) / (m1 + m2) * (v1 - v2).Dot(x1 - x2) / (x1 - x2).LengthSq();
-                    other->velocity -= (x2 - x1) * (2.0f * m1) / (m1 + m2) * (v2 - v1).Dot(x2 - x1) / (x2 - x1).LengthSq();
-                }
-            }
-            // Swept AABB collision detection
-            else {
-                Vector2 relativeMotion = (entity->velocity - other->velocity) * delta;
-
-                float intersectFraction = md.ComputeRayIntersectionFraction(Vector2::ZERO, relativeMotion);
-                if (intersectFraction < FLOAT_INFINITY)
-                {
-                    entity->position += entity->velocity * (delta * intersectFraction);
-                    if (otherRigidbody->GetType() == RigidbodyType::DYNAMIC)
-                    {
-                        other->position += other->velocity * (delta * intersectFraction);
-                    }
-
-                    // TODO: Two-dimensional collision with two moving objects
-                    relativeMotion.Normalize();
-                    const Vector2& tangent = relativeMotion.Tangent();
-                    entity->velocity = tangent * entity->velocity.Dot(tangent);
-                    if (otherRigidbody->GetType() == RigidbodyType::DYNAMIC)
-                    {
-                        other->velocity = tangent * other->velocity.Dot(tangent);
-                    }
-                }
+                ResolveCollision(manifold);
+                PositionalCorrection(manifold);
             }
         }
     }
@@ -177,5 +132,5 @@ void CollisionManager::CheckCollisions(float delta)
 void CollisionManager::SetRootSize(int width, int height)
 {
     delete m_quadTree;
-	m_quadTree = new QuadTree<Entity>(AABB(Vector2(), Vector2(width, height)));
+	m_quadTree = new QuadTree<Entity>(AABB(Vector2(), Vector2(FLOAT(width), FLOAT(height))));
 }

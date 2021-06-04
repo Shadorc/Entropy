@@ -78,7 +78,7 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Manifold.cpp">
+    <ClCompile Include="Collision.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="CollisionResolver.cpp">
@@ -86,9 +86,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Config.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Sandbox.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -137,11 +134,14 @@
     <ClInclude Include="MathUtil.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
-    <ClInclude Include="Manifold.h">
+    <ClInclude Include="Collision.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="CollisionResolver.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

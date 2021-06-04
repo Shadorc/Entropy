@@ -27,7 +27,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="GravityComponent.cpp" />
-    <ClCompile Include="Manifold.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />
@@ -40,11 +40,10 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CollisionResolver.h" />
     <ClInclude Include="DebugMode.h" />
-    <ClInclude Include="Manifold.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Precompiled.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="Config.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GraphicUtil.h" />
     <ClInclude Include="GravityComponent.h" />
@@ -53,6 +52,9 @@
     <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="Vector2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

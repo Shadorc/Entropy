@@ -1,9 +1,26 @@
 #include "Precompiled.h"
 
-void CircleToCircle(Manifold* manifold)
+CollisionCallback Dispatch[INT(EntityType::Count)][INT(EntityType::Count)] =
 {
-	const entity::Circle* circleA = reinterpret_cast<const entity::Circle*>(manifold->entityA);
-	const entity::Circle* circleB = reinterpret_cast<const entity::Circle*>(manifold->entityB);
+  {
+	CircleToCircle, CircleToRectangle
+  },
+  {
+	RectangleToCircle, RectangleToRectangle
+  },
+};
+
+Collision Solve(Entity* entityA, Entity* entityB)
+{
+	Collision manifold(entityA, entityB);
+	Dispatch[INT(entityA->GetType())][INT(entityB->GetType())](manifold);
+	return manifold;
+}
+
+void CircleToCircle(Collision& collision)
+{
+	const entity::Circle* circleA = dynamic_cast<const entity::Circle*>(collision.entityA);
+	const entity::Circle* circleB = dynamic_cast<const entity::Circle*>(collision.entityB);
 
 	const Vector2& deltaPos = circleB->position - circleA->position;
 	float normalLenSq = deltaPos.LengthSq();
@@ -16,37 +33,38 @@ void CircleToCircle(Manifold* manifold)
 
 	if (normalLenSq == 0.0f)
 	{
-		manifold->penetration = circleA->GetRadius();
-		manifold->normal = Vector2(1, 0);
+		collision.penetration = circleA->GetRadius();
+		collision.normal = Vector2(1, 0);
 	}
 	else
 	{
-		float deltaPosLen = sqrt(normalLenSq);
-		manifold->penetration = sumRadius - deltaPosLen;
-		manifold->normal = deltaPos / deltaPosLen;
+		float deltaPosLen = FLOAT(sqrt(normalLenSq));
+		collision.penetration = sumRadius - deltaPosLen;
+		collision.normal = deltaPos / deltaPosLen;
 	}
 }
 
-void CircleToRectangle(Manifold* manifold)
+void CircleToRectangle(Collision& collision)
 {
-	RectangleToCircle(manifold);
-	manifold->normal = -manifold->normal;
+	std::swap(collision.entityA, collision.entityB);
+	RectangleToCircle(collision);
+	collision.normal = -collision.normal;
 }
 
-void RectangleToCircle(Manifold* manifold)
+void RectangleToCircle(Collision& collision)
 {
-	const entity::Rectangle* rectangleA = reinterpret_cast<const entity::Rectangle*>(manifold->entityA);
-	const entity::Circle* circleB = reinterpret_cast<const entity::Circle*>(manifold->entityB);
+	const entity::Rectangle* rectangleA = dynamic_cast<const entity::Rectangle*>(collision.entityA);
+	const entity::Circle* circleB = dynamic_cast<const entity::Circle*>(collision.entityB);
 
 	const Vector2& deltaPos = circleB->position - rectangleA->position;
 
 	Vector2 closest = deltaPos;
 
-	float halfXExtent = rectangleA->GetWidth() / 2.0f;
-	float halfYExtent = rectangleA->GetHeight() / 2.0f;
+	float halfWidth = rectangleA->GetWidth() / 2.0f;
+	float halfHeight = rectangleA->GetHeight() / 2.0f;
 
-	closest.x = CLAMP(closest.x, -halfXExtent, halfXExtent);
-	closest.y = CLAMP(closest.y, -halfYExtent, halfYExtent);
+	closest.x = CLAMP(closest.x, -halfWidth, halfWidth);
+	closest.y = CLAMP(closest.y, -halfHeight, halfHeight);
 
 	bool inside = false;
 
@@ -57,11 +75,11 @@ void RectangleToCircle(Manifold* manifold)
 
 		if (abs(deltaPos.x) > abs(deltaPos.y))
 		{
-			closest.x = closest.x > 0 ? halfXExtent : -halfXExtent;
+			closest.x = closest.x > 0 ? halfWidth : -halfWidth;
 		}
 		else
 		{
-			closest.y = closest.y > 0 ? halfYExtent : -halfYExtent;
+			closest.y = closest.y > 0 ? halfHeight : -halfHeight;
 		}
 	}
 
@@ -76,39 +94,39 @@ void RectangleToCircle(Manifold* manifold)
 		return;
 	}
 
-	float normalLen = sqrt(normalLenSq);
+	float normalLen = FLOAT(sqrt(normalLenSq));
 
 	// Collision normal needs to be flipped to point outside if circle was inside the AABB
-	manifold->normal = inside ? -normal : normal;
-	manifold->penetration = radius - normalLen;
+	collision.normal = (inside ? normal : -normal) / normalLen;
+	collision.penetration = radius - normalLen;
 }
 
-void RectangleToRectangle(Manifold* manifold)
+void RectangleToRectangle(Collision& collision)
 {
-	const entity::Rectangle* rectangleA = reinterpret_cast<const entity::Rectangle*>(manifold->entityA);
-	const entity::Rectangle* rectangleB = reinterpret_cast<const entity::Rectangle*>(manifold->entityB);
+	const entity::Rectangle* rectangleA = dynamic_cast<const entity::Rectangle*>(collision.entityA);
+	const entity::Rectangle* rectangleB = dynamic_cast<const entity::Rectangle*>(collision.entityB);
 
 	const Vector2& deltaPos = rectangleB->position - rectangleA->position;
 
-	float halfXExtentA = rectangleA->GetWidth() / 2.0f;
-	float halfXExtentB = rectangleB->GetWidth() / 2.0f;
-	float xOverlap = halfXExtentA + halfXExtentB - abs(deltaPos.x);
-	if (xOverlap > 0)
+	float halfWidthA = rectangleA->GetWidth() / 2.0f;
+	float halfWidthB = rectangleB->GetWidth() / 2.0f;
+	float overlapX = halfWidthA + halfWidthB - abs(deltaPos.x);
+	if (overlapX > 0)
 	{
-		float halfYExtentA = rectangleA->GetHeight() / 2.0f;
-		float halfYExtentB = rectangleB->GetHeight() / 2.0f;
-		float yOverlap = halfYExtentA + halfYExtentB - abs(deltaPos.y);
+		float halfHeightA = rectangleA->GetHeight() / 2.0f;
+		float halfHeightB = rectangleB->GetHeight() / 2.0f;
+		float yOverlap = halfHeightA + halfHeightB - abs(deltaPos.y);
 		if (yOverlap > 0)
 		{
-			if (xOverlap > yOverlap)
+			if (overlapX < yOverlap)
 			{
-				manifold->normal = deltaPos.x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
-				manifold->penetration = xOverlap;
+				collision.normal = deltaPos.x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
+				collision.penetration = overlapX;
 			}
 			else
 			{
-				manifold->normal = deltaPos.y < 0 ? Vector2(0, -1) : Vector2(0, 1);
-				manifold->penetration = yOverlap;
+				collision.normal = deltaPos.y < 0 ? Vector2(0, -1) : Vector2(0, 1);
+				collision.penetration = yOverlap;
 			}
 		}
 	}

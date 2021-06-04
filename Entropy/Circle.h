@@ -15,14 +15,8 @@ namespace entity
 
 			float GetRadius() const;
 			AABB GetAABB() const override;
+			EntityType GetType() const override;
 
 			void Paint() const;
-
-			bool Intersects(const Vector2* point) const;
-			bool Intersects(const Rectangle* rectangle) const;
-			bool Intersects(const Circle* rectangle) const;
-
-			Vector2 ComputePenetrationVector(const Rectangle* rectangle) const;
-			Vector2 ComputePenetrationVector(const Circle* circle) const;
 	};
 }

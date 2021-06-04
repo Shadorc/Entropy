@@ -1,13 +1,14 @@
 #pragma once
 #include "Entity.h"
 
-struct Manifold;
+struct Collision;
 
-typedef void (*CollisionCallback)(Manifold* manifold);
+typedef void (*CollisionCallback)(Collision& collision);
 
-extern CollisionCallback Dispatch[static_cast<int>(EntityType::Count)][static_cast<int>(EntityType::Count)];
+extern CollisionCallback Dispatch[INT(EntityType::Count)][INT(EntityType::Count)];
 
-void CircleToCircle(Manifold* manifold);
-void CircleToRectangle(Manifold* manifold);
-void RectangleToCircle(Manifold* manifold);
-void RectangleToRectangle(Manifold* manifold);
+Collision Solve(Entity* entityA, Entity* entityB);
+void CircleToCircle(Collision& collision);
+void CircleToRectangle(Collision& collision);
+void RectangleToCircle(Collision& collision);
+void RectangleToRectangle(Collision& collision);

@@ -41,42 +41,12 @@ unsigned int Entity::GetId() const
 	return m_id;
 }
 
-void Entity::Update(float delta)
+void Entity::Update(float deltaTime)
 {
 	for (Component* component : m_components)
 	{
-		component->Update(delta);
+		component->Update(deltaTime);
 	}
-}
-
-bool Entity::Intersects(const Entity* other) const
-{
-	const entity::Rectangle* rectangle = reinterpret_cast<const entity:: Rectangle* > (other);
-	if (rectangle != nullptr) {
-		return Intersects(rectangle);
-	}
-
-	const entity::Circle* circle = reinterpret_cast<const entity::Circle*>(other);
-	if (circle != nullptr) {
-		return Intersects(circle);
-	}
-
-	return false;
-}
-
-Vector2 Entity::ComputePenetrationVector(const Entity* other) const
-{
-	const entity::Rectangle* rectangle = dynamic_cast<const entity::Rectangle*>(other);
-	if (rectangle != nullptr)
-	{
-		return ComputePenetrationVector(rectangle);
-	}
-	const entity::Circle* circle = dynamic_cast<const entity::Circle*>(other);
-	if (circle != nullptr)
-	{
-		return ComputePenetrationVector(circle);
-	}
-	return Vector2();
 }
 
 bool Entity::operator==(Entity& other) const
