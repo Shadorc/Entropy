@@ -6,9 +6,9 @@
 
 constexpr float TWICE_PI = 2.0f * 3.14159265f;
 
-entity::Circle::Circle(float x, float y, float radius) :
-	Entity(x, y),
-	m_radius(radius)
+entity::Circle::Circle(float x, float y, float radius)
+	: Entity(x, y)
+	, m_radius(radius)
 {
 
 }

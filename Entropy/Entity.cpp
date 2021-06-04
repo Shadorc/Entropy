@@ -10,7 +10,7 @@ Entity::Entity(float x, float y) :
 	m_id(id++),
 	m_position(new Vector2(x, y)),
 	m_velocity(new Vector2(0, 0)),
-	m_rigidBodyComponent(nullptr)
+	m_rigidBodyComponentCache(nullptr)
 {
 
 }
@@ -19,7 +19,7 @@ Entity::~Entity()
 {
 	delete m_position;
 	delete m_velocity;
-	delete m_rigidBodyComponent;
+	delete m_rigidBodyComponentCache;
 	for (Component* component : m_components)
 	{
 		delete component;
@@ -30,11 +30,11 @@ Entity::~Entity()
 // Cache RigidBody component
 RigidBodyComponent* Entity::GetRigidBodyComponent() const
 {
-	if (m_rigidBodyComponent == nullptr)
+	if (m_rigidBodyComponentCache == nullptr)
 	{
-		m_rigidBodyComponent = GetComponent<RigidBodyComponent>();
+		m_rigidBodyComponentCache = GetComponent<RigidBodyComponent>();
 	}
-	return m_rigidBodyComponent;
+	return m_rigidBodyComponentCache;
 }
 
 void Entity::AddComponent(Component* component)
@@ -67,12 +67,12 @@ void Entity::Update(float delta)
 
 bool Entity::Intersects(const Entity* other) const
 {
-	const entity::Rectangle* rectangle = dynamic_cast<const entity:: Rectangle* > (other);
+	const entity::Rectangle* rectangle = reinterpret_cast<const entity:: Rectangle* > (other);
 	if (rectangle != nullptr) {
 		return Intersects(rectangle);
 	}
 
-	const entity::Circle* circle = dynamic_cast<const entity::Circle*>(other);
+	const entity::Circle* circle = reinterpret_cast<const entity::Circle*>(other);
 	if (circle != nullptr) {
 		return Intersects(circle);
 	}

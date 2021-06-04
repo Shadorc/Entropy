@@ -15,8 +15,7 @@ namespace entity
 class Entity: public AABBObject
 {
 private:
-	// Cached value
-	mutable RigidBodyComponent* m_rigidBodyComponent;
+	mutable RigidBodyComponent* m_rigidBodyComponentCache;
 
 protected:
 	const unsigned int m_id;
@@ -38,7 +37,7 @@ public:
 	{
 		for (Component* itr : m_components)
 		{
-			T* component = dynamic_cast<T*>(itr);
+			T* component = reinterpret_cast<T*>(itr);
 			if (component != nullptr)
 			{
 				return component;
