@@ -25,7 +25,7 @@ class QuadTree
 {
 private:
 	const int m_level;
-	std::vector<const T*> m_objects;
+	std::vector<T*> m_objects;
 	const AABB m_aabb;
 	QuadTree<T>* m_nodes[INT(Quadrant::SIZE)];
 
@@ -79,7 +79,7 @@ private:
 		return Quadrant::INVALID;
 	}
 
-	std::vector<const T*>& Search(std::vector<const T*>& returnObjects, const T* object) const
+	std::vector<T*> Search(std::vector<T*>& returnObjects, T* object) const
 	{
 		Quadrant quadrant = GetQuadrant(object);
 
@@ -98,7 +98,7 @@ private:
 		return returnObjects;
 	}
 
-	std::vector<const T*>& SearchChildren(std::vector<const T*>& returnObjects, const T* object) const
+	std::vector<T*> SearchChildren(std::vector<T*>& returnObjects, T* object) const
 	{
 		if (!m_aabb.IntersectsWith(object->GetAABB()))
 		{
@@ -163,7 +163,7 @@ public:
 		}
 	}
 
-	void Insert(const T* object)
+	void Insert(T* object)
 	{
 		if (m_nodes[0] != nullptr)
 		{
@@ -201,9 +201,9 @@ public:
 		}
 	}
 
-	std::vector<const T*> Search(const T* object) const
+	std::vector<T*> Search(T* object) const
 	{
-		auto vector = std::vector<const T*>();
+		auto vector = std::vector<T*>();
 		Search(vector, object);
 		return vector;
 	}

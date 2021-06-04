@@ -13,6 +13,7 @@ public:
 	Vector2();
 	Vector2(float x, float y);
 
+	void Reset();
 	Vector2 ToNormalizedSpace() const;
 	void Normalize();
 

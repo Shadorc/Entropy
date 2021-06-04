@@ -6,17 +6,23 @@ const float Vector2::EPSILON = (float) pow(10, -4);
 const float Vector2::EPSILON_SQ = (float) pow(EPSILON, 2);
 const Vector2 Vector2::ZERO = Vector2(0, 0);
 
-Vector2::Vector2() :
-	Vector2(0, 0)
+Vector2::Vector2() 
+	: Vector2(0, 0)
 {
 
 }
 
-Vector2::Vector2(float x, float y) :
-	x(x),
-	y(y)
+Vector2::Vector2(float x, float y) 
+	: x(x)
+	, y(y)
 {
 
+}
+
+void Vector2::Reset()
+{
+	x = 0;
+	y = 0;
 }
 
 Vector2 Vector2::ToNormalizedSpace() const

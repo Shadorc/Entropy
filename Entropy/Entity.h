@@ -4,7 +4,6 @@
 #include "Vector2.h"
 #include <vector>
 
-// TODO: Precompiled header
 class Component;
 class RigidBodyComponent;
 namespace entity 
@@ -27,18 +26,16 @@ private:
 
 protected:
 	const unsigned int m_id;
-	// TODO: Don't use pointers
-	Vector2* m_position;
-	Vector2* m_velocity;
 	std::vector<Component*> m_components;
 
 public:
 	Entity(float x, float y);
 	~Entity();
 
+	Vector2 position;
+	Vector2 velocity;
+
 	unsigned int GetId() const;
-	Vector2* GetPosition() const;
-	Vector2* GetVelocity() const;
 	virtual AABB GetAABB() const = 0;
 
 	template<typename T>

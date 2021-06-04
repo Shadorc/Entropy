@@ -5,7 +5,7 @@ void CircleToCircle(Manifold* manifold)
 	const entity::Circle* circleA = reinterpret_cast<const entity::Circle*>(manifold->entityA);
 	const entity::Circle* circleB = reinterpret_cast<const entity::Circle*>(manifold->entityB);
 
-	const Vector2& deltaPos = *circleB->GetPosition() - *circleA->GetPosition();
+	const Vector2& deltaPos = circleB->position - circleA->position;
 	float normalLenSq = deltaPos.LengthSq();
 	float sumRadius = circleA->GetRadius() + circleB->GetRadius();
 
@@ -38,7 +38,7 @@ void RectangleToCircle(Manifold* manifold)
 	const entity::Rectangle* rectangleA = reinterpret_cast<const entity::Rectangle*>(manifold->entityA);
 	const entity::Circle* circleB = reinterpret_cast<const entity::Circle*>(manifold->entityB);
 
-	const Vector2& deltaPos = *circleB->GetPosition() - *rectangleA->GetPosition();
+	const Vector2& deltaPos = circleB->position - rectangleA->position;
 
 	Vector2 closest = deltaPos;
 
@@ -88,7 +88,7 @@ void RectangleToRectangle(Manifold* manifold)
 	const entity::Rectangle* rectangleA = reinterpret_cast<const entity::Rectangle*>(manifold->entityA);
 	const entity::Rectangle* rectangleB = reinterpret_cast<const entity::Rectangle*>(manifold->entityB);
 
-	const Vector2& deltaPos = *rectangleB->GetPosition() - *rectangleA->GetPosition();
+	const Vector2& deltaPos = rectangleB->position - rectangleA->position;
 
 	float halfXExtentA = rectangleA->GetWidth() / 2.0f;
 	float halfXExtentB = rectangleB->GetWidth() / 2.0f;

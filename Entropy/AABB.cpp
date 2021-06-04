@@ -2,9 +2,9 @@
 
 #include "Precompiled.h"
 
-AABB::AABB(const Vector2& topLeft, const Vector2& bottomRight) :
-	min(topLeft),
-	max(bottomRight)
+AABB::AABB(const Vector2& min, const Vector2& max) 
+	: min(min)
+	, max(max)
 {
 
 }

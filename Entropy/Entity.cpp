@@ -2,19 +2,17 @@
 
 static int id = 0;
 
-Entity::Entity(float x, float y) :
-	m_id(id++),
-	m_position(new Vector2(x, y)),
-	m_velocity(new Vector2(0, 0)),
-	m_rigidBodyComponentCache(nullptr)
+Entity::Entity(float x, float y) 
+	: m_id(id++)
+	, position(x, y)
+	, velocity()
+	, m_rigidBodyComponentCache(nullptr)
 {
 
 }
 
 Entity::~Entity()
 {
-	delete m_position;
-	delete m_velocity;
 	delete m_rigidBodyComponentCache;
 	for (Component* component : m_components)
 	{
@@ -43,16 +41,6 @@ unsigned int Entity::GetId() const
 	return m_id;
 }
 
-Vector2* Entity::GetPosition() const
-{
-	return m_position;
-}
-
-Vector2* Entity::GetVelocity() const
-{
-	return m_velocity;
-}
-
 void Entity::Update(float delta)
 {
 	for (Component* component : m_components)
@@ -72,13 +60,6 @@ bool Entity::Intersects(const Entity* other) const
 	if (circle != nullptr) {
 		return Intersects(circle);
 	}
-
-	/* TODO
-	Line* line = dynamic_cast<Line*>(other);
-	if (line !m= nullptr) {
-		return Intersects(line);
-	}
-	*/
 
 	return false;
 }

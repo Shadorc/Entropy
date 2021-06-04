@@ -7,7 +7,7 @@ struct AABB
 	const Vector2 min;
 	const Vector2 max;
 
-	AABB(const Vector2& topLeft, const Vector2& bottomRight);
+	AABB(const Vector2& min, const Vector2& max);
 
 	float GetX() const;
 	float GetY() const;

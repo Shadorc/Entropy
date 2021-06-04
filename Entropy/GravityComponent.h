@@ -8,8 +8,8 @@ class GravityComponent: public Component
 public:
 	static const Vector2 GRAVITY;
 
-	GravityComponent(const Entity* entity);
+	GravityComponent(Entity* entity);
 
-	void Update(float delta) override;
+	void Update(float deltaTime) override;
 };
 

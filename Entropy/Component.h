@@ -4,13 +4,13 @@ class Entity;
 class Component
 {
 protected:
-	const Entity* m_entity;
+	Entity* m_entity;
 
 public:
-	Component(const Entity* entity);
+	Component(Entity* entity);
 
 	const Entity* GetEntity() const;
 
-	virtual void Update(float delta) = 0;
+	virtual void Update(float deltaTime) = 0;
 };
 

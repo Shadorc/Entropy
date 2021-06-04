@@ -1,18 +1,17 @@
 #include "Precompiled.h"
 
-RigidBodyComponent::RigidBodyComponent(const Entity* entity, const ComponentType type, const float mass) :
-	Component(entity),
-	m_type(type),
-	m_mass(mass),
-	m_invMass(1/mass),
-	m_acceleration(new Vector2())
+RigidBodyComponent::RigidBodyComponent(Entity* entity, RigidbodyType type, float mass)
+	: Component(entity)
+	, m_type(type)
+	, m_mass(mass)
+	, m_invMass(1/mass)
+	, m_acceleration()
 {
 
 }
 
 RigidBodyComponent::~RigidBodyComponent()
 {
-	delete m_acceleration;
 	m_forces.clear();
 }
 
@@ -35,18 +34,17 @@ void RigidBodyComponent::Update(float delta)
 		}
 	}
 	
-	*m_acceleration = forcesSum / m_mass;
-	*m_entity->GetVelocity() += *m_acceleration * delta;
+	m_acceleration = forcesSum / m_mass;
+	m_entity->velocity += m_acceleration * delta;
 
-	float speedLengthSq = m_entity->GetVelocity()->LengthSq();
+	float speedLengthSq = m_entity->velocity.LengthSq();
 	if (speedLengthSq < Vector2::EPSILON_SQ)
 	{
-		m_entity->GetVelocity()->x = 0;
-		m_entity->GetVelocity()->y = 0;
+		m_entity->velocity.Reset();
 	}
 	else
 	{
-		*m_entity->GetPosition() += *m_entity->GetVelocity() * delta;
+		m_entity->position += m_entity->velocity * delta;
 	}
 }
 
@@ -60,7 +58,7 @@ void RigidBodyComponent::AddInstantForce(Vector2& force)
 	m_forces.emplace_back(force, true);
 }
 
-ComponentType RigidBodyComponent::GetType() const
+RigidbodyType RigidBodyComponent::GetType() const
 {
 	return m_type;
 }

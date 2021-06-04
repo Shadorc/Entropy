@@ -4,25 +4,24 @@
 #include <GL/glut.h>
 #include "Config.h"
 #include "QuadTree.h"
+#include <string>
 
-static void DrawText(float x, float y, float size, char* str)
+static void DrawText(float x, float y, float size, const std::string& str)
 {
-	// TODO: Do not allocate a vector2
-	Vector2 nPosition = Vector2::ToNormalizedSpace(x, y);
+	const Vector2& nPosition = Vector2::ToNormalizedSpace(x, y);
 	float scale = size / 10000.0f; // TODO: This is very arbitrary
 	glPushMatrix();
 	glTranslatef(nPosition.x, nPosition.y, 0);
 	glScalef(scale, scale, 1);
-	for (char* p = str; *p; p++) {
-		glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+	for (const char& c : str) {
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, c);
 	}
 	glPopMatrix();
 }
 
 static void DrawRectangle(float x, float y, float width, float height)
 {
-	// TODO: Do not allocate a vector2
-	const Vector2 nPosition = Vector2::ToNormalizedSpace(x, y);
+	const Vector2& nPosition = Vector2::ToNormalizedSpace(x, y);
 	float nWidth = width / WIDTH;
 	float nHeight = height / HEIGHT;
 	glBegin(GL_LINE_LOOP);

@@ -6,5 +6,5 @@ enum class DebugMode
     SHOW_QUADTREE,
     SHOW_AABB,
     SHOW_VELOCITY,
-    SIZE
+    COUNT
 };

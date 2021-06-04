@@ -1,7 +1,7 @@
 #include "Precompiled.h"
 
-Component::Component(const Entity* entity):
-	m_entity(entity)
+Component::Component(Entity* entity)
+	: m_entity(entity)
 {
 }
 
