@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include <vector>
 
+// TODO: Precompiled header
 class Component;
 class RigidBodyComponent;
 namespace entity 
@@ -12,6 +13,13 @@ namespace entity
 	class Rectangle;
 }
 
+enum class Type
+{
+	Circle,
+	Rectangle,
+	Count
+};
+
 class Entity: public AABBObject
 {
 private:
@@ -19,6 +27,7 @@ private:
 
 protected:
 	const unsigned int m_id;
+	// TODO: Don't use pointers
 	Vector2* m_position;
 	Vector2* m_velocity;
 	std::vector<Component*> m_components;

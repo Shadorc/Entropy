@@ -22,10 +22,12 @@
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="CollisionResolver.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="GravityComponent.cpp" />
+    <ClCompile Include="Manifold.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />
@@ -36,7 +38,9 @@
     <ClInclude Include="AABBObject.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="CollisionResolver.h" />
     <ClInclude Include="DebugMode.h" />
+    <ClInclude Include="Manifold.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="precomp.h" />
     <ClInclude Include="Component.h" />
