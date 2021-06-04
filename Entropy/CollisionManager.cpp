@@ -36,6 +36,55 @@ void CollisionManager::UpdateQuadTree()
 		m_quadTree->Insert(object);
 	}
 }
+/*
+void CollisionManager::ResolveCollision(const Entity* entityA, const Entity* entityB)
+{
+    // Calculate relative velocity
+    const Vector2& rv = *entityB->GetVelocity() - *entityA->GetVelocity();
+
+    // TODO 
+    Vector2 normal;
+    // Calculate relative velocity in terms of the normal direction
+    float velAlongNormal = rv.Dot(normal);
+
+    // Do not resolve if velocities are separating
+    if (velAlongNormal > 0)
+    {
+        return;
+    }
+
+    // Calculate restitution
+    float e = MIN(entityA->GetRestitution(), entityB->GetRestitution());
+
+    // Calculate impulse scalar
+    float entityAMass = entityA->GetRigidBodyComponent()->GetMass();
+    float entityBMass = entityB->GetRigidBodyComponent()->GetMass();
+    float entityAInvMass = entityA->GetRigidBodyComponent()->GetInvMass();
+    float entityBInvMass = entityB->GetRigidBodyComponent()->GetInvMass();
+
+    float j = -(1 + e) * velAlongNormal / (entityAInvMass + entityBInvMass);
+
+    // Apply impule
+    const Vector2& impulse = normal * j;
+
+    float massSum = entityAMass + entityBMass;
+    float ratioA = entityAMass / massSum;
+    *entityA->GetVelocity() -= impulse * ratioA;
+    float ratioB = entityBMass / massSum;
+    *entityB->GetVelocity() += impulse * ratioB;
+}
+
+void PositionalCorrection(const Entity* entityA, const Entity* entityB)
+{
+    static const float percent = 0.4f; // Penetration percentage to correct
+    static const float slop = 0.05f; // Penetration allowance
+    float invMassA = entityA->GetRigidBodyComponent()->GetInvMass();
+    float invMassB = entityB->GetRigidBodyComponent()->GetInvMass();
+    const Vector2& correction = (std::max(penetration - slop, 0.0f) / (invMassA + invMassB)) * normal * percent;
+    *entityA->GetPosition() -= correction * invMassA;
+    *entityB->GetPosition() += correction * invMassB;
+}
+*/
 
 void CollisionManager::CheckCollisions(float delta)
 {

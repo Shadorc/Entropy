@@ -1,10 +1,11 @@
 #include "Entity.h"
 #include "RigidBodyComponent.h"
 
-RigidBodyComponent::RigidBodyComponent(const Entity* entity, Type type, float mass) :
+RigidBodyComponent::RigidBodyComponent(const Entity* entity, const Type type, const float mass) :
 	Component(entity),
 	m_type(type),
 	m_mass(mass),
+	m_invMass(1/mass),
 	m_acceleration(new Vector2())
 {
 
@@ -68,5 +69,10 @@ Type RigidBodyComponent::GetType() const
 float RigidBodyComponent::GetMass() const
 {
 	return m_mass;
+}
+
+float RigidBodyComponent::GetInvMass() const
+{
+	return m_invMass;
 }
 
