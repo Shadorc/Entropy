@@ -1,8 +1,4 @@
-#include "Circle.h"
-#include "Rectangle.h"
-#include "Component.h"
-#include "Entity.h"
-#include "RigidBodyComponent.h"
+#include "Precompiled.h"
 
 static int id = 0;
 

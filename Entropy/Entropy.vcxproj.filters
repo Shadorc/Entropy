@@ -128,7 +128,7 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="precomp.h">
+    <ClInclude Include="Precompiled.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="DebugMode.h">

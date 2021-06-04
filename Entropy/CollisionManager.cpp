@@ -1,9 +1,6 @@
-#include "Sandbox.h"
-#include "Entity.h"
-#include "CollisionManager.h"
-#include "RigidBodyComponent.h"
-#include "Config.h"
 #include <algorithm>
+
+#include "Precompiled.h"
 
 CollisionManager::CollisionManager(const Sandbox* sandbox) :
 	m_sandbox(sandbox),
@@ -92,7 +89,7 @@ void CollisionManager::CheckCollisions(float delta)
     {
         // Do not check for static object
         RigidBodyComponent* rigidbody = entity->GetRigidBodyComponent();
-        if (rigidbody == nullptr || rigidbody->GetType() == Type::STATIC)
+        if (rigidbody == nullptr || rigidbody->GetType() == ComponentType::STATIC)
         {
             continue;
         }
@@ -138,7 +135,7 @@ void CollisionManager::CheckCollisions(float delta)
                 const Vector2& x2 = *other->GetPosition();
                 const Vector2& v1 = *entity->GetVelocity();
                 const Vector2& v2 = *other->GetVelocity();
-                if(otherRigidbody->GetType() == Type::STATIC)
+                if(otherRigidbody->GetType() == ComponentType::STATIC)
                 {
                     *entity->GetVelocity() -= (x1 - x2) * 2.0f * (v1 - v2).Dot(x1 - x2) / (x1 - x2).LengthSq();
                 }
@@ -158,7 +155,7 @@ void CollisionManager::CheckCollisions(float delta)
                 if (intersectFraction < FLOAT_INFINITY)
                 {
                     *entity->GetPosition() += *entity->GetVelocity() * (delta * intersectFraction);
-                    if (otherRigidbody->GetType() == Type::DYNAMIC)
+                    if (otherRigidbody->GetType() == ComponentType::DYNAMIC)
                     {
                         *other->GetPosition() += *other->GetVelocity() * (delta * intersectFraction);
                     }
@@ -167,7 +164,7 @@ void CollisionManager::CheckCollisions(float delta)
                     relativeMotion.Normalize();
                     const Vector2& tangent = relativeMotion.Tangent();
                     *entity->GetVelocity() = tangent * entity->GetVelocity()->Dot(tangent);
-                    if (otherRigidbody->GetType() == Type::DYNAMIC)
+                    if (otherRigidbody->GetType() == ComponentType::DYNAMIC)
                     {
                         *other->GetVelocity() = tangent * other->GetVelocity()->Dot(tangent);
                     }

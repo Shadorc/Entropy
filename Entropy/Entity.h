@@ -13,7 +13,7 @@ namespace entity
 	class Rectangle;
 }
 
-enum class Type
+enum class EntityType
 {
 	Circle,
 	Rectangle,

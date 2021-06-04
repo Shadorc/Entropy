@@ -1,8 +1,9 @@
 #pragma once
 
-#include "precomp.h"
 #include <vector>
 
+class CollisionManager;
+class Entity;
 class Sandbox
 {
 private:

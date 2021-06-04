@@ -1,8 +1,6 @@
-#include "Vector2.h"
-#include "AABB.h"
-#include <math.h>
 #include <limits>
-#include "MathUtil.h"
+
+#include "Precompiled.h"
 
 AABB::AABB(const Vector2& topLeft, const Vector2& bottomRight) :
 	min(topLeft),

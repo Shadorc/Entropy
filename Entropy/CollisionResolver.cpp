@@ -1,9 +1,4 @@
-#include "CollisionResolver.h"
-
-#include "Circle.h"
-#include "Rectangle.h"
-#include <math.h>
-#include "MathUtil.h"
+#include "Precompiled.h"
 
 void CircleToCircle(Manifold* manifold)
 {

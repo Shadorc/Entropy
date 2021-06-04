@@ -1,9 +1,9 @@
 #pragma once
 
-#include "precomp.h"
-#include "AABB.h"
 #include "QuadTree.h"
 
+class Sandbox;
+class Entity;
 class CollisionManager
 {
 private:

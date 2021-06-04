@@ -1,5 +1,4 @@
-#include "Entity.h"
-#include "Component.h"
+#include "Precompiled.h"
 
 Component::Component(const Entity* entity):
 	m_entity(entity)

@@ -1,8 +1,4 @@
-#include "AABB.h"
-#include "Rectangle.h"
-#include "Circle.h"
-#include "Config.h"
-#include <GL/glut.h>
+#include "Precompiled.h"
 
 constexpr float TWICE_PI = 2.0f * 3.14159265f;
 

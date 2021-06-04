@@ -1,6 +1,4 @@
-#include "Entity.h"
-#include "GravityComponent.h"
-#include "RigidBodyComponent.h"
+#include "Precompiled.h"
 
 const Vector2 GravityComponent::GRAVITY(0, 91.4f);
 

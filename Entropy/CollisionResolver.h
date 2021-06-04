@@ -1,10 +1,11 @@
 #pragma once
 #include "Entity.h"
-#include "Manifold.h"
+
+struct Manifold;
 
 typedef void (*CollisionCallback)(Manifold* manifold);
 
-extern CollisionCallback Dispatch[static_cast<int>(Type::Count)][static_cast<int>(Type::Count)];
+extern CollisionCallback Dispatch[static_cast<int>(EntityType::Count)][static_cast<int>(EntityType::Count)];
 
 void CircleToCircle(Manifold* manifold);
 void CircleToRectangle(Manifold* manifold);

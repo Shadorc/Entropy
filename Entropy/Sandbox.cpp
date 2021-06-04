@@ -1,10 +1,6 @@
-#include "CollisionManager.h"
-#include "Entity.h"
-#include "Sandbox.h"
-#include <GL/glut.h>
 #include <ctime>
-#include "GraphicUtil.h"
 
+#include "Precompiled.h"
 #ifdef _DEBUG
 #include "DebugMode.h"
 #endif // _DEBUG

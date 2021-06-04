@@ -1,10 +1,4 @@
-#include "AABB.h"
-#include "Circle.h"
-#include "Rectangle.h"
-#include "Config.h"
-#include "MathUtil.h"
-#include <GL/glut.h>
-#include "GraphicUtil.h"
+#include "Precompiled.h"
 
 entity::Rectangle::Rectangle(float x, float y, float width, float height):
     Entity(x, y),

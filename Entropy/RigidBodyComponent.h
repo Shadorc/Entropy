@@ -1,8 +1,9 @@
 #pragma once
 
+#include <vector>
+
 #include "Component.h"
 #include "Vector2.h"
-#include <vector>
 
 struct Force 
 {
@@ -17,17 +18,18 @@ struct Force
 	}
 };
 
-enum class Type
+enum class ComponentType
 {
 	STATIC, 
-	DYNAMIC
+	DYNAMIC,
+	COUNT
 };
 
 class Entity;
 class RigidBodyComponent: public Component
 {
 private:
-	const Type m_type;
+	const ComponentType m_type;
 	const float m_mass;
 	// Pre-computed value of 1 / m_mass
 	const float m_invMass;
@@ -35,14 +37,14 @@ private:
 	Vector2* m_acceleration;
 
 public:
-	RigidBodyComponent(const Entity* entity, const Type type, const float mass);
+	RigidBodyComponent(const Entity* entity, const ComponentType type, const float mass);
 	~RigidBodyComponent();
 
 	void AddForce(Vector2& force);
 	void AddInstantForce(Vector2& force);
 	void Update(float delta) override;
 
-	Type GetType() const;
+	ComponentType GetType() const;
 	float GetMass() const;
 	float GetInvMass() const;
 };

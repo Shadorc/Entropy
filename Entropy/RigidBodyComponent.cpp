@@ -1,7 +1,6 @@
-#include "Entity.h"
-#include "RigidBodyComponent.h"
+#include "Precompiled.h"
 
-RigidBodyComponent::RigidBodyComponent(const Entity* entity, const Type type, const float mass) :
+RigidBodyComponent::RigidBodyComponent(const Entity* entity, const ComponentType type, const float mass) :
 	Component(entity),
 	m_type(type),
 	m_mass(mass),
@@ -61,7 +60,7 @@ void RigidBodyComponent::AddInstantForce(Vector2& force)
 	m_forces.emplace_back(force, true);
 }
 
-Type RigidBodyComponent::GetType() const
+ComponentType RigidBodyComponent::GetType() const
 {
 	return m_type;
 }

@@ -1,7 +1,6 @@
-#include "Vector2.h"
-#include "Config.h"
-#include <math.h>
 #include <ostream>
+
+#include "Precompiled.h"
 
 const float Vector2::EPSILON = (float) pow(10, -4);
 const float Vector2::EPSILON_SQ = (float) pow(EPSILON, 2);

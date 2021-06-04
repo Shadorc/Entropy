@@ -1,7 +1,6 @@
 #pragma once
 
-#include <vector>
-#include "MathUtil.h"
+#include "Precompiled.h"
 
 #define MAX_OBJECTS 5
 #define MAX_LEVELS 10

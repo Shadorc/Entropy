@@ -42,7 +42,7 @@
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Manifold.h" />
     <ClInclude Include="MathUtil.h" />
-    <ClInclude Include="precomp.h" />
+    <ClInclude Include="Precompiled.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Entity.h" />
