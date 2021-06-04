@@ -20,37 +20,37 @@ enum class Quadrant
  * Source: 
  * https://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
  */
-class AABB;
+struct AABB;
 template<typename T>
 class QuadTree
 {
 private:
 	const int m_level;
 	std::vector<const T*> m_objects;
-	const AABB* m_aabb;
+	const AABB m_aabb;
 	QuadTree<T>* m_nodes[INT(Quadrant::SIZE)];
 
 	void Split()
 	{
-		float subWidth = m_aabb->GetWidth() / 2.0f;
-		float subHeight = m_aabb->GetHeight() / 2.0f;
-		const Vector2* topLeft = m_aabb->GetTopLeft();
-		const Vector2* bottomRight = m_aabb->GetBottomRight();
+		float subWidth = m_aabb.GetWidth() / 2.0f;
+		float subHeight = m_aabb.GetHeight() / 2.0f;
+		const Vector2& topLeft = m_aabb.min;
+		const Vector2& bottomRight = m_aabb.max;
 
 		m_nodes[INT(Quadrant::TOP_LEFT)] = new QuadTree<T>(m_level + 1,
-			new AABB(*topLeft, *topLeft + Vector2(subWidth, subHeight)));
+			AABB(topLeft, topLeft + Vector2(subWidth, subHeight)));
 		m_nodes[INT(Quadrant::TOP_RIGHT)] = new QuadTree<T>(m_level + 1,
-			new AABB(*topLeft + Vector2(subWidth, 0), *bottomRight - Vector2(0, subHeight)));
+			AABB(topLeft + Vector2(subWidth, 0), bottomRight - Vector2(0, subHeight)));
 		m_nodes[INT(Quadrant::BOTTOM_LEFT)] = new QuadTree<T>(m_level + 1,
-			new AABB(*topLeft + Vector2(0, subHeight), *bottomRight - Vector2(subWidth, 0)));
+			AABB(topLeft + Vector2(0, subHeight), bottomRight - Vector2(subWidth, 0)));
 		m_nodes[INT(Quadrant::BOTTOM_RIGHT)] = new QuadTree<T>(m_level + 1,
-			new AABB(*topLeft + Vector2(subWidth, subHeight), *bottomRight));
+			AABB(topLeft + Vector2(subWidth, subHeight), bottomRight));
 	}
 
 	Quadrant GetQuadrant(const T* object) const
 	{
-		float middleX = m_aabb->GetX() + m_aabb->GetWidth() / 2;
-		float middleY = m_aabb->GetY() + m_aabb->GetHeight() / 2;
+		float middleX = m_aabb.GetX() + m_aabb.GetWidth() / 2;
+		float middleY = m_aabb.GetY() + m_aabb.GetHeight() / 2;
 
 		AABB aabb = object->GetAABB();
 		bool topQuadrant = aabb.GetY() + aabb.GetHeight() < middleY;
@@ -101,7 +101,7 @@ private:
 
 	std::vector<const T*>& SearchChildren(std::vector<const T*>& returnObjects, const T* object) const
 	{
-		if (!m_aabb->IntersectsWith(object->GetAABB()))
+		if (!m_aabb.IntersectsWith(object->GetAABB()))
 		{
 			return returnObjects;
 		}
@@ -119,13 +119,13 @@ private:
 	}
 
 public:
-	QuadTree(AABB* aabb) :
+	QuadTree(const AABB& aabb) :
 		QuadTree(0, aabb)
 	{
 
 	}
 
-	QuadTree(int level, AABB* aabb) :
+	QuadTree(int level, const AABB& aabb) :
 		m_level(level),
 		m_aabb(aabb),
 		m_nodes(),
@@ -137,7 +137,6 @@ public:
 	~QuadTree()
 	{
 		Clear();
-		delete m_aabb;
 	}
 
 	const QuadTree<T>* GetNode(int i) const
@@ -145,7 +144,7 @@ public:
 		return m_nodes[i];
 	}
 
-	const AABB* GetAABB() const
+	const AABB GetAABB() const
 	{
 		return m_aabb;
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-class AABB;
+struct AABB;
 class AABBObject
 {
 public:

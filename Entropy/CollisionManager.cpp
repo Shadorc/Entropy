@@ -71,8 +71,8 @@ void CollisionManager::CheckCollisions(float delta)
             const AABB& md = other->GetAABB().MinkowskiDifference(entity->GetAABB());
 
             // Check for discrete AABB collision and then check for full collision
-            if (md.GetTopLeft()->x <= 0 && md.GetBottomRight()->x >= 0
-                && md.GetTopLeft()->y <= 0 && md.GetBottomRight()->y >= 0
+            if (md.min.x <= 0 && md.max.x >= 0
+                && md.min.y <= 0 && md.max.y >= 0
                 && entity->Intersects(other))
             {
 
@@ -131,5 +131,5 @@ void CollisionManager::CheckCollisions(float delta)
 void CollisionManager::SetRootSize(int width, int height)
 {
     delete m_quadTree;
-	m_quadTree = new QuadTree<Entity>(new AABB(Vector2(), Vector2(width, height)));
+	m_quadTree = new QuadTree<Entity>(AABB(Vector2(), Vector2(width, height)));
 }

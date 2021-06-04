@@ -2,30 +2,23 @@
 
 #include "Vector2.h"
 
-class AABB
+struct AABB
 {
-private:
-	const Vector2* m_topLeft;
-	const Vector2* m_bottomRight;
+	const Vector2 min;
+	const Vector2 max;
 
-	float ComputeRayIntersectionFractionOfFirstRay(const Vector2& originA, const Vector2& endA, 
-		const Vector2& originB, const Vector2& endB) const;
-
-public:
-	AABB(Vector2 topLeft, Vector2 bottomRight);
-	AABB(Vector2* topLeft, Vector2* bottomRight);
-	~AABB();
+	AABB(const Vector2& topLeft, const Vector2& bottomRight);
 
 	float GetX() const;
 	float GetY() const;
 	float GetWidth() const;
 	float GetHeight() const;
-	const Vector2* GetTopLeft() const;
-	const Vector2* GetBottomRight() const;
 
 	bool IntersectsWith(const AABB& other) const;
 	AABB MinkowskiDifference(const AABB& other) const;
 	Vector2 ClosestPointOnBoundsToPoint(const Vector2& point) const;
 	float ComputeRayIntersectionFraction(const Vector2& origin, const Vector2& direction) const;
+	float ComputeRayIntersectionFractionOfFirstRay(const Vector2& originA, const Vector2& endA, 
+		const Vector2& originB, const Vector2& endB) const;
 };
 

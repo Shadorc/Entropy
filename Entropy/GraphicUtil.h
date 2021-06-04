@@ -44,7 +44,7 @@ static void DrawQuadTree(const QuadTree<Entity>* quadtree)
 	{
 		const auto node = quadtree->GetNode(i);
 		if (node != nullptr) {
-			DrawAABB(*node->GetAABB());
+			DrawAABB(node->GetAABB());
 			DrawQuadTree(node);
 		}
 	}
