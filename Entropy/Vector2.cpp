@@ -79,6 +79,11 @@ Vector2 Vector2::operator+(const Vector2& other) const
 	return Vector2(x + other.x, y + other.y);
 }
 
+Vector2 Vector2::operator-() const
+{
+	return Vector2(-x, -y);
+}
+
 Vector2 Vector2::operator-(const Vector2& other) const
 {
 	return Vector2(x - other.x, y - other.y);
@@ -92,6 +97,16 @@ Vector2 Vector2::operator*(float coef) const
 Vector2 Vector2::operator/(float coef) const
 {
 	return Vector2(x / coef, y / coef);
+}
+
+Vector2 operator*(float coef, const Vector2& vector)
+{
+	return vector * coef;
+}
+
+Vector2 operator/(float coef, const Vector2& vector)
+{
+	return vector / coef;
 }
 
 void Vector2::operator+=(const Vector2& other)
@@ -132,3 +147,4 @@ Vector2 Vector2::ToNormalizedSpace(float x, float y)
 {
 	return Vector2(2 * x / WIDTH - 1, 1 - 2 * y / HEIGHT);
 }
+

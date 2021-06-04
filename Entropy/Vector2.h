@@ -25,9 +25,13 @@ public:
 	float DistanceSq(const Vector2& other) const;
 
 	Vector2 operator+(const Vector2& other) const;
+	Vector2 operator-() const;
 	Vector2 operator-(const Vector2& other) const;
 	Vector2 operator*(float coef) const;
 	Vector2 operator/(float coef) const;
+
+	friend Vector2 operator*(float coef, const Vector2& other);
+	friend Vector2 operator/(float coef, const Vector2& other);
 
 	void operator+=(const Vector2& other);
 	void operator-=(const Vector2& other);
