@@ -9,9 +9,13 @@ Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
     m_collisionManager(new CollisionManager(this))
+    , m_entities()
+    , m_updating(false)
+    , m_targetFps(100)
+    , m_dt(1/m_targetFps)
     , m_fps(0)
     , m_lastLoopTime(0)
-    , m_updating(false)
+    , m_accumulatorTime(0)
 #ifdef _DEBUG
     , m_debugMask(0)
 #endif // _DEBUG
@@ -64,6 +68,7 @@ void Sandbox::Update(float deltaTime)
 
 void Sandbox::Repaint() const
 {
+    glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0f, 1.0f, 0.0f);
     for (Entity* entity : m_entities)
     {
@@ -73,6 +78,8 @@ void Sandbox::Repaint() const
 #ifdef _DEBUG
     RepaintDebug();
 #endif // _DEBUG
+
+    glutSwapBuffers();
 }
 
 #ifdef _DEBUG
@@ -127,6 +134,43 @@ void Sandbox::RemoveEntity(Entity* entity)
     }
 }
 
+void Sandbox::OnLoop()
+{
+    int now = glutGet(GLUT_ELAPSED_TIME);
+    m_accumulatorTime += FLOAT(now - m_lastLoopTime) / CLOCKS_PER_SEC;
+    m_lastLoopTime = now;
+
+    if (m_accumulatorTime > 0.2f)
+    {
+        m_accumulatorTime = 0.2f;
+    }
+
+    while (m_accumulatorTime > m_dt)
+    {
+        Update(m_dt);
+        m_accumulatorTime -= m_dt;
+    }
+
+    Repaint();
+}
+
+void Sandbox::OnIdle()
+{
+    glutPostRedisplay();
+}
+
+void Sandbox::OnVisible(int visibility)
+{
+    if (visibility == GLUT_VISIBLE)
+    {
+        glutIdleFunc(&OnIdleWrapper);
+    }
+    else
+    {
+        glutIdleFunc(nullptr);
+    }
+}
+
 void Sandbox::OnKeyboard(unsigned char key, int x, int y)
 {
     switch (key)
@@ -170,40 +214,14 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
 }
 #endif // _DEBUG
 
-void Sandbox::OnVisible(int visibility)
-{
-    if (visibility == GLUT_VISIBLE)
-    {
-        glutIdleFunc(&OnIdleWrapper);
-    }
-    else
-    {
-        glutIdleFunc(nullptr);
-    }
-}
-
-void Sandbox::OnIdle()
-{
-    glutPostRedisplay();
-}
-
-void Sandbox::OnLoop()
-{
-    int now = glutGet(GLUT_ELAPSED_TIME);
-    float elapsed = static_cast<float>(now - m_lastLoopTime) / CLOCKS_PER_SEC;
-    m_lastLoopTime = now;
-
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    Update(elapsed);
-    Repaint();
-
-    glutSwapBuffers();
-}
-
 /* 
  * Static functions which are passed to Glut function callbacks 
  */
+
+void Sandbox::OnLoopWrapper()
+{
+    instance->OnLoop();
+}
 
 void Sandbox::OnIdleWrapper()
 {
@@ -213,11 +231,6 @@ void Sandbox::OnIdleWrapper()
 void Sandbox::OnVisibleWrapper(int visibility)
 {
     instance->OnVisible(visibility);
-}
-
-void Sandbox::OnLoopWrapper()
-{
-    instance->OnLoop();
 }
 
 void Sandbox::OnKeyboardWrapper(unsigned char key, int x, int y)
