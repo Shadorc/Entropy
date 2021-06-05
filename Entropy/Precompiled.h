@@ -7,6 +7,7 @@
 #include <vector>
 #include <GL/glut.h>
 
+#include "Render.h"
 #include "Vector2.h"
 #include "Entity.h"
 #include "Circle.h"
@@ -21,5 +22,4 @@
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"
 #include "Sandbox.h"
-#include "GraphicUtil.h"
 #include "MathUtil.h"

@@ -33,5 +33,5 @@ EntityType entity::Rectangle::GetType() const
 
 void entity::Rectangle::Paint() const
 {
-    DrawRectangle(position.x, position.y, m_width, m_height);
+    RenderRectangle(position.x, position.y, m_width, m_height);
 }

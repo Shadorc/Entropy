@@ -84,6 +84,9 @@
     <ClCompile Include="CollisionResolver.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sandbox.h">
@@ -104,7 +107,7 @@
     <ClInclude Include="Rectangle.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicUtil.h">
+    <ClInclude Include="Render.h">
       <Filter>Fichiers d%27en-tête\util</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">

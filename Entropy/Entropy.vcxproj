@@ -29,6 +29,7 @@
     <ClCompile Include="GravityComponent.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Render.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -45,7 +46,7 @@
     <ClInclude Include="Precompiled.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="GraphicUtil.h" />
+    <ClInclude Include="Render.h" />
     <ClInclude Include="GravityComponent.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Rectangle.h" />

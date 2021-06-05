@@ -91,13 +91,13 @@ void Sandbox::RepaintDebug() const
     {
         glColor3f(0.0f, 1.0f, 0.0f);
         sprintf_s(fps, "%.1f", m_fps);
-        DrawText(5, 20, 3.5f, fps);
+        RenderText(-0.99f, 0.95f, fps);
     }
 
     if (DEBUG_MODE_ENABLED(DebugMode::SHOW_QUADTREE))
     {
         glColor3f(0.0f, 1.0f, 1.0f);
-        DrawQuadTree(m_collisionManager->GetRootQuadTree());
+        RenderQuadTree(m_collisionManager->GetRootQuadTree());
     }
 
     if (DEBUG_MODE_ENABLED(DebugMode::SHOW_AABB))
@@ -105,7 +105,7 @@ void Sandbox::RepaintDebug() const
         glColor3f(1.0f, 0.0f, 0.0f);
         for (Entity* entity : m_entities)
         {
-            DrawAABB(entity->GetAABB());
+            RenderAABB(entity->GetAABB());
         }
     }
 
