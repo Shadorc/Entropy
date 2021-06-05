@@ -97,7 +97,7 @@ void RectangleToCircle(Collision& collision)
 	float normalLen = FLOAT(sqrt(normalLenSq));
 
 	// Collision normal needs to be flipped to point outside if circle was inside the AABB
-	collision.normal = (inside ? normal : -normal) / normalLen;
+	collision.normal = (inside ? -normal : normal) / normalLen;
 	collision.penetration = radius - normalLen;
 }
 
