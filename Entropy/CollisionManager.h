@@ -1,8 +1,7 @@
 #pragma once
 
-#include "QuadTree.h"
-
 class Sandbox;
+template<class T> class QuadTree;
 class Entity;
 class CollisionManager
 {

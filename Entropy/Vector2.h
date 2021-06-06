@@ -14,7 +14,6 @@ public:
 	Vector2(float x, float y);
 
 	void Reset();
-	Vector2 ToNormalizedSpace() const;
 	void Normalize();
 
 	float Dot(const Vector2& other) const;
@@ -39,6 +38,4 @@ public:
 	void operator*=(float coef);
 	void operator/=(float coef);
 	bool operator==(const Vector2& other) const;
-
-	static Vector2 ToNormalizedSpace(float x, float y);
 };

@@ -91,7 +91,7 @@ void Sandbox::RepaintDebug() const
     {
         glColor3f(0.0f, 1.0f, 0.0f);
         sprintf_s(fps, "%.1f", m_fps);
-        RenderText(-0.99f, 0.95f, fps);
+        RenderText(5, 20, fps);
     }
 
     if (DEBUG_MODE_ENABLED(DebugMode::SHOW_QUADTREE))

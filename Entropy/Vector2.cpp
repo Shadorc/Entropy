@@ -25,11 +25,6 @@ void Vector2::Reset()
 	y = 0;
 }
 
-Vector2 Vector2::ToNormalizedSpace() const
-{
-	return Vector2::ToNormalizedSpace(x, y);
-}
-
 void Vector2::Normalize()
 {
 	float length = Length();
@@ -147,9 +142,3 @@ std::ostream& operator<<(std::ostream& os, const Vector2& vector)
 {
 	return os << "{" << vector.x << ", " << vector.y << "}";
 }
-
-Vector2 Vector2::ToNormalizedSpace(float x, float y)
-{
-	return Vector2(2 * x / WIDTH - 1, 1 - 2 * y / HEIGHT);
-}
-
