@@ -57,7 +57,6 @@ void Sandbox::Stop()
 
 void Sandbox::Update(float deltaTime)
 {
-	m_fps = 1.0f / deltaTime;
 	for (Entity* entity : m_entities)
 	{
 		entity->Update(deltaTime);
@@ -137,7 +136,9 @@ void Sandbox::RemoveEntity(Entity* entity)
 void Sandbox::OnLoop()
 {
     int now = glutGet(GLUT_ELAPSED_TIME);
-    m_accumulatorTime += FLOAT(now - m_lastLoopTime) / CLOCKS_PER_SEC;
+    float elapsed = FLOAT(now - m_lastLoopTime) / CLOCKS_PER_SEC;
+    m_fps = 1.0f / elapsed;
+    m_accumulatorTime += elapsed;
     m_lastLoopTime = now;
 
     if (m_accumulatorTime > 0.2f)
