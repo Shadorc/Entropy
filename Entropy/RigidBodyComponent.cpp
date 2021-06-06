@@ -52,20 +52,9 @@ void RigidBodyComponent::ComputeMass()
 void RigidBodyComponent::Update(float deltaTime)
 {
 	Vector2 forcesSum;
-
-	auto it = m_forces.begin();
-	while (it != m_forces.end())
+	for (Vector2& force : m_forces)
 	{
-		Force& force = *it;
-		forcesSum += force.vector;
-		if (force.isInstant)
-		{
-			it = m_forces.erase(it);
-		}
-		else
-		{
-			++it;
-		}
+		forcesSum += force;
 	}
 	
 	m_acceleration = forcesSum * m_massData.invMass;
@@ -84,12 +73,7 @@ void RigidBodyComponent::Update(float deltaTime)
 
 void RigidBodyComponent::AddForce(Vector2& force)
 {
-	m_forces.emplace_back(force, false);
-}
-
-void RigidBodyComponent::AddInstantForce(Vector2& force)
-{
-	m_forces.emplace_back(force, true);
+	m_forces.emplace_back(force);
 }
 
 RigidbodyType RigidBodyComponent::GetType() const

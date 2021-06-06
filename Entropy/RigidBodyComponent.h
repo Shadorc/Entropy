@@ -7,19 +7,6 @@
 #include "MassData.h"
 #include "Material.h"
 
-struct Force 
-{
-	Vector2 vector;
-	bool isInstant;
-
-	Force(Vector2& vector, bool isInstant)
-		: vector(vector)
-		, isInstant(isInstant)
-	{
-
-	}
-};
-
 enum class RigidbodyType
 {
 	STATIC, 
@@ -34,7 +21,7 @@ private:
 	RigidbodyType m_type;
 	MassData m_massData;
 	Material m_material;
-	std::vector<Force> m_forces;
+	std::vector<Vector2> m_forces;
 	Vector2 m_acceleration;
 
 	void ComputeMass();
@@ -45,7 +32,6 @@ public:
 	~RigidBodyComponent();
 
 	void AddForce(Vector2& force);
-	void AddInstantForce(Vector2& force);
 	void Update(float deltaTime) override;
 
 	RigidbodyType GetType() const;
