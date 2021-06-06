@@ -43,6 +43,15 @@
     <Filter Include="Fichiers d%27en-tête\debug">
       <UniqueIdentifier>{a33d1f7f-b9ad-47fd-9db1-88224860a5c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\util">
+      <UniqueIdentifier>{aa61c3e0-057d-49aa-8172-5a975883190e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\physic">
+      <UniqueIdentifier>{bd93e776-3c9e-404b-ae4a-0d4c1ab3e40e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\physic">
+      <UniqueIdentifier>{cd6bc469-2144-485d-beb3-fdd943897aef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entropy.cpp">
@@ -75,17 +84,17 @@
     <ClCompile Include="AABB.cpp">
       <Filter>Fichiers sources\quadtree</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Render.cpp">
+      <Filter>Fichiers sources\util</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\physic</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Fichiers sources\physic</Filter>
     </ClCompile>
     <ClCompile Include="CollisionResolver.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\physic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,23 +134,20 @@
     <ClInclude Include="AABB.h">
       <Filter>Fichiers d%27en-tête\quadtree</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Precompiled.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="DebugMode.h">
       <Filter>Fichiers d%27en-tête\debug</Filter>
     </ClInclude>
-    <ClInclude Include="MathUtil.h">
-      <Filter>Fichiers d%27en-tête\math</Filter>
-    </ClInclude>
     <ClInclude Include="Collision.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\physic</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
     <ClInclude Include="CollisionResolver.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
