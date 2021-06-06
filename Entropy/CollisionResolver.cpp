@@ -23,24 +23,24 @@ void CircleToCircle(Collision& collision)
 	const entity::Circle* circleB = dynamic_cast<const entity::Circle*>(collision.entityB);
 
 	const Vector2& deltaPos = circleB->position - circleA->position;
-	float normalLenSq = deltaPos.LengthSq();
+	float deltaLenSq = deltaPos.LengthSq();
 	float sumRadius = circleA->GetRadius() + circleB->GetRadius();
 
-	if (normalLenSq >= sumRadius * sumRadius)
+	if (deltaLenSq >= sumRadius * sumRadius)
 	{
 		return;
 	}
 
-	if (IS_ZERO(normalLenSq))
+	if (IS_ZERO(deltaLenSq))
 	{
 		collision.penetration = circleA->GetRadius();
 		collision.normal = Vector2(1, 0);
 	}
 	else
 	{
-		float deltaPosLen = FLOAT(sqrt(normalLenSq));
-		collision.penetration = sumRadius - deltaPosLen;
-		collision.normal = deltaPos / deltaPosLen;
+		float deltaLen = sqrtf(deltaLenSq);
+		collision.penetration = sumRadius - deltaLen;
+		collision.normal = deltaPos / deltaLen;
 	}
 }
 
@@ -57,48 +57,55 @@ void RectangleToCircle(Collision& collision)
 	const entity::Circle* circleB = dynamic_cast<const entity::Circle*>(collision.entityB);
 
 	const Vector2& deltaPos = circleB->position - rectangleA->position;
-
-	Vector2 closest = deltaPos;
-
-	float halfWidth = rectangleA->GetWidth() / 2.0f;
-	float halfHeight = rectangleA->GetHeight() / 2.0f;
-
-	closest.x = CLAMP(closest.x, -halfWidth, halfWidth);
-	closest.y = CLAMP(closest.y, -halfHeight, halfHeight);
-
-	bool inside = false;
-
-	// Circle is inside the AABB, so we need to clamp the circle's center to the closest edge
-	if (deltaPos == closest)
+	if (IS_ZERO(deltaPos.LengthSq()))
 	{
-		inside = true;
-
-		if (abs(deltaPos.x) > abs(deltaPos.y))
-		{
-			closest.x = closest.x > 0 ? halfWidth : -halfWidth;
-		}
-		else
-		{
-			closest.y = closest.y > 0 ? halfHeight : -halfHeight;
-		}
+		collision.penetration = circleB->GetRadius();
+		collision.normal = Vector2(0, -1);
 	}
-
-	const Vector2& normal = deltaPos - closest;
-	float normalLenSq = normal.LengthSq();
-	float radius = circleB->GetRadius();
-
-	// Early out of the radius is shorter than distance to closest point and
-	// circle not inside the AABB
-	if (normalLenSq > radius * radius && !inside)
+	else
 	{
-		return;
+		Vector2 closest = deltaPos;
+
+		float halfWidth = rectangleA->GetWidth() / 2.0f;
+		float halfHeight = rectangleA->GetHeight() / 2.0f;
+
+		closest.x = CLAMP(closest.x, -halfWidth, halfWidth);
+		closest.y = CLAMP(closest.y, -halfHeight, halfHeight);
+
+		bool inside = false;
+
+		// Circle is inside the AABB, so we need to clamp the circle's center to the closest edge
+		if (deltaPos == closest)
+		{
+			inside = true;
+
+			if (abs(deltaPos.x) > abs(deltaPos.y))
+			{
+				closest.x = closest.x > 0 ? halfWidth : -halfWidth;
+			}
+			else
+			{
+				closest.y = closest.y > 0 ? halfHeight : -halfHeight;
+			}
+		}
+
+		const Vector2& normal = deltaPos - closest;
+		float normalLenSq = normal.LengthSq();
+		float radius = circleB->GetRadius();
+
+		// Early out of the radius is shorter than distance to closest point and
+		// circle not inside the AABB
+		if (normalLenSq > radius * radius && !inside)
+		{
+			return;
+		}
+
+		float normalLen = sqrtf(normalLenSq);
+
+		// Collision normal needs to be flipped to point outside if circle was inside the AABB
+		collision.normal = (inside ? -normal : normal) / normalLen;
+		collision.penetration = inside ? (radius + normalLen) : (radius - normalLen);
 	}
-
-	float normalLen = FLOAT(sqrt(normalLenSq));
-
-	// Collision normal needs to be flipped to point outside if circle was inside the AABB
-	collision.normal = (inside ? -normal : normal) / normalLen;
-	collision.penetration = radius - normalLen;
 }
 
 void RectangleToRectangle(Collision& collision)

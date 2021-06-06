@@ -142,43 +142,44 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     // Calculate impulse
     const float restitution = MIN(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
     const float normalImpulseScalar = -(1 + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
-    const Vector2& impulse = manifold.normal * normalImpulseScalar;
+    if (!IS_ZERO(normalImpulseScalar))
+    {
+        const Vector2& impulse = manifold.normal * normalImpulseScalar;
 
-    //Apply impulse
-    const float massSum = massA.mass + massB.mass;
-    const float ratioA = massA.mass / massSum;
-    entityA->velocity -= impulse * ratioA;
-    const float ratioB = massB.mass / massSum;
-    entityB->velocity += impulse * ratioB;
+        //Apply impulse
+        const float massSum = massA.mass + massB.mass;
+        const float ratioA = massA.mass / massSum;
+        entityA->velocity -= impulse * ratioA;
+        const float ratioB = massB.mass / massSum;
+        entityB->velocity += impulse * ratioB;
+    }
 
     // Compute friction factors
     const float staticFriction = PYTHAGORE(rigidbodyA->GetFrictionData().staticFactor, rigidbodyB->GetFrictionData().staticFactor);
     const float dynamicFriction = PYTHAGORE(rigidbodyA->GetFrictionData().dynamicFactor, rigidbodyB->GetFrictionData().dynamicFactor);
 
-    // Calculate friction tangent
+    // Calculate friction
     Vector2 tangent = relativVelocity - relativVelocity.Dot(manifold.normal) * manifold.normal;
     tangent.Normalize();
 
     const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
-    if (IS_ZERO(frictionImpulseScalar))
+    if (!IS_ZERO(frictionImpulseScalar))
     {
-        return;
-    }
+        // Clamp magnitude of friction and create friction impulse vector
+        Vector2 friction;
+        if (abs(frictionImpulseScalar) < normalImpulseScalar * staticFriction)
+        {
+            friction = frictionImpulseScalar * tangent;
+        }
+        else
+        {
+            friction = -normalImpulseScalar * tangent * dynamicFriction;
+        }
 
-    // Clamp magnitude of friction and create friction impulse vector
-    Vector2 friction;
-    if (abs(frictionImpulseScalar) < normalImpulseScalar * staticFriction)
-    {
-        friction = frictionImpulseScalar * tangent;
+        // Apply friction
+        entityA->velocity -= massA.invMass * friction;
+        entityB->velocity += massB.invMass * friction;
     }
-    else
-    {
-        friction = -normalImpulseScalar * tangent * dynamicFriction;
-    }
-
-    // Apply friction
-    entityA->velocity -= massA.invMass * friction;
-    entityB->velocity += massB.invMass * friction;
 }
 
 void CollisionManager::PositionalCorrection(const Collision& manifold)
