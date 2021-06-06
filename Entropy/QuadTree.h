@@ -2,8 +2,8 @@
 
 #include "Precompiled.h"
 
-#define MAX_OBJECTS 5
-#define MAX_LEVELS 10
+constexpr int MAX_OBJECTS = 5;
+constexpr int MAX_LEVELS = 10;
 
 enum class Quadrant
 {
@@ -11,7 +11,7 @@ enum class Quadrant
 	BOTTOM_RIGHT,
 	TOP_LEFT,
 	TOP_RIGHT,
-	SIZE,
+	COUNT,
 	INVALID
 };
 
@@ -27,7 +27,7 @@ private:
 	const int m_level;
 	std::vector<T*> m_objects;
 	const AABB m_aabb;
-	QuadTree<T>* m_nodes[INT(Quadrant::SIZE)];
+	QuadTree<T>* m_nodes[INT(Quadrant::COUNT)];
 
 	void Split()
 	{
@@ -152,7 +152,7 @@ public:
 	{
 		m_objects.clear();
 
-		for (int i = 0; i < INT(Quadrant::SIZE); ++i)
+		for (int i = 0; i < INT(Quadrant::COUNT); ++i)
 		{
 			if (m_nodes[i] != nullptr)
 			{

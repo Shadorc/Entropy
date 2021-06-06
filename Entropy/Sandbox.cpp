@@ -5,6 +5,8 @@
 #include "DebugMode.h"
 #endif // _DEBUG
 
+constexpr float MAX_ACCUMULATOR_TIME = 0.2f;
+
 Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
@@ -141,9 +143,9 @@ void Sandbox::OnLoop()
     m_accumulatorTime += elapsed;
     m_lastLoopTime = now;
 
-    if (m_accumulatorTime > 0.2f)
+    if (m_accumulatorTime > MAX_ACCUMULATOR_TIME)
     {
-        m_accumulatorTime = 0.2f;
+        m_accumulatorTime = MAX_ACCUMULATOR_TIME;
     }
 
     while (m_accumulatorTime > m_dt)

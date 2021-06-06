@@ -22,7 +22,7 @@ AABB entity::Circle::GetAABB() const
 
 EntityType entity::Circle::GetType() const
 {
-    return EntityType::Circle;
+    return EntityType::CIRCLE;
 }
 
 void entity::Circle::Paint() const

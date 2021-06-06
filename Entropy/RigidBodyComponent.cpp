@@ -27,7 +27,7 @@ void RigidBodyComponent::ComputeMass()
 {
 	switch (m_entity->GetType())
 	{
-	case EntityType::Circle:
+	case EntityType::CIRCLE:
 	{
 		const entity::Circle* circle = dynamic_cast<entity::Circle*>(m_entity);
 		const float radiusSq = circle->GetRadius() * circle->GetRadius();
@@ -37,7 +37,7 @@ void RigidBodyComponent::ComputeMass()
 		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
 		break;
 	}
-	case EntityType::Rectangle:
+	case EntityType::RECTANGLE:
 	{
 		const entity::Rectangle* rectangle = dynamic_cast<entity::Rectangle*>(m_entity);
 		m_massData.mass = rectangle->GetWidth() * rectangle->GetHeight() * m_material.density * MASS_METER_SQUARE;

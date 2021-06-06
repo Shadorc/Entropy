@@ -64,7 +64,7 @@ void RenderAABB(const AABB& aabb)
 
 void RenderQuadTree(const QuadTree<Entity>* quadtree)
 {
-	for (int i = 0; i < INT(Quadrant::SIZE); ++i)
+	for (int i = 0; i < INT(Quadrant::COUNT); ++i)
 	{
 		const auto node = quadtree->GetNode(i);
 		if (node != nullptr) {

@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-CollisionCallback Dispatch[INT(EntityType::Count)][INT(EntityType::Count)] =
+CollisionCallback Dispatch[INT(EntityType::COUNT)][INT(EntityType::COUNT)] =
 {
   {
 	CircleToCircle, CircleToRectangle

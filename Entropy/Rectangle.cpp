@@ -28,7 +28,7 @@ AABB entity::Rectangle::GetAABB() const
 
 EntityType entity::Rectangle::GetType() const
 {
-    return EntityType::Rectangle;
+    return EntityType::RECTANGLE;
 }
 
 void entity::Rectangle::Paint() const

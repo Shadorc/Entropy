@@ -14,9 +14,9 @@ namespace entity
 
 enum class EntityType
 {
-	Circle,
-	Rectangle,
-	Count
+	CIRCLE,
+	RECTANGLE,
+	COUNT
 };
 
 class Entity: public AABBObject
