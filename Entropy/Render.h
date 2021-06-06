@@ -1,5 +1,9 @@
 #pragma once
 
+constexpr float PI = 3.14159265f;
+constexpr float TWICE_PI = 2.0f * PI;
+constexpr int MAX_CIRCLE_SEGMENTS = 20;
+
 struct AABB;
 template<class T> class QuadTree;
 class Entity;

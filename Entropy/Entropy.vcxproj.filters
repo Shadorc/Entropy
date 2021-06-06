@@ -149,6 +149,12 @@
     <ClInclude Include="CollisionResolver.h">
       <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
+    <ClInclude Include="MassData.h">
+      <Filter>Fichiers d%27en-tête\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Fichiers d%27en-tête\entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

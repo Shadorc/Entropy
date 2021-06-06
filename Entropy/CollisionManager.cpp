@@ -56,21 +56,21 @@ void ResolveCollision(const Collision& manifold)
     float e = MIN(rigidbodyA->GetRestitution(), rigidbodyB->GetRestitution());
 
     // Calculate impulse scalar
-    float j = -(1 + e) * velAlongNormal / (rigidbodyA->GetInvMass() + rigidbodyB->GetInvMass());
+    float j = -(1 + e) * velAlongNormal / (rigidbodyA->GetMassData().invMass + rigidbodyB->GetMassData().invMass);
 
     // Calculate impulse
     const Vector2& impulse = manifold.normal * j;
 
     //Apply impule
-    float massSum = rigidbodyA->GetMass() + rigidbodyB->GetMass();
+    float massSum = rigidbodyA->GetMassData().mass + rigidbodyB->GetMassData().mass;
     if (!rigidbodyA->IsStatic())
     {
-        float ratioA = rigidbodyA->GetMass() / massSum;
+        float ratioA = rigidbodyA->GetMassData().mass / massSum;
         entityA->velocity -= impulse * ratioA;
     }
     if (!rigidbodyB->IsStatic())
     {
-        float ratioB = rigidbodyB->GetMass() / massSum;
+        float ratioB = rigidbodyB->GetMassData().mass / massSum;
         entityB->velocity += impulse * ratioB;
     }
 }
@@ -81,8 +81,8 @@ void PositionalCorrection(const Collision& manifold)
 {
     const RigidBodyComponent* rigidbodyA = manifold.entityA->GetRigidBodyComponent();
     const RigidBodyComponent* rigidbodyB = manifold.entityB->GetRigidBodyComponent();
-    float invMassA = rigidbodyA->GetInvMass();
-    float invMassB = rigidbodyB->GetInvMass();
+    float invMassA = rigidbodyA->GetMassData().invMass;
+    float invMassB = rigidbodyB->GetMassData().invMass;
     const Vector2& correction = (std::max(manifold.penetration - slop, 0.0f) / (invMassA + invMassB)) * manifold.normal * percent;
     if (!rigidbodyA->IsStatic())
     {

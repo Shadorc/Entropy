@@ -1,8 +1,5 @@
 #include "Precompiled.h"
 
-constexpr float TWICE_PI = 2.0f * 3.14159265f;
-constexpr int MAX_CIRCLE_SEGMENTS = 20;
-
 struct Position
 {
 	float x;

@@ -22,6 +22,8 @@ constexpr int HEIGHT = 720;
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"
 #include "Sandbox.h"
+#include "MassData.h"
+#include "Material.h"
 
 #define FLOAT_INFINITY std::numeric_limits<float>::infinity()
 #define RAND_INT(max) rand() % max + 1

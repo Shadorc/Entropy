@@ -4,6 +4,8 @@
 
 #include "Component.h"
 #include "Vector2.h"
+#include "MassData.h"
+#include "Material.h"
 
 struct Force 
 {
@@ -29,12 +31,13 @@ class Entity;
 class RigidBodyComponent: public Component
 {
 private:
-	const RigidbodyType m_type;
-	const float m_mass;
-	// Pre-computed value of 1 / m_mass
-	const float m_invMass;
+	RigidbodyType m_type;
+	MassData m_massData;
+	Material m_material;
 	std::vector<Force> m_forces;
 	Vector2 m_acceleration;
+
+	void ComputeMass();
 
 public:
 	RigidBodyComponent(Entity* entity);
@@ -46,8 +49,8 @@ public:
 	void Update(float deltaTime) override;
 
 	RigidbodyType GetType() const;
-	float GetMass() const;
-	float GetInvMass() const;
+	MassData GetMassData() const;
+	Material GetMaterial() const;
 	float GetRestitution() const;
 
 	bool IsStatic() const;
