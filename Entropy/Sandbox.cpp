@@ -11,7 +11,7 @@ Sandbox::Sandbox():
     m_collisionManager(new CollisionManager(this))
     , m_entities()
     , m_updating(false)
-    , m_targetFps(100)
+    , m_targetFps(60)
     , m_dt(1/m_targetFps)
     , m_fps(0)
     , m_lastLoopTime(0)
