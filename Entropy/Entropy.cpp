@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 	Sandbox sandbox;
 
 	const int wallSize = 25;
-	entity::Rectangle* floor = new entity::Rectangle(WIDTH / 2.0f, HEIGHT - wallSize, WIDTH, wallSize);
+	entity::Rectangle* floor = new entity::Rectangle(WIDTH / 2.0f, HEIGHT - wallSize / 2.0f, WIDTH - wallSize * 2.0f, wallSize);
 	floor->AddComponent(new RigidbodyComponent(floor, STATIC));
 	sandbox.AddEntity(floor);
 
