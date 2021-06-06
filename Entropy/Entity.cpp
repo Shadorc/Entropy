@@ -6,14 +6,14 @@ Entity::Entity(float x, float y)
 	: m_id(id++)
 	, position(x, y)
 	, velocity()
-	, m_rigidBodyComponentCache(nullptr)
+	, m_rigidbodyComponentCache(nullptr)
 {
 
 }
 
 Entity::~Entity()
 {
-	delete m_rigidBodyComponentCache;
+	delete m_rigidbodyComponentCache;
 	for (Component* component : m_components)
 	{
 		delete component;
@@ -21,14 +21,14 @@ Entity::~Entity()
 	m_components.clear();
 }
 
-// Cache RigidBody component
-RigidBodyComponent* Entity::GetRigidBodyComponent() const
+// Cache Rigidbody component
+RigidbodyComponent* Entity::GetRigidbodyComponent() const
 {
-	if (m_rigidBodyComponentCache == nullptr)
+	if (m_rigidbodyComponentCache == nullptr)
 	{
-		m_rigidBodyComponentCache = GetComponent<RigidBodyComponent>();
+		m_rigidbodyComponentCache = GetComponent<RigidbodyComponent>();
 	}
-	return m_rigidBodyComponentCache;
+	return m_rigidbodyComponentCache;
 }
 
 void Entity::AddComponent(Component* component)

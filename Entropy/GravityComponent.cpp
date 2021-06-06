@@ -10,5 +10,5 @@ GravityComponent::GravityComponent(Entity* entity)
 
 void GravityComponent::Update(float deltaTime)
 {
-	m_entity->GetRigidBodyComponent()->AddForce(GRAVITY);
+	m_entity->GetRigidbodyComponent()->AddForce(GRAVITY);
 }

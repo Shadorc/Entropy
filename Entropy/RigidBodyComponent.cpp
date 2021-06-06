@@ -2,7 +2,7 @@
 
 constexpr float MASS_METER_SQUARE = 1.0f / 1000.0f; // kg.m-2
 
-RigidBodyComponent::RigidBodyComponent(Entity* entity, Material material)
+RigidbodyComponent::RigidbodyComponent(Entity* entity, Material material)
 	: Component(entity)
 	, m_massData()
 	, m_material(material)
@@ -11,7 +11,7 @@ RigidBodyComponent::RigidBodyComponent(Entity* entity, Material material)
 	ComputeMass();
 }
 
-void RigidBodyComponent::ComputeMass()
+void RigidbodyComponent::ComputeMass()
 {
 	switch (m_entity->GetType())
 	{
@@ -37,7 +37,7 @@ void RigidBodyComponent::ComputeMass()
 	}
 }
 
-void RigidBodyComponent::Update(float deltaTime)
+void RigidbodyComponent::Update(float deltaTime)
 {
 	Vector2 forcesSum;
 	for (Vector2& force : m_forces)
@@ -45,38 +45,28 @@ void RigidBodyComponent::Update(float deltaTime)
 		forcesSum += force;
 	}
 	
-	const Vector2& acceleration = forcesSum * m_massData.invMass;
-	m_entity->velocity += acceleration * deltaTime;
-
-	float speedLengthSq = m_entity->velocity.LengthSq();
-	if (speedLengthSq < Vector2::EPSILON_SQ)
-	{
-		m_entity->velocity.Reset();
-	}
-	else
-	{
-		m_entity->position += m_entity->velocity * deltaTime;
-	}
+	m_entity->velocity += forcesSum * m_massData.invMass * deltaTime;
+	m_entity->position += m_entity->velocity * deltaTime;
 
 	m_forces.clear();
 }
 
-void RigidBodyComponent::AddForce(Vector2 force)
+void RigidbodyComponent::AddForce(Vector2 force)
 {
 	m_forces.emplace_back(force);
 }
 
-MassData RigidBodyComponent::GetMassData() const
+MassData RigidbodyComponent::GetMassData() const
 {
 	return m_massData;
 }
 
-Material RigidBodyComponent::GetMaterial() const
+Material RigidbodyComponent::GetMaterial() const
 {
 	return m_material;
 }
 
-FrictionData RigidBodyComponent::GetFrictionData() const
+FrictionData RigidbodyComponent::GetFrictionData() const
 {
 	return m_frictionData;
 }

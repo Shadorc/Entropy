@@ -5,7 +5,7 @@
 #include <vector>
 
 class Component;
-class RigidBodyComponent;
+class RigidbodyComponent;
 namespace entity 
 {
 	class Circle;
@@ -22,7 +22,7 @@ enum class EntityType
 class Entity: public AABBObject
 {
 private:
-	mutable RigidBodyComponent* m_rigidBodyComponentCache;
+	mutable RigidbodyComponent* m_rigidbodyComponentCache;
 
 protected:
 	const unsigned int m_id;
@@ -52,13 +52,12 @@ public:
 		}
 		return nullptr;
 	}
-	RigidBodyComponent* GetRigidBodyComponent() const;
+	RigidbodyComponent* GetRigidbodyComponent() const;
 
 	void AddComponent(Component* component);
 	virtual void Update(float deltaTime);
 	virtual void Paint() const = 0;
 
 	bool operator==(Entity& other) const;
-	bool operator!=(Entity& other) const;
 };
 

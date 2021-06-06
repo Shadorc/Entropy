@@ -33,17 +33,15 @@ private:
 	{
 		float subWidth = m_aabb.GetWidth() / 2.0f;
 		float subHeight = m_aabb.GetHeight() / 2.0f;
-		const Vector2& topLeft = m_aabb.min;
-		const Vector2& bottomRight = m_aabb.max;
 
 		m_nodes[INT(Quadrant::TOP_LEFT)] = new QuadTree<T>(m_level + 1,
-			AABB(topLeft, topLeft + Vector2(subWidth, subHeight)));
+			AABB(m_aabb.min, m_aabb.min + Vector2(subWidth, subHeight)));
 		m_nodes[INT(Quadrant::TOP_RIGHT)] = new QuadTree<T>(m_level + 1,
-			AABB(topLeft + Vector2(subWidth, 0), bottomRight - Vector2(0, subHeight)));
+			AABB(m_aabb.min + Vector2(subWidth, 0), m_aabb.max - Vector2(0, subHeight)));
 		m_nodes[INT(Quadrant::BOTTOM_LEFT)] = new QuadTree<T>(m_level + 1,
-			AABB(topLeft + Vector2(0, subHeight), bottomRight - Vector2(subWidth, 0)));
+			AABB(m_aabb.min + Vector2(0, subHeight), m_aabb.max - Vector2(subWidth, 0)));
 		m_nodes[INT(Quadrant::BOTTOM_RIGHT)] = new QuadTree<T>(m_level + 1,
-			AABB(topLeft + Vector2(subWidth, subHeight), bottomRight));
+			AABB(m_aabb.min + Vector2(subWidth, subHeight), m_aabb.max));
 	}
 
 	Quadrant GetQuadrant(const T* object) const
@@ -51,7 +49,7 @@ private:
 		float middleX = m_aabb.GetX() + m_aabb.GetWidth() / 2.0f;
 		float middleY = m_aabb.GetY() + m_aabb.GetHeight() / 2.0f;
 
-		AABB aabb = object->GetAABB();
+		const AABB& aabb = object->GetAABB();
 		bool topQuadrant = aabb.GetY() + aabb.GetHeight() < middleY;
 		bool bottomQuadrant = aabb.GetY() > middleY;
 		if (aabb.GetX() + aabb.GetWidth() < middleX) 
@@ -175,7 +173,7 @@ public:
 			}
 		}
 
-		m_objects.push_back(object);
+		m_objects.emplace_back(object);
 
 		if (m_objects.size() > MAX_OBJECTS && m_level < MAX_LEVELS)
 		{

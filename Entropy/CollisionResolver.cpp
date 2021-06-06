@@ -31,7 +31,7 @@ void CircleToCircle(Collision& collision)
 		return;
 	}
 
-	if (FLOAT_EQUAL(normalLenSq, 0.0f))
+	if (IS_ZERO(normalLenSq))
 	{
 		collision.penetration = circleA->GetRadius();
 		collision.normal = Vector2(1, 0);

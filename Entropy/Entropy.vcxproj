@@ -30,7 +30,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Render.cpp" />
-    <ClCompile Include="RigidBodyComponent.cpp" />
+    <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClInclude Include="GravityComponent.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Rectangle.h" />
-    <ClInclude Include="RigidBodyComponent.h" />
+    <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>

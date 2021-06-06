@@ -24,10 +24,11 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 
 void CollisionManager::Update()
 {
+    // Push all entities with a rigid body inside m_entities
     m_entities.clear();
     for (Entity* entity : m_sandbox->GetEntities())
     {
-        if (entity->GetRigidBodyComponent() != nullptr)
+        if (entity->GetRigidbodyComponent() != nullptr)
         {
             m_entities.emplace_back(entity);
         }
@@ -52,6 +53,7 @@ void CollisionManager::BroadPhase()
     m_pairs.clear(); 
     m_uniquePairs.clear();
 
+    // Detect all colliding entities and push the corresponding pair inside m_pairs
     for (Entity* entityA : m_entities)
     {
         for (Entity* entityB : m_quadTree->Search(entityA))
@@ -68,8 +70,10 @@ void CollisionManager::BroadPhase()
         }
     }
 
+    // Sort the m_pairs vector so that all similar pairs follow each other    
     std::sort(m_pairs.begin(), m_pairs.end(), PairComparator<Entity>);
 
+    // Push non-duplicate pairs inside m_uniquePairs
     int i = 0;
     while (i < m_pairs.size())
     {
@@ -97,15 +101,15 @@ void CollisionManager::CheckCollisions()
 {
     for (Pair<Entity>& pair : m_uniquePairs)
     {
-        // Both objects are statics
-        if (FLOAT_EQUAL(pair.left->GetRigidBodyComponent()->GetMassData().mass, 0.0f) 
-            && FLOAT_EQUAL(pair.right->GetRigidBodyComponent()->GetMassData().mass, 0.0f))
+        // Do not check collisions between static objects
+        if (IS_ZERO(pair.left->GetRigidbodyComponent()->GetMassData().mass) 
+            && IS_ZERO(pair.right->GetRigidbodyComponent()->GetMassData().mass))
         {
             continue;
         }
 
         const Collision& manifold = Solve(pair.left, pair.right);
-        if (manifold.penetration != 0)
+        if (!IS_ZERO(manifold.penetration))
         {
             ResolveCollision(manifold);
             PositionalCorrection(manifold);
@@ -130,8 +134,8 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
         return;
     }
 
-    const RigidBodyComponent* rigidbodyA = entityA->GetRigidBodyComponent();
-    const RigidBodyComponent* rigidbodyB = entityB->GetRigidBodyComponent();
+    const RigidbodyComponent* rigidbodyA = entityA->GetRigidbodyComponent();
+    const RigidbodyComponent* rigidbodyB = entityB->GetRigidbodyComponent();
     const MassData& massA = rigidbodyA->GetMassData();
     const MassData& massB = rigidbodyB->GetMassData();
 
@@ -140,22 +144,23 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     const float normalImpulseScalar = -(1 + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
     const Vector2& impulse = manifold.normal * normalImpulseScalar;
 
-    //Apply impule
+    //Apply impulse
     const float massSum = massA.mass + massB.mass;
     const float ratioA = massA.mass / massSum;
     entityA->velocity -= impulse * ratioA;
     const float ratioB = massB.mass / massSum;
     entityB->velocity += impulse * ratioB;
 
+    // Compute friction factors
     const float staticFriction = PYTHAGORE(rigidbodyA->GetFrictionData().staticFactor, rigidbodyB->GetFrictionData().staticFactor);
     const float dynamicFriction = PYTHAGORE(rigidbodyA->GetFrictionData().dynamicFactor, rigidbodyB->GetFrictionData().dynamicFactor);
 
-    // Calculate tangent friction
+    // Calculate friction tangent
     Vector2 tangent = relativVelocity - relativVelocity.Dot(manifold.normal) * manifold.normal;
     tangent.Normalize();
 
     const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
-    if (FLOAT_EQUAL(frictionImpulseScalar, 0.0f))
+    if (IS_ZERO(frictionImpulseScalar))
     {
         return;
     }
@@ -178,8 +183,8 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
 
 void CollisionManager::PositionalCorrection(const Collision& manifold)
 {
-    const RigidBodyComponent* rigidbodyA = manifold.entityA->GetRigidBodyComponent();
-    const RigidBodyComponent* rigidbodyB = manifold.entityB->GetRigidBodyComponent();
+    const RigidbodyComponent* rigidbodyA = manifold.entityA->GetRigidbodyComponent();
+    const RigidbodyComponent* rigidbodyB = manifold.entityB->GetRigidbodyComponent();
     float invMassA = rigidbodyA->GetMassData().invMass;
     float invMassB = rigidbodyB->GetMassData().invMass;
     const Vector2& correction = (MAX(manifold.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * manifold.normal * PENETRATION_PERCENT;

@@ -3,8 +3,6 @@
 class Vector2
 {
 public:
-	static const float EPSILON;
-	static const float EPSILON_SQ;
 	static const Vector2 ZERO;
 
 	float x;

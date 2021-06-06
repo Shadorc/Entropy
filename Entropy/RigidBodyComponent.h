@@ -9,7 +9,7 @@
 #include "FrictionData.h"
 
 class Entity;
-class RigidBodyComponent: public Component
+class RigidbodyComponent: public Component
 {
 private:
 	MassData m_massData;
@@ -20,7 +20,7 @@ private:
 	void ComputeMass();
 
 public:
-	RigidBodyComponent(Entity* entity, Material material);
+	RigidbodyComponent(Entity* entity, Material material);
 
 	void AddForce(Vector2 force);
 	void Update(float deltaTime) override;
