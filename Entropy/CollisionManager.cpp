@@ -94,6 +94,13 @@ void CollisionManager::CheckCollisions()
 {
     for (Pair<Entity>& pair : m_uniquePairs)
     {
+        // Both objects are statics
+        if (FLOAT_EQUAL(pair.left->GetRigidBodyComponent()->GetMassData().mass, 0.0f) 
+            && FLOAT_EQUAL(pair.right->GetRigidBodyComponent()->GetMassData().mass, 0.0f))
+        {
+            continue;
+        }
+
         const Collision& manifold = Solve(pair.left, pair.right);
         if (manifold.penetration != 0)
         {
@@ -132,16 +139,10 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
 
     //Apply impule
     const float massSum = massA.mass + massB.mass;
-    if (!rigidbodyA->IsStatic())
-    {
-        const float ratioA = massA.mass / massSum;
-        entityA->velocity -= impulse * ratioA;
-    }
-    if (!rigidbodyB->IsStatic())
-    {
-        const float ratioB = massB.mass / massSum;
-        entityB->velocity += impulse * ratioB;
-    }
+    const float ratioA = massA.mass / massSum;
+    entityA->velocity -= impulse * ratioA;
+    const float ratioB = massB.mass / massSum;
+    entityB->velocity += impulse * ratioB;
 
     const float staticFriction = PYTHAGORE(rigidbodyA->GetFrictionData().staticFactor, rigidbodyB->GetFrictionData().staticFactor);
     const float dynamicFriction = PYTHAGORE(rigidbodyA->GetFrictionData().dynamicFactor, rigidbodyB->GetFrictionData().dynamicFactor);
@@ -151,6 +152,10 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     tangent.Normalize();
 
     const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
+    if (FLOAT_EQUAL(frictionImpulseScalar, 0.0f))
+    {
+        return;
+    }
 
     // Clamp magnitude of friction and create friction impulse vector
     Vector2 friction;
@@ -177,14 +182,8 @@ void CollisionManager::PositionalCorrection(const Collision& manifold)
     float invMassA = rigidbodyA->GetMassData().invMass;
     float invMassB = rigidbodyB->GetMassData().invMass;
     const Vector2& correction = (std::max(manifold.penetration - slop, 0.0f) / (invMassA + invMassB)) * manifold.normal * percent;
-    if (!rigidbodyA->IsStatic())
-    {
-        manifold.entityA->position -= correction * invMassA;
-    }
-    if (!rigidbodyB->IsStatic())
-    {
-        manifold.entityB->position += correction * invMassB;
-    }
+    manifold.entityA->position -= correction * invMassA;
+    manifold.entityB->position += correction * invMassB;
 }
 
 void CollisionManager::SetRootSize(int width, int height)

@@ -2,35 +2,13 @@
 
 constexpr float MASS_METER_SQUARE = 1.0f / 1000.0f; // kg.m-2
 
-RigidBodyComponent::RigidBodyComponent(Entity* entity)
-	: RigidBodyComponent(entity, RigidbodyType::STATIC)
-{
-
-}
-
-RigidBodyComponent::RigidBodyComponent(Entity* entity, float density)
+RigidBodyComponent::RigidBodyComponent(Entity* entity, Material material)
 	: Component(entity)
-	, m_type(RigidbodyType::DYNAMIC)
 	, m_massData()
-	, m_material({ density, 0.2f })
+	, m_material(material)
 	, m_frictionData({ 0.2f, 0.4f })
 {
 	ComputeMass();
-}
-
-RigidBodyComponent::RigidBodyComponent(Entity* entity, RigidbodyType type)
-	: Component(entity)
-	, m_type(type)
-	, m_massData()
-	, m_material({ 1.0f, 0.2f })
-	, m_frictionData({ 0.2f, 0.4f })
-{
-	ComputeMass();
-}
-
-RigidBodyComponent::~RigidBodyComponent()
-{
-	m_forces.clear();
 }
 
 void RigidBodyComponent::ComputeMass()
@@ -88,11 +66,6 @@ void RigidBodyComponent::AddForce(Vector2 force)
 	m_forces.emplace_back(force);
 }
 
-RigidbodyType RigidBodyComponent::GetType() const
-{
-	return m_type;
-}
-
 MassData RigidBodyComponent::GetMassData() const
 {
 	return m_massData;
@@ -101,11 +74,6 @@ MassData RigidBodyComponent::GetMassData() const
 Material RigidBodyComponent::GetMaterial() const
 {
 	return m_material;
-}
-
-bool RigidBodyComponent::IsStatic() const
-{
-	return m_type == RigidbodyType::STATIC;
 }
 
 FrictionData RigidBodyComponent::GetFrictionData() const

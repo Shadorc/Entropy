@@ -8,18 +8,10 @@
 #include "Material.h"
 #include "FrictionData.h"
 
-enum class RigidbodyType
-{
-	STATIC, 
-	DYNAMIC,
-	COUNT
-};
-
 class Entity;
 class RigidBodyComponent: public Component
 {
 private:
-	RigidbodyType m_type;
 	MassData m_massData;
 	Material m_material;
 	FrictionData m_frictionData;
@@ -28,19 +20,13 @@ private:
 	void ComputeMass();
 
 public:
-	RigidBodyComponent(Entity* entity);
-	RigidBodyComponent(Entity* entity, float density);
-	RigidBodyComponent(Entity* entity, RigidbodyType type);
-	~RigidBodyComponent();
+	RigidBodyComponent(Entity* entity, Material material);
 
 	void AddForce(Vector2 force);
 	void Update(float deltaTime) override;
 
-	RigidbodyType GetType() const;
 	MassData GetMassData() const;
 	Material GetMaterial() const;
 	FrictionData GetFrictionData() const;
-
-	bool IsStatic() const;
 };
 

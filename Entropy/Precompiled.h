@@ -35,3 +35,4 @@ constexpr int HEIGHT = 720;
 #define CLAMP(value, min, max) (value < min ? min : (value > max ? max : value))
 #define MIN(a, b) a < b ? a : b
 #define MAX(a, b) a > b ? a : b
+#define FLOAT_EQUAL(a, b) abs(a - b) <= 0.0001f
