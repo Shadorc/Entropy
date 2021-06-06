@@ -13,7 +13,6 @@ RigidBodyComponent::RigidBodyComponent(Entity* entity, RigidbodyType type)
 	, m_type(type)
 	, m_massData()
 	, m_material({ 1.0f, 0.2f })
-	, m_acceleration()
 {
 	ComputeMass();
 }
@@ -57,8 +56,8 @@ void RigidBodyComponent::Update(float deltaTime)
 		forcesSum += force;
 	}
 	
-	m_acceleration = forcesSum * m_massData.invMass;
-	m_entity->velocity += m_acceleration * deltaTime;
+	const Vector2& acceleration = forcesSum * m_massData.invMass;
+	m_entity->velocity += acceleration * deltaTime;
 
 	float speedLengthSq = m_entity->velocity.LengthSq();
 	if (speedLengthSq < Vector2::EPSILON_SQ)
@@ -69,9 +68,11 @@ void RigidBodyComponent::Update(float deltaTime)
 	{
 		m_entity->position += m_entity->velocity * deltaTime;
 	}
+
+	m_forces.clear();
 }
 
-void RigidBodyComponent::AddForce(Vector2& force)
+void RigidBodyComponent::AddForce(Vector2 force)
 {
 	m_forces.emplace_back(force);
 }

@@ -22,7 +22,6 @@ private:
 	MassData m_massData;
 	Material m_material;
 	std::vector<Vector2> m_forces;
-	Vector2 m_acceleration;
 
 	void ComputeMass();
 
@@ -31,7 +30,7 @@ public:
 	RigidBodyComponent(Entity* entity, RigidbodyType type);
 	~RigidBodyComponent();
 
-	void AddForce(Vector2& force);
+	void AddForce(Vector2 force);
 	void Update(float deltaTime) override;
 
 	RigidbodyType GetType() const;
