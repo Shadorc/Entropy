@@ -64,7 +64,7 @@ void Sandbox::Update(float deltaTime)
 		entity->Update(deltaTime);
 	}
 
-    m_collisionManager->Update(deltaTime);
+    m_collisionManager->Update();
 }
 
 void Sandbox::Repaint() const

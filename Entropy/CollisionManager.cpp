@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Precompiled.h"
 
 CollisionManager::CollisionManager(const Sandbox* sandbox) 
@@ -17,25 +19,91 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
     return m_quadTree;
 }
 
-void CollisionManager::Update(float deltaTime)
+void CollisionManager::Update()
 {
-	UpdateQuadTree();
-	CheckCollisions(deltaTime);
+    m_entities.clear();
+    for (Entity* entity : m_sandbox->GetEntities())
+    {
+        if (entity->GetRigidBodyComponent() != nullptr)
+        {
+            m_entities.emplace_back(entity);
+        }
+    }
+
+    UpdateQuadTree();
+    BroadPhase();
+    CheckCollisions();
 }
 
 void CollisionManager::UpdateQuadTree()
 {
 	m_quadTree->Clear();
-	for (Entity* object : m_sandbox->GetEntities())
+	for (Entity* entity : m_entities)
 	{
-        if (object->GetRigidBodyComponent() != nullptr)
-        {
-	        m_quadTree->Insert(object);
-        }
+	    m_quadTree->Insert(entity);
 	}
 }
 
-void ResolveCollision(const Collision& manifold)
+void CollisionManager::BroadPhase()
+{
+    m_pairs.clear(); 
+    m_uniquePairs.clear();
+
+    for (Entity* entityA : m_entities)
+    {
+        for (Entity* entityB : m_quadTree->Search(entityA))
+        {
+            if (entityA == entityB)
+            {
+                continue;
+            }
+
+            if (entityA->GetAABB().IntersectsWith(entityB->GetAABB()))
+            {
+                m_pairs.emplace_back(entityA, entityB);
+            }
+        }
+    }
+
+    std::sort(m_pairs.begin(), m_pairs.end(), PairComparator<Entity>);
+
+    int i = 0;
+    while (i < m_pairs.size())
+    {
+        const Pair<Entity>& pair = m_pairs[i];
+        m_uniquePairs.emplace_back(pair);
+
+        ++i;
+
+        while (i < m_pairs.size())
+        {
+            const Pair<Entity>& potentialDup = m_pairs[i];
+            if (pair.left == potentialDup.right && pair.right == potentialDup.left)
+            {
+                ++i;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+}
+
+void CollisionManager::CheckCollisions()
+{
+    for (Pair<Entity>& pair : m_uniquePairs)
+    {
+        const Collision& manifold = Solve(pair.left, pair.right);
+        if (manifold.penetration != 0)
+        {
+            ResolveCollision(manifold);
+            PositionalCorrection(manifold);
+        }
+    }
+}
+
+void CollisionManager::ResolveCollision(const Collision& manifold)
 {
     Entity* entityA = manifold.entityA;
     Entity* entityB = manifold.entityB;
@@ -102,7 +170,7 @@ void ResolveCollision(const Collision& manifold)
 
 static const float percent = 0.8f; // Penetration percentage to correct
 static const float slop = 0.01f; // Penetration allowance
-void PositionalCorrection(const Collision& manifold)
+void CollisionManager::PositionalCorrection(const Collision& manifold)
 {
     const RigidBodyComponent* rigidbodyA = manifold.entityA->GetRigidBodyComponent();
     const RigidBodyComponent* rigidbodyB = manifold.entityB->GetRigidBodyComponent();
@@ -116,35 +184,6 @@ void PositionalCorrection(const Collision& manifold)
     if (!rigidbodyB->IsStatic())
     {
         manifold.entityB->position += correction * invMassB;
-    }
-}
-
-void CollisionManager::CheckCollisions(float deltaTime)
-{
-    for (Entity* entity : m_sandbox->GetEntities())
-    {
-        // Do not check for static object
-        RigidBodyComponent* rigidbody = entity->GetRigidBodyComponent();
-        if (rigidbody == nullptr || rigidbody->IsStatic())
-        {
-            continue;
-        }
-
-        for (Entity* other : m_quadTree->Search(entity))
-        {
-            // Do not check for self-collision
-            if (entity == other)
-            {
-                continue;
-            }
-
-            const Collision& manifold = Solve(entity, other);
-            if (manifold.penetration != 0)
-            {
-                ResolveCollision(manifold);
-                PositionalCorrection(manifold);
-            }
-        }
     }
 }
 

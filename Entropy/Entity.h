@@ -59,5 +59,6 @@ public:
 	virtual void Paint() const = 0;
 
 	bool operator==(Entity& other) const;
+	bool operator!=(Entity& other) const;
 };
 

@@ -158,6 +158,9 @@
     <ClInclude Include="FrictionData.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
+    <ClInclude Include="Pair.h">
+      <Filter>Fichiers d%27en-tête\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

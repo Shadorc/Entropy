@@ -24,6 +24,7 @@ constexpr int HEIGHT = 720;
 #include "Sandbox.h"
 #include "MassData.h"
 #include "Material.h"
+#include "Pair.h"
 
 #define PYTHAGORE(a, b) sqrtf(a * a + b * b)
 #define FLOAT_INFINITY std::numeric_limits<float>::infinity()
