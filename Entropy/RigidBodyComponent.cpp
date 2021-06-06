@@ -91,11 +91,6 @@ Material RigidBodyComponent::GetMaterial() const
 	return m_material;
 }
 
-float RigidBodyComponent::GetRestitution() const
-{
-	return 0.2f;
-}
-
 bool RigidBodyComponent::IsStatic() const
 {
 	return m_type == RigidbodyType::STATIC;

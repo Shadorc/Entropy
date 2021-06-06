@@ -53,7 +53,7 @@ void ResolveCollision(const Collision& manifold)
     const RigidBodyComponent* rigidbodyB = entityB->GetRigidBodyComponent();
 
     // Calculate restitution
-    float e = MIN(rigidbodyA->GetRestitution(), rigidbodyB->GetRestitution());
+    float e = MIN(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
 
     // Calculate impulse scalar
     float j = -(1 + e) * velAlongNormal / (rigidbodyA->GetMassData().invMass + rigidbodyB->GetMassData().invMass);

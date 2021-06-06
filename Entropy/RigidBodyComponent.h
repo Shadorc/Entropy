@@ -37,7 +37,6 @@ public:
 	RigidbodyType GetType() const;
 	MassData GetMassData() const;
 	Material GetMaterial() const;
-	float GetRestitution() const;
 
 	bool IsStatic() const;
 };
