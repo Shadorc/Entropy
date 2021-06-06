@@ -2,6 +2,9 @@
 
 #include "Precompiled.h"
 
+constexpr float PENETRATION_PERCENT = 0.4f; // Penetration percentage to correct
+constexpr float PENETRATION_ALLOWANCE = 0.05f; // Penetration allowance
+
 CollisionManager::CollisionManager(const Sandbox* sandbox) 
     : m_sandbox(sandbox)
     , m_quadTree(nullptr)
@@ -173,15 +176,13 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     entityB->velocity += massB.invMass * friction;
 }
 
-static const float percent = 0.8f; // Penetration percentage to correct
-static const float slop = 0.01f; // Penetration allowance
 void CollisionManager::PositionalCorrection(const Collision& manifold)
 {
     const RigidBodyComponent* rigidbodyA = manifold.entityA->GetRigidBodyComponent();
     const RigidBodyComponent* rigidbodyB = manifold.entityB->GetRigidBodyComponent();
     float invMassA = rigidbodyA->GetMassData().invMass;
     float invMassB = rigidbodyB->GetMassData().invMass;
-    const Vector2& correction = (std::max(manifold.penetration - slop, 0.0f) / (invMassA + invMassB)) * manifold.normal * percent;
+    const Vector2& correction = (MAX(manifold.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * manifold.normal * PENETRATION_PERCENT;
     manifold.entityA->position -= correction * invMassA;
     manifold.entityB->position += correction * invMassB;
 }
