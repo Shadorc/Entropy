@@ -42,6 +42,7 @@
     <ClInclude Include="CollisionResolver.h" />
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="FrictionData.h" />
     <ClInclude Include="MassData.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Precompiled.h" />

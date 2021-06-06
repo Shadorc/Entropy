@@ -155,6 +155,9 @@
     <ClInclude Include="Material.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
+    <ClInclude Include="FrictionData.h">
+      <Filter>Fichiers d%27en-tête\entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

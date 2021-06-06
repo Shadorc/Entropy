@@ -25,6 +25,7 @@ constexpr int HEIGHT = 720;
 #include "MassData.h"
 #include "Material.h"
 
+#define PYTHAGORE(a, b) sqrtf(a * a + b * b)
 #define FLOAT_INFINITY std::numeric_limits<float>::infinity()
 #define RAND_INT(max) rand() % max + 1
 #define INT(a) static_cast<int>(a)

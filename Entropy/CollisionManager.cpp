@@ -38,10 +38,10 @@ void ResolveCollision(const Collision& manifold)
     Entity* entityB = manifold.entityB;
 
     // Calculate relative velocity
-    const Vector2& rv = entityB->velocity - entityA->velocity;
+    const Vector2& relativVelocity = entityB->velocity - entityA->velocity;
 
     // Calculate relative velocity in terms of the normal direction
-    float velAlongNormal = rv.Dot(manifold.normal);
+    const float velAlongNormal = relativVelocity.Dot(manifold.normal);
 
     // Do not resolve if velocities are separating
     if (velAlongNormal > 0)
@@ -51,28 +51,50 @@ void ResolveCollision(const Collision& manifold)
 
     const RigidBodyComponent* rigidbodyA = entityA->GetRigidBodyComponent();
     const RigidBodyComponent* rigidbodyB = entityB->GetRigidBodyComponent();
-
-    // Calculate restitution
-    float e = MIN(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
-
-    // Calculate impulse scalar
-    float j = -(1 + e) * velAlongNormal / (rigidbodyA->GetMassData().invMass + rigidbodyB->GetMassData().invMass);
+    const MassData& massA = rigidbodyA->GetMassData();
+    const MassData& massB = rigidbodyB->GetMassData();
 
     // Calculate impulse
-    const Vector2& impulse = manifold.normal * j;
+    const float restitution = MIN(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
+    const float normalImpulseScalar = -(1 + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
+    const Vector2& impulse = manifold.normal * normalImpulseScalar;
 
     //Apply impule
-    float massSum = rigidbodyA->GetMassData().mass + rigidbodyB->GetMassData().mass;
+    const float massSum = massA.mass + massB.mass;
     if (!rigidbodyA->IsStatic())
     {
-        float ratioA = rigidbodyA->GetMassData().mass / massSum;
+        const float ratioA = massA.mass / massSum;
         entityA->velocity -= impulse * ratioA;
     }
     if (!rigidbodyB->IsStatic())
     {
-        float ratioB = rigidbodyB->GetMassData().mass / massSum;
+        const float ratioB = massB.mass / massSum;
         entityB->velocity += impulse * ratioB;
     }
+
+    const float staticFriction = PYTHAGORE(rigidbodyA->GetFrictionData().staticFactor, rigidbodyB->GetFrictionData().staticFactor);
+    const float dynamicFriction = PYTHAGORE(rigidbodyA->GetFrictionData().dynamicFactor, rigidbodyB->GetFrictionData().dynamicFactor);
+
+    // Calculate tangent friction
+    Vector2 tangent = relativVelocity - relativVelocity.Dot(manifold.normal) * manifold.normal;
+    tangent.Normalize();
+
+    const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
+
+    // Clamp magnitude of friction and create friction impulse vector
+    Vector2 friction;
+    if (abs(frictionImpulseScalar) < normalImpulseScalar * staticFriction)
+    {
+        friction = frictionImpulseScalar * tangent;
+    }
+    else
+    {
+        friction = -normalImpulseScalar * tangent * dynamicFriction;
+    }
+
+    // Apply friction
+    entityA->velocity -= massA.invMass * friction;
+    entityB->velocity += massB.invMass * friction;
 }
 
 static const float percent = 0.8f; // Penetration percentage to correct

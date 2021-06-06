@@ -8,11 +8,22 @@ RigidBodyComponent::RigidBodyComponent(Entity* entity)
 
 }
 
+RigidBodyComponent::RigidBodyComponent(Entity* entity, float density)
+	: Component(entity)
+	, m_type(RigidbodyType::DYNAMIC)
+	, m_massData()
+	, m_material({ density, 0.2f })
+	, m_frictionData({ 0.2f, 0.4f })
+{
+	ComputeMass();
+}
+
 RigidBodyComponent::RigidBodyComponent(Entity* entity, RigidbodyType type)
 	: Component(entity)
 	, m_type(type)
 	, m_massData()
 	, m_material({ 1.0f, 0.2f })
+	, m_frictionData({ 0.2f, 0.4f })
 {
 	ComputeMass();
 }
@@ -95,5 +106,10 @@ Material RigidBodyComponent::GetMaterial() const
 bool RigidBodyComponent::IsStatic() const
 {
 	return m_type == RigidbodyType::STATIC;
+}
+
+FrictionData RigidBodyComponent::GetFrictionData() const
+{
+	return m_frictionData;
 }
 
