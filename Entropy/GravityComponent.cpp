@@ -10,5 +10,6 @@ GravityComponent::GravityComponent(Entity* entity)
 
 void GravityComponent::Update(float deltaTime)
 {
-	m_entity->GetRigidbodyComponent()->AddForce(GRAVITY);
+	RigidbodyComponent* rigidbody = m_entity->GetRigidbodyComponent();
+	rigidbody->AddForce(rigidbody->GetMassData().mass * GRAVITY);
 }
