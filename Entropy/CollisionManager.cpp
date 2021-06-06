@@ -28,7 +28,10 @@ void CollisionManager::UpdateQuadTree()
 	m_quadTree->Clear();
 	for (Entity* object : m_sandbox->GetEntities())
 	{
-		m_quadTree->Insert(object);
+        if (object->GetRigidBodyComponent() != nullptr)
+        {
+	        m_quadTree->Insert(object);
+        }
 	}
 }
 
@@ -131,12 +134,6 @@ void CollisionManager::CheckCollisions(float deltaTime)
         {
             // Do not check for self-collision
             if (entity == other)
-            {
-                continue;
-            }
-
-            RigidBodyComponent* otherRigidbody = other->GetRigidBodyComponent();
-            if (otherRigidbody == nullptr)
             {
                 continue;
             }

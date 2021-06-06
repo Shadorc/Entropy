@@ -48,8 +48,8 @@ private:
 
 	Quadrant GetQuadrant(const T* object) const
 	{
-		float middleX = m_aabb.GetX() + m_aabb.GetWidth() / 2;
-		float middleY = m_aabb.GetY() + m_aabb.GetHeight() / 2;
+		float middleX = m_aabb.GetX() + m_aabb.GetWidth() / 2.0f;
+		float middleY = m_aabb.GetY() + m_aabb.GetHeight() / 2.0f;
 
 		AABB aabb = object->GetAABB();
 		bool topQuadrant = aabb.GetY() + aabb.GetHeight() < middleY;
