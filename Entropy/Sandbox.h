@@ -42,6 +42,7 @@ public:
 	void OnLoop();
 	void OnIdle();
 	void OnVisible(int visibility);
+	void OnMouse(int button, int state, int x, int y);
 	void OnKeyboard(unsigned char key, int x, int y);
 #ifdef _DEBUG
 	void OnSpecialKeyboard(int key, int x, int y);
@@ -51,6 +52,7 @@ public:
 	static void OnLoopWrapper();
 	static void OnIdleWrapper();
 	static void OnVisibleWrapper(int visibility);
+	static void OnMouseWrapper(int button, int state, int x, int y);
 	static void OnKeyboardWrapper(unsigned char key, int x, int y);
 #ifdef _DEBUG
 	static void OnSpecialKeyboardWrapper(int key, int x, int y);

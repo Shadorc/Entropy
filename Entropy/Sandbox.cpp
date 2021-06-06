@@ -38,6 +38,7 @@ void Sandbox::Start()
 
     glutDisplayFunc(&OnLoopWrapper);
     glutVisibilityFunc(&OnVisibleWrapper);
+    glutMouseFunc(&OnMouseWrapper);
     glutKeyboardFunc(&OnKeyboardWrapper);
 #ifdef _DEBUG
     glutSpecialFunc(&OnSpecialKeyboardWrapper);
@@ -50,6 +51,7 @@ void Sandbox::Stop()
 
     glutDisplayFunc(nullptr);
     glutVisibilityFunc(nullptr);
+    glutMouseFunc(nullptr);
     glutKeyboardFunc(nullptr);
 #ifdef _DEBUG
     glutSpecialFunc(nullptr);
@@ -174,6 +176,31 @@ void Sandbox::OnVisible(int visibility)
     }
 }
 
+void Sandbox::OnMouse(int button, int state, int x, int y)
+{
+    switch (button)
+    {
+    case GLUT_LEFT_BUTTON:
+        if (state == GLUT_UP)
+        {
+            entity::Circle* circle = new entity::Circle(FLOAT(x), FLOAT(y), 20);
+            circle->AddComponent(new RigidbodyComponent(circle, ROCK));
+            circle->AddComponent(new GravityComponent(circle));
+            AddEntity(circle);
+        }
+        break;
+    case GLUT_RIGHT_BUTTON:
+        if (state == GLUT_UP)
+        {
+            entity::Rectangle* rectangle = new entity::Rectangle(FLOAT(x), FLOAT(y), 40, 40);
+            rectangle->AddComponent(new RigidbodyComponent(rectangle, ROCK));
+            rectangle->AddComponent(new GravityComponent(rectangle));
+            AddEntity(rectangle);
+        }
+        break;
+    }
+}
+
 void Sandbox::OnKeyboard(unsigned char key, int x, int y)
 {
     switch (key)
@@ -234,6 +261,11 @@ void Sandbox::OnIdleWrapper()
 void Sandbox::OnVisibleWrapper(int visibility)
 {
     instance->OnVisible(visibility);
+}
+
+void Sandbox::OnMouseWrapper(int button, int state, int x, int y)
+{
+    instance->OnMouse(button, state, x, y);
 }
 
 void Sandbox::OnKeyboardWrapper(unsigned char key, int x, int y)

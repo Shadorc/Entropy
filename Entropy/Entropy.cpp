@@ -26,20 +26,6 @@ int main(int argc, char** argv)
 	rightWall->AddComponent(new RigidbodyComponent(rightWall, STATIC));
 	sandbox.AddEntity(rightWall);
 
-	srand(UINT(time(nullptr)));
-	for (int i = 0; i < 20; ++i)
-	{
-		entity::Rectangle* rectangle = new entity::Rectangle(FLOAT(RAND_INT(WIDTH)), FLOAT(RAND_INT(HEIGHT / 5.0f)), 50.0f, 50.0f);
-		rectangle->AddComponent(new RigidbodyComponent(rectangle, ROCK));
-		rectangle->AddComponent(new GravityComponent(rectangle));
-		sandbox.AddEntity(rectangle);
-
-		entity::Circle* circle = new entity::Circle(FLOAT(RAND_INT(WIDTH)), FLOAT(RAND_INT(HEIGHT / 5.0f)), 15.0f);
-		circle->AddComponent(new RigidbodyComponent(circle, ROCK));
-		circle->AddComponent(new GravityComponent(circle));
-		sandbox.AddEntity(circle);
-	}
-
 	sandbox.Start();
 	
 	glutMainLoop();

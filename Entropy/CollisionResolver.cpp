@@ -83,7 +83,7 @@ void RectangleToCircle(Collision& collision)
 		}
 	}
 
-	const Vector2& normal = closest - deltaPos;
+	const Vector2& normal = deltaPos - closest;
 	float normalLenSq = normal.LengthSq();
 	float radius = circleB->GetRadius();
 
