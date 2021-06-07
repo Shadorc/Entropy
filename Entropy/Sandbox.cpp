@@ -150,7 +150,7 @@ void Sandbox::OnLoop()
         m_accumulatorTime = MAX_ACCUMULATOR_TIME;
     }
 
-    while (m_accumulatorTime > m_dt)
+    while (m_accumulatorTime >= m_dt)
     {
         Update(m_dt);
         m_accumulatorTime -= m_dt;
