@@ -1,8 +1,7 @@
 #pragma once
 
-class Vector2
+struct Vector2
 {
-public:
 	static const Vector2 ZERO;
 
 	float x;
