@@ -139,3 +139,13 @@ std::ostream& operator<<(std::ostream& os, const Vector2& vector)
 {
 	return os << "{" << vector.x << ", " << vector.y << "}";
 }
+
+Vector2 Vector2::Cross(const Vector2& vector, float scalar)
+{
+	return Vector2(scalar * vector.y, -scalar * vector.x);
+}
+
+Vector2 Vector2::Cross(float scalar, const Vector2& vector)
+{
+	return Vector2(-scalar * vector.y, scalar * vector.x);
+}

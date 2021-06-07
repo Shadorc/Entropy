@@ -36,4 +36,7 @@ public:
 	void operator*=(float scalar);
 	void operator/=(float scalar);
 	bool operator==(const Vector2& other) const;
+
+	static Vector2 Cross(const Vector2& vector, float scalar);
+	static Vector2 Cross(float scalar, const Vector2& vector);
 };
