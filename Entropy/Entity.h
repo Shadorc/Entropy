@@ -34,6 +34,8 @@ public:
 
 	Vector2 position;
 	Vector2 velocity;
+	float orientation;
+	float angularVelocity;
 
 	unsigned int GetId() const;
 	virtual AABB GetAABB() const = 0;
