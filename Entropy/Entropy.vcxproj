@@ -24,10 +24,12 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="CollisionResolver.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DebugMode.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="GravityComponent.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="MathIE.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
@@ -45,6 +47,7 @@
     <ClInclude Include="FrictionData.h" />
     <ClInclude Include="MassData.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MathIE.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Precompiled.h" />
     <ClInclude Include="Component.h" />
@@ -56,9 +59,6 @@
     <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="Vector2.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

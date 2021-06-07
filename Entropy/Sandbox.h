@@ -2,6 +2,7 @@
 
 #include <vector>
 
+DEBUG(class DebugMode;)
 class CollisionManager;
 class Entity;
 class Sandbox
@@ -10,18 +11,12 @@ private:
 	CollisionManager* m_collisionManager;
 	std::vector<Entity*> m_entities;
 	bool m_updating;
-	float m_targetFps;
-	float m_dt;
 	float m_fps;
 	int m_lastLoopTime;
 	float m_accumulatorTime;
-#ifdef _DEBUG
-	int m_debugMask;
-#endif // _DEBUG
+	DEBUG(DebugMode m_debugMode;)
 
-#ifdef _DEBUG
-	void RepaintDebug() const;
-#endif // _DEBUG
+	DEBUG(void RepaintDebug() const;)
 
 protected:
 	static Sandbox* instance;
@@ -44,9 +39,7 @@ public:
 	void OnVisible(int visibility);
 	void OnMouse(int button, int state, int x, int y);
 	void OnKeyboard(unsigned char key, int x, int y);
-#ifdef _DEBUG
-	void OnSpecialKeyboard(int key, int x, int y);
-#endif // _DEBUG
+	DEBUG(void OnSpecialKeyboard(int key, int x, int y);)
 
 	/* Static functions which are passed to Glut function callbacks */
 	static void OnLoopWrapper();
@@ -54,8 +47,6 @@ public:
 	static void OnVisibleWrapper(int visibility);
 	static void OnMouseWrapper(int button, int state, int x, int y);
 	static void OnKeyboardWrapper(unsigned char key, int x, int y);
-#ifdef _DEBUG
-	static void OnSpecialKeyboardWrapper(int key, int x, int y);
-#endif // _DEBUG
+	DEBUG(static void OnSpecialKeyboardWrapper(int key, int x, int y);)
 };
 

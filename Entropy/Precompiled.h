@@ -3,9 +3,30 @@
 constexpr int WIDTH = 720;
 constexpr int HEIGHT = 720;
 
+constexpr float DELTA_TIME = 1.0f / 60.0f;		// Target 60 FPS
+
+constexpr float PENETRATION_PERCENT = 0.4f;		// Penetration percentage to correct
+constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
+
+constexpr int CIRCLE_VERTICES = 24;
+
+#define INT(a) static_cast<int>(a)
+#define FLOAT(a) static_cast<float>(a)
+
+#ifdef _DEBUG 
+#define DEBUG(...) __VA_ARGS__
+#else 
+#define DEBUG(x)
+#endif
+
 #include <math.h>
 #include <vector>
 #include <GL/glut.h>
+#include <algorithm>
+
+#ifdef _DEBUG
+#include "DebugMode.h"
+#endif // _DEBUG
 
 #include "Render.h"
 #include "Vector2.h"
@@ -25,14 +46,4 @@ constexpr int HEIGHT = 720;
 #include "MassData.h"
 #include "Material.h"
 #include "Pair.h"
-
-#define PYTHAGORE(a, b) sqrtf(a * a + b * b)
-#define FLOAT_INFINITY std::numeric_limits<float>::infinity()
-#define RAND_INT(max) (rand() % max + 1)
-#define INT(a) static_cast<int>(a)
-#define UINT(a) static_cast<unsigned int>(a)
-#define FLOAT(a) static_cast<float>(a)
-#define CLAMP(value, min, max) (value < min ? min : (value > max ? max : value))
-#define MIN(a, b) a < b ? a : b
-#define MAX(a, b) a > b ? a : b
-#define IS_ZERO(a) (abs(a) <= 0.0001f)
+#include "MathIE.h"

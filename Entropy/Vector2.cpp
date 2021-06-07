@@ -26,7 +26,7 @@ void Vector2::Reset()
 void Vector2::Normalize()
 {
 	float length = Length();
-	if (IS_ZERO(length))
+	if (IsZero(length))
 	{
 		Reset();
 	}

@@ -31,7 +31,7 @@ void CircleToCircle(Collision& collision)
 		return;
 	}
 
-	if (IS_ZERO(deltaLenSq))
+	if (IsZero(deltaLenSq))
 	{
 		collision.penetration = circleA->GetRadius();
 		collision.normal = Vector2(1, 0);
@@ -57,7 +57,7 @@ void RectangleToCircle(Collision& collision)
 	const entity::Circle* circleB = dynamic_cast<const entity::Circle*>(collision.entityB);
 
 	const Vector2& deltaPos = circleB->position - rectangleA->position;
-	if (IS_ZERO(deltaPos.LengthSq()))
+	if (IsZero(deltaPos.LengthSq()))
 	{
 		collision.penetration = rectangleA->GetHeight() / 2.0f + circleB->GetRadius();
 		collision.normal = Vector2(0, -1);
@@ -69,8 +69,8 @@ void RectangleToCircle(Collision& collision)
 		float halfWidth = rectangleA->GetWidth() / 2.0f;
 		float halfHeight = rectangleA->GetHeight() / 2.0f;
 
-		closest.x = CLAMP(closest.x, -halfWidth, halfWidth);
-		closest.y = CLAMP(closest.y, -halfHeight, halfHeight);
+		closest.x = Clamp(closest.x, -halfWidth, halfWidth);
+		closest.y = Clamp(closest.y, -halfHeight, halfHeight);
 
 		bool inside = false;
 
