@@ -96,6 +96,9 @@
     <ClCompile Include="CollisionResolver.cpp">
       <Filter>Fichiers sources\physic</Filter>
     </ClCompile>
+    <ClCompile Include="Matrix22.cpp">
+      <Filter>Fichiers sources\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sandbox.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="Pair.h">
       <Filter>Fichiers d%27en-tête\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix22.h">
+      <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

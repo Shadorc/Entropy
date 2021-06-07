@@ -28,6 +28,7 @@
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="GravityComponent.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Matrix22.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="FrictionData.h" />
     <ClInclude Include="MassData.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Matrix22.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Precompiled.h" />
     <ClInclude Include="Component.h" />
