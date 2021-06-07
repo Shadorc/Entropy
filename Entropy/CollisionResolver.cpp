@@ -59,7 +59,7 @@ void RectangleToCircle(Collision& collision)
 	const Vector2& deltaPos = circleB->position - rectangleA->position;
 	if (IS_ZERO(deltaPos.LengthSq()))
 	{
-		collision.penetration = circleB->GetRadius();
+		collision.penetration = rectangleA->GetHeight() / 2.0f + circleB->GetRadius();
 		collision.normal = Vector2(0, -1);
 	}
 	else
