@@ -87,13 +87,13 @@ void Sandbox::Repaint() const
 
 #ifdef _DEBUG
 #define DEBUG_MODE_ENABLED(mode) m_debugMask & 1 << static_cast<int>(mode)
+static char fps[4];
 void Sandbox::RepaintDebug() const
 {
-    static char fps[16];
     if (DEBUG_MODE_ENABLED(DebugMode::PERFORMANCE_INFO))
     {
         glColor3f(0.0f, 1.0f, 0.0f);
-        sprintf_s(fps, "%.1f", m_fps);
+        sprintf_s(fps, "%.0f", round(m_fps));
         RenderText(5, 20, fps);
     }
 
@@ -137,11 +137,19 @@ void Sandbox::RemoveEntity(Entity* entity)
     }
 }
 
+static const float alpha = 0.95f;
 void Sandbox::OnLoop()
 {
     int now = glutGet(GLUT_ELAPSED_TIME);
     float elapsed = FLOAT(now - m_lastLoopTime) / CLOCKS_PER_SEC;
-    m_fps = 1.0f / elapsed;
+
+#ifdef _DEBUG
+    if (!IS_ZERO(elapsed))
+    {
+        m_fps = alpha * m_fps + (1.0f - alpha) * (1.0f / elapsed);
+    }
+#endif // _DEBUG
+
     m_accumulatorTime += elapsed;
     m_lastLoopTime = now;
 
