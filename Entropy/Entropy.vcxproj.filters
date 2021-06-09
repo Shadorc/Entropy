@@ -173,8 +173,6 @@
     <ClInclude Include="Matrix22.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="MathIE.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
