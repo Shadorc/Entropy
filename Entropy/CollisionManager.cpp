@@ -1,9 +1,4 @@
-#include <algorithm>
-
 #include "Precompiled.h"
-
-constexpr float PENETRATION_PERCENT = 0.4f; // Penetration percentage to correct
-constexpr float PENETRATION_ALLOWANCE = 0.05f; // Penetration allowance
 
 CollisionManager::CollisionManager(const Sandbox* sandbox) 
     : m_sandbox(sandbox)
@@ -102,14 +97,14 @@ void CollisionManager::CheckCollisions()
     for (Pair<Entity>& pair : m_uniquePairs)
     {
         // Do not check collisions between static objects
-        if (IS_ZERO(pair.left->GetRigidbodyComponent()->GetMassData().mass) 
-            && IS_ZERO(pair.right->GetRigidbodyComponent()->GetMassData().mass))
+        if (IsZero(pair.left->GetRigidbodyComponent()->GetMassData().mass) 
+            && IsZero(pair.right->GetRigidbodyComponent()->GetMassData().mass))
         {
             continue;
         }
 
         const Collision& manifold = Solve(pair.left, pair.right);
-        if (!IS_ZERO(manifold.penetration))
+        if (!IsZero(manifold.penetration))
         {
             ResolveCollision(manifold);
             PositionalCorrection(manifold);
@@ -142,7 +137,7 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     // Calculate impulse
     const float restitution = MIN(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
     const float normalImpulseScalar = -(1 + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
-    if (!IS_ZERO(normalImpulseScalar))
+    if (!IsZero(normalImpulseScalar))
     {
         const Vector2& impulse = manifold.normal * normalImpulseScalar;
 
@@ -155,15 +150,15 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     }
 
     // Compute friction factors
-    const float staticFriction = PYTHAGORE(rigidbodyA->GetFrictionData().staticFactor, rigidbodyB->GetFrictionData().staticFactor);
-    const float dynamicFriction = PYTHAGORE(rigidbodyA->GetFrictionData().dynamicFactor, rigidbodyB->GetFrictionData().dynamicFactor);
+    const float staticFriction = Pythagore(rigidbodyA->GetFrictionData().staticFactor, rigidbodyB->GetFrictionData().staticFactor);
+    const float dynamicFriction = Pythagore(rigidbodyA->GetFrictionData().dynamicFactor, rigidbodyB->GetFrictionData().dynamicFactor);
 
     // Calculate friction
     Vector2 tangent = relativVelocity - relativVelocity.Dot(manifold.normal) * manifold.normal;
     tangent.Normalize();
 
     const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
-    if (!IS_ZERO(frictionImpulseScalar))
+    if (!IsZero(frictionImpulseScalar))
     {
         // Clamp magnitude of friction and create friction impulse vector
         Vector2 friction;
@@ -188,7 +183,7 @@ void CollisionManager::PositionalCorrection(const Collision& manifold)
     const RigidbodyComponent* rigidbodyB = manifold.entityB->GetRigidbodyComponent();
     float invMassA = rigidbodyA->GetMassData().invMass;
     float invMassB = rigidbodyB->GetMassData().invMass;
-    const Vector2& correction = (MAX(manifold.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * manifold.normal * PENETRATION_PERCENT;
+    const Vector2& correction = (std::max(manifold.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * manifold.normal * PENETRATION_PERCENT;
     manifold.entityA->position -= correction * invMassA;
     manifold.entityB->position += correction * invMassB;
 }

@@ -1,10 +1,23 @@
+#ifdef _DEBUG
 #pragma once
 
-enum class DebugMode
+enum class DebugOption
 {
     PERFORMANCE_INFO,
     SHOW_QUADTREE,
     SHOW_AABB,
-    SHOW_VELOCITY,
     COUNT
 };
+
+class DebugMode
+{
+private:
+    int m_debugMask;
+
+public:
+    DebugMode();
+
+    void Enable(DebugOption option);
+    bool IsEnabled(DebugOption option) const;
+};
+#endif // _DEBUG

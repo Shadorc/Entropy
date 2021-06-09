@@ -84,9 +84,6 @@
     <ClCompile Include="AABB.cpp">
       <Filter>Fichiers sources\quadtree</Filter>
     </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>Fichiers sources\util</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Fichiers sources\physic</Filter>
     </ClCompile>
@@ -98,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="Matrix22.cpp">
       <Filter>Fichiers sources\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>Fichiers sources\util</Filter>
+    </ClCompile>
+    <ClCompile Include="MathIE.cpp">
+      <Filter>Fichiers sources\math</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugMode.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,5 +176,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <ClInclude Include="MathIE.h">
+      <Filter>Fichiers d%27en-tête\math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

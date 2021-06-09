@@ -42,9 +42,9 @@ void RenderCircle(float x, float y, float radius)
 	const float radiusY = radius * 2.0f / HEIGHT;
 
 	glBegin(GL_LINE_LOOP);
-	for (int i = 0; i < MAX_CIRCLE_SEGMENTS; i++)
+	for (int i = 0; i < CIRCLE_VERTICES; i++)
 	{
-		float theta = TWICE_PI * i / MAX_CIRCLE_SEGMENTS;
+		float theta = TWICE_PI * i / CIRCLE_VERTICES;
 		float x = radiusX * cosf(theta);
 		float y = radiusY * sinf(theta);
 		glVertex2f(x + pos.x, y + pos.y);
