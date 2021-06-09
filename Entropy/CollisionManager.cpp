@@ -31,7 +31,7 @@ void CollisionManager::Update()
 
     UpdateQuadTree();
     BroadPhase();
-    CheckCollisions();
+    SolveCollisions();
 }
 
 void CollisionManager::UpdateQuadTree()
@@ -99,20 +99,20 @@ void CollisionManager::BroadPhase()
     }
 }
 
-void CollisionManager::CheckCollisions()
+void CollisionManager::SolveCollisions()
 {
     for (Pair<Entity>& pair : m_uniquePairs)
     {
         const Collision& manifold = Solve(pair.left, pair.right);
         if (!IsZero(manifold.penetration))
         {
-            ResolveCollision(manifold);
-            PositionalCorrection(manifold);
+            ApplyImpulses(manifold);
+            CorrectPosition(manifold);
         }
     }
 }
 
-void CollisionManager::ResolveCollision(const Collision& manifold)
+void CollisionManager::ApplyImpulses(const Collision& manifold)
 {
     Entity* entityA = manifold.entityA;
     Entity* entityB = manifold.entityB;
@@ -184,7 +184,7 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     }
 }
 
-void CollisionManager::PositionalCorrection(const Collision& manifold)
+void CollisionManager::CorrectPosition(const Collision& manifold)
 {
     const RigidbodyComponent* rigidbodyA = manifold.entityA->GetRigidbodyComponent();
     const RigidbodyComponent* rigidbodyB = manifold.entityB->GetRigidbodyComponent();

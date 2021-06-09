@@ -20,9 +20,9 @@ private:
 
 	void BroadPhase();
 	void UpdateQuadTree();
-	void CheckCollisions();
-	void ResolveCollision(const Collision& manifold);
-	void PositionalCorrection(const Collision& manifold);
+	void SolveCollisions();
+	void ApplyImpulses(const Collision& manifold);
+	void CorrectPosition(const Collision& manifold);
 
 public:
 	CollisionManager(const Sandbox* sandbox);
