@@ -86,24 +86,24 @@ Vector2 Vector2::operator-(const Vector2& other) const
 	return Vector2(x - other.x, y - other.y);
 }
 
-Vector2 Vector2::operator*(float coef) const
+Vector2 Vector2::operator*(float scalar) const
 {
-	return Vector2(x * coef, y * coef);
+	return Vector2(x * scalar, y * scalar);
 }
 
-Vector2 Vector2::operator/(float coef) const
+Vector2 Vector2::operator/(float scalar) const
 {
-	return Vector2(x / coef, y / coef);
+	return Vector2(x / scalar, y / scalar);
 }
 
-Vector2 operator*(float coef, const Vector2& vector)
+Vector2 operator*(float scalar, const Vector2& vector)
 {
-	return vector * coef;
+	return vector * scalar;
 }
 
-Vector2 operator/(float coef, const Vector2& vector)
+Vector2 operator/(float scalar, const Vector2& vector)
 {
-	return vector / coef;
+	return vector / scalar;
 }
 
 void Vector2::operator+=(const Vector2& other)
@@ -118,16 +118,16 @@ void Vector2::operator-=(const Vector2& other)
 	y -= other.y;
 }
 
-void Vector2::operator*=(float coef)
+void Vector2::operator*=(float scalar)
 {
-	x *= coef;
-	y *= coef;
+	x *= scalar;
+	y *= scalar;
 }
 
-void Vector2::operator/=(float coef)
+void Vector2::operator/=(float scalar)
 {
-	x /= coef;
-	y /= coef;
+	x /= scalar;
+	y /= scalar;
 }
 
 bool Vector2::operator==(const Vector2& other) const
