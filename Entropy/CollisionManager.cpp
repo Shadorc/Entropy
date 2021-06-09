@@ -58,6 +58,13 @@ void CollisionManager::BroadPhase()
                 continue;
             }
 
+            // Do not check collisions between static objects
+            if (IsZero(entityA->GetRigidbodyComponent()->GetMassData().mass)
+                && IsZero(entityB->GetRigidbodyComponent()->GetMassData().mass))
+            {
+                continue;
+            }
+
             if (entityA->GetAABB().IntersectsWith(entityB->GetAABB()))
             {
                 m_pairs.emplace_back(entityA, entityB);
@@ -96,13 +103,6 @@ void CollisionManager::CheckCollisions()
 {
     for (Pair<Entity>& pair : m_uniquePairs)
     {
-        // Do not check collisions between static objects
-        if (IsZero(pair.left->GetRigidbodyComponent()->GetMassData().mass) 
-            && IsZero(pair.right->GetRigidbodyComponent()->GetMassData().mass))
-        {
-            continue;
-        }
-
         const Collision& manifold = Solve(pair.left, pair.right);
         if (!IsZero(manifold.penetration))
         {
