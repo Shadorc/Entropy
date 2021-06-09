@@ -97,6 +97,19 @@ DEBUG(
                 RenderAABB(entity->GetAABB());
             }
         }
+
+        if (m_debugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
+        {
+            for (Entity* entity : m_entities)
+            {
+                RenderLine(
+                    entity->position.x, 
+                    entity->position.y,
+                    entity->position.x + entity->velocity.x,
+                    entity->position.y + entity->velocity.y 
+                );
+            }
+        }
     }
 )
 
@@ -224,6 +237,9 @@ DEBUG(
             m_debugMode.Enable(DebugOption::SHOW_AABB);
             break;
         }
+        case GLUT_KEY_F4:
+            m_debugMode.Enable(DebugOption::SHOW_VELOCITY);
+            break;
         }
     }
 )

@@ -6,6 +6,7 @@ enum class DebugOption
     PERFORMANCE_INFO,
     SHOW_QUADTREE,
     SHOW_AABB,
+    SHOW_VELOCITY,
     COUNT
 };
 

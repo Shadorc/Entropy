@@ -11,6 +11,17 @@ Position ToNormalizedSpace(float x, float y)
 	return { 2 * x / WIDTH - 1, 1 - 2 * y / HEIGHT };
 }
 
+void RenderLine(float x1, float y1, float x2, float y2)
+{
+	const Position& startPos = ToNormalizedSpace(x1, y1);
+	const Position& endPos = ToNormalizedSpace(x2, y2);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glBegin(GL_LINES);
+	glVertex2f(startPos.x, startPos.y);
+	glVertex2f(endPos.x, endPos.y);
+	glEnd();
+}
+
 void RenderText(float x, float y, const char* str)
 {
 	const Position& pos = ToNormalizedSpace(x, y);
