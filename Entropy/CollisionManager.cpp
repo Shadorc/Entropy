@@ -135,7 +135,14 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     const MassData& massB = rigidbodyB->GetMassData();
 
     // Calculate impulse
-    const float restitution = std::min(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
+    float restitution = std::min(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
+    // Determine if we should perform a resting collision or not
+    // The idea is if the only thing moving this object is gravity, then the collision should be performed without any restitution
+    if (Equal(relativVelocity.LengthSq(), (GravityComponent::GRAVITY * DELTA_TIME).LengthSq()))
+    {
+        restitution = 0.0f;
+    }
+
     const float normalImpulseScalar = -(1 + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
     if (!IsZero(normalImpulseScalar))
     {
