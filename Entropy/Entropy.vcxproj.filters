@@ -175,7 +175,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
     <ClInclude Include="MathIE.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
