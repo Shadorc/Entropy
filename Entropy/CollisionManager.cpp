@@ -135,7 +135,7 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     const MassData& massB = rigidbodyB->GetMassData();
 
     // Calculate impulse
-    const float restitution = MIN(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
+    const float restitution = std::min(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
     const float normalImpulseScalar = -(1 + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
     if (!IsZero(normalImpulseScalar))
     {
