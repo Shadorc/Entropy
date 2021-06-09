@@ -16,7 +16,7 @@ constexpr int CIRCLE_VERTICES = 24;
 #ifdef _DEBUG 
 #define DEBUG(...) __VA_ARGS__
 #else 
-#define DEBUG(x)
+#define DEBUG(...)
 #endif
 
 #include <math.h>
