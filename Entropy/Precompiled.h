@@ -10,15 +10,33 @@ constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
 
 constexpr int CIRCLE_VERTICES = 24;
 
+#ifdef _DEBUG
+#define ENTROPY_DEBUG
+#endif
+
+#ifdef ENTROPY_DEBUG
+static size_t s_allocatedMemory = 0;
+
+#define ENTROPY_NEW(x, ...) ([&]() {\
+	s_allocatedMemory += sizeof(x);\
+	return new x(__VA_ARGS__);\
+})()
+
+#define ENTROPY_DELETE(x) ([&]() {\
+	s_allocatedMemory -= sizeof(x);\
+	return delete x;\
+})()
+#endif // ENTROPY_DEBUG
+
 #include <math.h>
 #include <vector>
 #include <GL/glut.h>
 #include <algorithm>
 #include <ostream>
 
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
 #include "DebugMode.h"
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 
 #include "Render.h"
 #include "Vector2.h"

@@ -11,16 +11,16 @@ int main(int argc, char** argv)
 	Sandbox sandbox;
 
 	const int wallSize = 25;
-	entity::Rectangle* floor = new entity::Rectangle(WIDTH / 2.0f, HEIGHT - wallSize / 2.0f, WIDTH - wallSize * 2.0f, wallSize);
-	floor->AddComponent(new RigidbodyComponent(floor, STATIC));
+	entity::Rectangle* floor = ENTROPY_NEW(entity::Rectangle, WIDTH / 2.0f, HEIGHT - wallSize / 2.0f, WIDTH - wallSize * 2.0f, wallSize);
+	floor->AddComponent(ENTROPY_NEW(RigidbodyComponent, floor, STATIC));
 	sandbox.AddEntity(floor);
 
-	entity::Rectangle* leftWall = new entity::Rectangle(wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
-	leftWall->AddComponent(new RigidbodyComponent(leftWall, STATIC));
+	entity::Rectangle* leftWall = ENTROPY_NEW(entity::Rectangle, wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
+	leftWall->AddComponent(ENTROPY_NEW(RigidbodyComponent, leftWall, STATIC));
 	sandbox.AddEntity(leftWall);
 	
-	entity::Rectangle* rightWall = new entity::Rectangle(WIDTH - wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
-	rightWall->AddComponent(new RigidbodyComponent(rightWall, STATIC));
+	entity::Rectangle* rightWall = ENTROPY_NEW(entity::Rectangle, WIDTH - wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
+	rightWall->AddComponent(ENTROPY_NEW(RigidbodyComponent, rightWall, STATIC));
 	sandbox.AddEntity(rightWall);
 
 	sandbox.Start();

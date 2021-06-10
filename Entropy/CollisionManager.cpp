@@ -9,7 +9,7 @@ CollisionManager::CollisionManager(const Sandbox* sandbox)
 
 CollisionManager::~CollisionManager()
 {
-    delete m_quadTree;
+    ENTROPY_DELETE(m_quadTree);
 }
 
 void CollisionManager::Update()
@@ -196,6 +196,6 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 
 void CollisionManager::SetRootSize(int width, int height)
 {
-    delete m_quadTree;
-	m_quadTree = new QuadTree<Entity>(AABB(Vector2(), Vector2((float) width, (float) height)));
+    ENTROPY_DELETE(m_quadTree);
+	m_quadTree = ENTROPY_NEW(QuadTree<Entity>, AABB(Vector2(), Vector2((float) width, (float) height)));
 }

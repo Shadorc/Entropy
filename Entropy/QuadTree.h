@@ -34,13 +34,13 @@ private:
 		float subWidth = m_aabb.GetWidth() / 2.0f;
 		float subHeight = m_aabb.GetHeight() / 2.0f;
 
-		m_nodes[(int) Quadrant::TOP_LEFT] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int) Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
 			AABB(m_aabb.min, m_aabb.min + Vector2(subWidth, subHeight)));
-		m_nodes[(int) Quadrant::TOP_RIGHT] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int) Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
 			AABB(m_aabb.min + Vector2(subWidth, 0), m_aabb.max - Vector2(0, subHeight)));
-		m_nodes[(int)Quadrant::BOTTOM_LEFT] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int)Quadrant::BOTTOM_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
 			AABB(m_aabb.min + Vector2(0, subHeight), m_aabb.max - Vector2(subWidth, 0)));
-		m_nodes[(int)Quadrant::BOTTOM_RIGHT] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int)Quadrant::BOTTOM_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
 			AABB(m_aabb.min + Vector2(subWidth, subHeight), m_aabb.max));
 	}
 
@@ -155,7 +155,7 @@ public:
 			if (m_nodes[i] != nullptr)
 			{
 				m_nodes[i]->Clear();
-				delete m_nodes[i];
+				ENTROPY_DELETE(m_nodes[i]);
 				m_nodes[i] = nullptr;
 			}
 		}

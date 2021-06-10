@@ -1,4 +1,3 @@
-#ifdef _DEBUG
 #include "Precompiled.h"
 
 DebugMode::DebugMode()
@@ -16,4 +15,3 @@ bool DebugMode::IsEnabled(DebugOption option) const
 {
 	return m_debugMask & 1 << (int) option;
 }
-#endif // _DEBUG

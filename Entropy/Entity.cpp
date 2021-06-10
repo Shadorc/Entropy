@@ -13,10 +13,10 @@ Entity::Entity(float x, float y)
 
 Entity::~Entity()
 {
-	delete m_rigidbodyComponentCache;
+	ENTROPY_DELETE(m_rigidbodyComponentCache);
 	for (Component* component : m_components)
 	{
-		delete component;
+		ENTROPY_DELETE(component);
 	}
 	m_components.clear();
 }

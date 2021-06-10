@@ -1,4 +1,4 @@
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
 #pragma once
 
 enum class DebugOption
@@ -21,4 +21,4 @@ public:
     void Enable(DebugOption option);
     bool IsEnabled(DebugOption option) const;
 };
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG

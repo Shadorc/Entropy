@@ -7,22 +7,22 @@ constexpr float MAX_ACCUMULATOR_TIME = 0.2f;
 Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
-    m_collisionManager(new CollisionManager(this))
+    m_collisionManager(ENTROPY_NEW(CollisionManager, this))
     , m_entities()
     , m_updating(false)
     , m_fps(0)
     , m_lastLoopTime(0)
     , m_accumulatorTime(0)
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
     , m_debugMode()
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 {
     instance = this;
 }
 
 Sandbox::~Sandbox()
 {
-    delete m_collisionManager;
+    ENTROPY_DELETE(m_collisionManager);
     instance = nullptr;
 }
 
@@ -35,9 +35,9 @@ void Sandbox::Start()
     glutVisibilityFunc(&OnVisibleWrapper);
     glutMouseFunc(&OnMouseWrapper);
     glutKeyboardFunc(&OnKeyboardWrapper);
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
     glutSpecialFunc(&OnSpecialKeyboardWrapper);
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 }
 
 void Sandbox::Stop()
@@ -49,9 +49,9 @@ void Sandbox::Stop()
     glutMouseFunc(nullptr);
     glutKeyboardFunc(nullptr);
     glutIdleFunc(nullptr);
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
     glutSpecialFunc(nullptr);
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 }
 
 void Sandbox::Update(float deltaTime)
@@ -73,15 +73,15 @@ void Sandbox::Repaint() const
         entity->Paint();
     }
 
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
     RepaintDebug();
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 
     glutSwapBuffers();
 }
 
-#ifdef _DEBUG
-static char fps[4];
+#ifdef ENTROPY_DEBUG
+static char strBuffer[16];
 static std::vector<const char*> texts = {
     "F1: Show FPS",
     "F2: Show quadtree",
@@ -100,8 +100,10 @@ void Sandbox::RepaintDebug() const
     if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
     {
         glColor3f(0.0f, 1.0f, 0.0f);
-        sprintf_s(fps, "%.0f", round(m_fps));
-        RenderText(WIDTH - 20, 15, fps);
+        sprintf_s(strBuffer, "FPS: %.0f", round(m_fps));
+        RenderText(5.0f, HEIGHT - 20.0f, strBuffer);
+        sprintf_s(strBuffer, "RAM: %zu bytes", s_allocatedMemory);
+        RenderText(5.0f, HEIGHT - 5.0f, strBuffer);
     }
 
     if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
@@ -132,7 +134,7 @@ void Sandbox::RepaintDebug() const
         }
     }
 }
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 
 std::vector<Entity*> Sandbox::GetEntities() const
 {
@@ -159,7 +161,7 @@ void Sandbox::OnLoop()
     int now = glutGet(GLUT_ELAPSED_TIME);
     float elapsed = (float) (now - m_lastLoopTime) / CLOCKS_PER_SEC;
 
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
     if (!IsZero(elapsed))
     {
         m_fps = alpha * m_fps + (1.0f - alpha) * (1.0f / elapsed);
@@ -207,18 +209,18 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
     case GLUT_LEFT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Circle* circle = new entity::Circle((float) x, (float) y, 20.0f);
-            circle->AddComponent(new RigidbodyComponent(circle, ROCK));
-            circle->AddComponent(new GravityComponent(circle));
+            entity::Circle* circle = ENTROPY_NEW(entity::Circle, (float) x, (float) y, 20.0f);
+            circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle, ROCK));
+            circle->AddComponent(ENTROPY_NEW(GravityComponent, circle));
             AddEntity(circle);
         }
         break;
     case GLUT_RIGHT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Rectangle* rectangle = new entity::Rectangle((float) x, (float) y, 40.0f, 40.0f);
-            rectangle->AddComponent(new RigidbodyComponent(rectangle, ROCK));
-            rectangle->AddComponent(new GravityComponent(rectangle));
+            entity::Rectangle* rectangle = ENTROPY_NEW(entity::Rectangle, (float) x, (float) y, 40.0f, 40.0f);
+            rectangle->AddComponent(ENTROPY_NEW(RigidbodyComponent, rectangle, ROCK));
+            rectangle->AddComponent(ENTROPY_NEW(GravityComponent, rectangle));
             AddEntity(rectangle);
         }
         break;
@@ -238,7 +240,7 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
     }
 }
 
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
 void Sandbox::OnSpecialKeyboard(int key, int x, int y)
 {
     switch (key)
@@ -263,7 +265,7 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
         break;
     }
 }
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 
 /* 
  * Static functions which are passed to Glut function callbacks 
@@ -294,9 +296,9 @@ void Sandbox::OnKeyboardWrapper(unsigned char key, int x, int y)
     instance->OnKeyboard(key, x, y);
 }
 
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
 void Sandbox::OnSpecialKeyboardWrapper(int key, int x, int y)
 {
     instance->OnSpecialKeyboard(key, x, y);
 }
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
