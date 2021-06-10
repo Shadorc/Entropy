@@ -7,7 +7,7 @@ constexpr float DELTA_TIME = 1.0f / 60.0f;		// Target 60 FPS
 
 constexpr float PENETRATION_PERCENT = 0.4f;		// Penetration percentage to correct
 constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
-constexpr unsigned int COLLISIONS_SOLVER_ITERATIONS = 20;
+constexpr unsigned int COLLISIONS_SOLVER_ITERATIONS = 10;
 
 constexpr unsigned int CIRCLE_VERTICES = 24;
 
