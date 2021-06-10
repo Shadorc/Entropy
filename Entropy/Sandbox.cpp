@@ -81,7 +81,7 @@ void Sandbox::Repaint() const
 }
 
 #ifdef ENTROPY_DEBUG
-static char strBuffer[16];
+static char strBuffer[64];
 static std::vector<const char*> texts = {
     "F1: Show FPS",
     "F2: Show quadtree",
