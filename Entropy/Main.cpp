@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <time.h>
-
 #include "Precompiled.h"
 
 int main(int argc, char** argv)

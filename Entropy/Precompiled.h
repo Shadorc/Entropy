@@ -14,6 +14,7 @@ constexpr int CIRCLE_VERTICES = 24;
 #include <vector>
 #include <GL/glut.h>
 #include <algorithm>
+#include <ostream>
 
 #ifdef _DEBUG
 #include "DebugMode.h"
