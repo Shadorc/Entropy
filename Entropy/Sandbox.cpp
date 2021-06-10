@@ -81,7 +81,7 @@ void Sandbox::Repaint() const
 }
 
 #ifdef ENTROPY_DEBUG
-static char strBuffer[64];
+static char s_strBuffer[64];
 static std::vector<const char*> texts = {
     "F1: Show FPS",
     "F2: Show quadtree",
@@ -100,10 +100,10 @@ void Sandbox::RepaintDebug() const
     if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
     {
         glColor3f(0.0f, 1.0f, 0.0f);
-        sprintf_s(strBuffer, "FPS: %.0f", round(m_fps));
-        RenderText(5.0f, HEIGHT - 20.0f, strBuffer);
-        sprintf_s(strBuffer, "RAM: %zu bytes", s_allocatedMemory);
-        RenderText(5.0f, HEIGHT - 5.0f, strBuffer);
+        sprintf_s(s_strBuffer, "FPS: %.0f", round(m_fps));
+        RenderText(5.0f, HEIGHT - 20.0f, s_strBuffer);
+        sprintf_s(s_strBuffer, "RAM: %zu bytes", s_allocatedMemory);
+        RenderText(5.0f, HEIGHT - 5.0f, s_strBuffer);
     }
 
     if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
