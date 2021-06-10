@@ -4,8 +4,8 @@
 
 struct AABB
 {
-	const Vector2 min;
-	const Vector2 max;
+	const Vector2& min;
+	const Vector2& max;
 
 	AABB(const Vector2& min, const Vector2& max);
 

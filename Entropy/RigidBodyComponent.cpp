@@ -51,9 +51,9 @@ void RigidbodyComponent::Update(float deltaTime)
 	m_forces.clear();
 }
 
-void RigidbodyComponent::AddForce(Vector2 force)
+void RigidbodyComponent::AddForce(const Vector2& force)
 {
-	m_forces.emplace_back(force);
+	m_forces.emplace_back(force.x, force.y);
 }
 
 MassData RigidbodyComponent::GetMassData() const
