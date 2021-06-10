@@ -26,7 +26,10 @@ void CollisionManager::Update()
 
     UpdateQuadTree();
     BroadPhase();
-    SolveCollisions();
+    for (int i = 0; i < COLLISIONS_SOLVER_ITERATIONS; ++i)
+    {
+        SolveCollisions();
+    }
 }
 
 void CollisionManager::UpdateQuadTree()
