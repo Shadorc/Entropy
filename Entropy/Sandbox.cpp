@@ -73,14 +73,27 @@ void Sandbox::Repaint() const
 }
 
 DEBUG(
-    static char fps[4];
+static char fps[4];
+static std::vector<const char*> texts = {
+    "F1: Show FPS",
+    "F2: Show quadtree",
+    "F3: Show AABB",
+    "F4: Show velocity",
+    "Left clic: Spawn circle",
+    "Right clic: Spawn rectangle"
+};
     void Sandbox::RepaintDebug() const
     {
+        for (int i = 0; i < texts.size(); ++i)
+        {
+            RenderText(5, (i + 1) * 15, texts[i]);
+        }
+
         if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
         {
             glColor3f(0.0f, 1.0f, 0.0f);
             sprintf_s(fps, "%.0f", round(m_fps));
-            RenderText(5, 20, fps);
+            RenderText(WIDTH - 20, 15, fps);
         }
 
         if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
