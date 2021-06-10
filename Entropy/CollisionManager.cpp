@@ -86,8 +86,8 @@ void CollisionManager::BroadPhase()
 
         while (i < m_pairs.size())
         {
-            const Pair<Entity>& potentialDup = m_pairs[i];
-            if (pair.left == potentialDup.right && pair.right == potentialDup.left)
+            const Pair<Entity>& otherPair = m_pairs[i];
+            if (pair.left == otherPair.right && pair.right == otherPair.left)
             {
                 ++i;
             }
@@ -129,8 +129,8 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
         return;
     }
 
-    const RigidbodyComponent* rigidbodyA = entityA->GetRigidbodyComponent();
-    const RigidbodyComponent* rigidbodyB = entityB->GetRigidbodyComponent();
+    const auto& rigidbodyA = entityA->GetRigidbodyComponent();
+    const auto& rigidbodyB = entityB->GetRigidbodyComponent();
     const MassData& massA = rigidbodyA->GetMassData();
     const MassData& massB = rigidbodyB->GetMassData();
 
@@ -186,10 +186,8 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
 
 void CollisionManager::CorrectPosition(const Collision& manifold)
 {
-    const RigidbodyComponent* rigidbodyA = manifold.entityA->GetRigidbodyComponent();
-    const RigidbodyComponent* rigidbodyB = manifold.entityB->GetRigidbodyComponent();
-    float invMassA = rigidbodyA->GetMassData().invMass;
-    float invMassB = rigidbodyB->GetMassData().invMass;
+    const float invMassA = manifold.entityA->GetRigidbodyComponent()->GetMassData().invMass;
+    const float invMassB = manifold.entityB->GetRigidbodyComponent()->GetMassData().invMass;
     const Vector2& correction = (std::max(manifold.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * manifold.normal * PENETRATION_PERCENT;
     manifold.entityA->position -= correction * invMassA;
     manifold.entityB->position += correction * invMassB;
