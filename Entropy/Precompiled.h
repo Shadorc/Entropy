@@ -5,7 +5,7 @@ constexpr int HEIGHT = 720;
 
 constexpr float DELTA_TIME = 1.0f / 60.0f;		// Target 60 FPS
 
-constexpr float PENETRATION_PERCENT = 0.4f;		// Penetration percentage to correct
+constexpr float PENETRATION_PERCENT = 0.8f;		// Penetration percentage to correct
 constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
 
 constexpr int CIRCLE_VERTICES = 24;
