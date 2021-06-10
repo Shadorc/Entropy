@@ -2,7 +2,10 @@
 
 #include <vector>
 
-DEBUG(class DebugMode;)
+#ifdef _DEBUG
+class DebugMode;
+#endif // _DEBUG
+
 class CollisionManager;
 class Entity;
 class Sandbox
@@ -14,9 +17,13 @@ private:
 	float m_fps;
 	int m_lastLoopTime;
 	float m_accumulatorTime;
-	DEBUG(DebugMode m_debugMode;)
+#ifdef _DEBUG
+	DebugMode m_debugMode;
+#endif // _DEBUG
 
-	DEBUG(void RepaintDebug() const;)
+#ifdef _DEBUG
+	void RepaintDebug() const;
+#endif // _DEBUG
 
 protected:
 	static Sandbox* instance;
@@ -39,7 +46,9 @@ public:
 	void OnVisible(int visibility);
 	void OnMouse(int button, int state, int x, int y);
 	void OnKeyboard(unsigned char key, int x, int y);
-	DEBUG(void OnSpecialKeyboard(int key, int x, int y);)
+#ifdef _DEBUG
+	void OnSpecialKeyboard(int key, int x, int y);
+#endif // _DEBUG
 
 	/* Static functions which are passed to Glut function callbacks */
 	static void OnLoopWrapper();
@@ -47,6 +56,8 @@ public:
 	static void OnVisibleWrapper(int visibility);
 	static void OnMouseWrapper(int button, int state, int x, int y);
 	static void OnKeyboardWrapper(unsigned char key, int x, int y);
-	DEBUG(static void OnSpecialKeyboardWrapper(int key, int x, int y);)
+#ifdef _DEBUG
+	static void OnSpecialKeyboardWrapper(int key, int x, int y);
+#endif // _DEBUG
 };
 

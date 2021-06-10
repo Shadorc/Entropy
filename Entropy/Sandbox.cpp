@@ -13,7 +13,9 @@ Sandbox::Sandbox():
     , m_fps(0)
     , m_lastLoopTime(0)
     , m_accumulatorTime(0)
-    DEBUG(, m_debugMode())
+#ifdef _DEBUG
+    , m_debugMode()
+#endif // _DEBUG
 {
     instance = this;
 }
@@ -33,7 +35,9 @@ void Sandbox::Start()
     glutVisibilityFunc(&OnVisibleWrapper);
     glutMouseFunc(&OnMouseWrapper);
     glutKeyboardFunc(&OnKeyboardWrapper);
-    DEBUG(glutSpecialFunc(&OnSpecialKeyboardWrapper);)
+#ifdef _DEBUG
+    glutSpecialFunc(&OnSpecialKeyboardWrapper);
+#endif // _DEBUG
 }
 
 void Sandbox::Stop()
@@ -45,7 +49,9 @@ void Sandbox::Stop()
     glutMouseFunc(nullptr);
     glutKeyboardFunc(nullptr);
     glutIdleFunc(nullptr);
-    DEBUG(glutSpecialFunc(nullptr);)
+#ifdef _DEBUG
+    glutSpecialFunc(nullptr);
+#endif // _DEBUG
 }
 
 void Sandbox::Update(float deltaTime)
@@ -67,12 +73,14 @@ void Sandbox::Repaint() const
         entity->Paint();
     }
 
-    DEBUG(RepaintDebug();)
+#ifdef _DEBUG
+    RepaintDebug();
+#endif // _DEBUG
 
     glutSwapBuffers();
 }
 
-DEBUG(
+#ifdef _DEBUG
 static char fps[4];
 static std::vector<const char*> texts = {
     "F1: Show FPS",
@@ -82,49 +90,49 @@ static std::vector<const char*> texts = {
     "Left clic: Spawn circle",
     "Right clic: Spawn rectangle"
 };
-    void Sandbox::RepaintDebug() const
+void Sandbox::RepaintDebug() const
+{
+    for (int i = 0; i < texts.size(); ++i)
     {
-        for (int i = 0; i < texts.size(); ++i)
-        {
-            RenderText(5, (i + 1) * 15, texts[i]);
-        }
+        RenderText(5.0f, (i + 1) * 15.0f, texts[i]);
+    }
 
-        if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
-        {
-            glColor3f(0.0f, 1.0f, 0.0f);
-            sprintf_s(fps, "%.0f", round(m_fps));
-            RenderText(WIDTH - 20, 15, fps);
-        }
+    if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
+    {
+        glColor3f(0.0f, 1.0f, 0.0f);
+        sprintf_s(fps, "%.0f", round(m_fps));
+        RenderText(WIDTH - 20, 15, fps);
+    }
 
-        if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
-        {
-            glColor3f(0.0f, 1.0f, 1.0f);
-            RenderQuadTree(m_collisionManager->GetRootQuadTree());
-        }
+    if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
+    {
+        glColor3f(0.0f, 1.0f, 1.0f);
+        RenderQuadTree(m_collisionManager->GetRootQuadTree());
+    }
 
-        if (m_debugMode.IsEnabled(DebugOption::SHOW_AABB))
+    if (m_debugMode.IsEnabled(DebugOption::SHOW_AABB))
+    {
+        glColor3f(1.0f, 0.0f, 0.0f);
+        for (Entity* entity : m_entities)
         {
-            glColor3f(1.0f, 0.0f, 0.0f);
-            for (Entity* entity : m_entities)
-            {
-                RenderAABB(entity->GetAABB());
-            }
-        }
-
-        if (m_debugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
-        {
-            for (Entity* entity : m_entities)
-            {
-                RenderLine(
-                    entity->position.x, 
-                    entity->position.y,
-                    entity->position.x + entity->velocity.x,
-                    entity->position.y + entity->velocity.y 
-                );
-            }
+            RenderAABB(entity->GetAABB());
         }
     }
-)
+
+    if (m_debugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
+    {
+        for (Entity* entity : m_entities)
+        {
+            RenderLine(
+                entity->position.x, 
+                entity->position.y,
+                entity->position.x + entity->velocity.x,
+                entity->position.y + entity->velocity.y 
+            );
+        }
+    }
+}
+#endif // _DEBUG
 
 std::vector<Entity*> Sandbox::GetEntities() const
 {
@@ -151,12 +159,12 @@ void Sandbox::OnLoop()
     int now = glutGet(GLUT_ELAPSED_TIME);
     float elapsed = FLOAT(now - m_lastLoopTime) / CLOCKS_PER_SEC;
 
-DEBUG(
+#ifdef _DEBUG
     if (!IsZero(elapsed))
     {
         m_fps = alpha * m_fps + (1.0f - alpha) * (1.0f / elapsed);
     }
-)
+#endif
 
     m_accumulatorTime += elapsed;
     m_lastLoopTime = now;
@@ -230,32 +238,32 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
     }
 }
 
-DEBUG(
-    void Sandbox::OnSpecialKeyboard(int key, int x, int y)
+#ifdef _DEBUG
+void Sandbox::OnSpecialKeyboard(int key, int x, int y)
+{
+    switch (key)
     {
-        switch (key)
-        {
-        case GLUT_KEY_F1:
-        {
-            m_debugMode.Enable(DebugOption::PERFORMANCE_INFO);
-            break;
-        }
-        case GLUT_KEY_F2:
-        {
-            m_debugMode.Enable(DebugOption::SHOW_QUADTREE);
-            break;
-        }
-        case GLUT_KEY_F3:
-        {
-            m_debugMode.Enable(DebugOption::SHOW_AABB);
-            break;
-        }
-        case GLUT_KEY_F4:
-            m_debugMode.Enable(DebugOption::SHOW_VELOCITY);
-            break;
-        }
+    case GLUT_KEY_F1:
+    {
+        m_debugMode.Enable(DebugOption::PERFORMANCE_INFO);
+        break;
     }
-)
+    case GLUT_KEY_F2:
+    {
+        m_debugMode.Enable(DebugOption::SHOW_QUADTREE);
+        break;
+    }
+    case GLUT_KEY_F3:
+    {
+        m_debugMode.Enable(DebugOption::SHOW_AABB);
+        break;
+    }
+    case GLUT_KEY_F4:
+        m_debugMode.Enable(DebugOption::SHOW_VELOCITY);
+        break;
+    }
+}
+#endif // _DEBUG
 
 /* 
  * Static functions which are passed to Glut function callbacks 
@@ -286,9 +294,9 @@ void Sandbox::OnKeyboardWrapper(unsigned char key, int x, int y)
     instance->OnKeyboard(key, x, y);
 }
 
-DEBUG(
-    void Sandbox::OnSpecialKeyboardWrapper(int key, int x, int y)
-    {
-        instance->OnSpecialKeyboard(key, x, y);
-    }
-)
+#ifdef _DEBUG
+void Sandbox::OnSpecialKeyboardWrapper(int key, int x, int y)
+{
+    instance->OnSpecialKeyboard(key, x, y);
+}
+#endif // _DEBUG

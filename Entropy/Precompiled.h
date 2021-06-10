@@ -13,12 +13,6 @@ constexpr int CIRCLE_VERTICES = 24;
 #define INT(a) static_cast<int>(a)
 #define FLOAT(a) static_cast<float>(a)
 
-#ifdef _DEBUG 
-#define DEBUG(...) __VA_ARGS__
-#else 
-#define DEBUG(...)
-#endif
-
 #include <math.h>
 #include <vector>
 #include <GL/glut.h>

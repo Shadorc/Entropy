@@ -131,7 +131,8 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
     
     // Determine if we should perform a resting collision or not
     // The idea is if the only thing moving this object is gravity, then the collision should be performed without any restitution
-    if (Equal(relativVelocity.LengthSq(), (GravityComponent::GRAVITY * DELTA_TIME).LengthSq()))
+    // TODO: Fix
+    if (Equal(relativVelocity.y, GravityComponent::GRAVITY.y * DELTA_TIME))
     {
         restitution = 0.0f;
     }
