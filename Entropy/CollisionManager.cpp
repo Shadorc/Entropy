@@ -143,11 +143,8 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
         const Vector2& impulse = manifold.normal * normalImpulseScalar;
 
         //Apply impulse
-        const float massSum = massA.mass + massB.mass;
-        const float ratioA = massA.mass / massSum;
-        entityA->velocity -= impulse * ratioA;
-        const float ratioB = massB.mass / massSum;
-        entityB->velocity += impulse * ratioB;
+        entityA->velocity -= impulse * massA.invMass;
+        entityB->velocity += impulse * massB.invMass;
     }
 
     // Calculate friction vector
