@@ -1,6 +1,6 @@
-#ifdef ENTROPY_DEBUG
 #pragma once
 
+#ifdef ENTROPY_DEBUG
 enum class DebugOption
 {
     PERFORMANCE_INFO,

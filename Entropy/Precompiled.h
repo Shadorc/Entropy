@@ -16,16 +16,34 @@ constexpr int CIRCLE_VERTICES = 24;
 
 #ifdef ENTROPY_DEBUG
 static size_t s_allocatedMemory = 0;
+#endif
 
+#ifdef ENTROPY_DEBUG
 #define ENTROPY_NEW(x, ...) ([&]() {\
 	s_allocatedMemory += sizeof(x);\
 	return new x(__VA_ARGS__);\
 })()
+#else
+#define ENTROPY_NEW(x, ...) ([&]() {\
+	return new x(__VA_ARGS__);\
+})()
+#endif
 
+#ifdef ENTROPY_DEBUG
 #define ENTROPY_DELETE(x) ([&]() {\
 	s_allocatedMemory -= sizeof(x);\
 	return delete x;\
 })()
+#else
+#define ENTROPY_DELETE(x) ([&]() {\
+	return delete x;\
+})()
+#endif
+
+#ifdef ENTROPY_DEBUG
+#define ENTROPY_LOG(x) std::cout << x << std::endl;
+#else
+#define ENTROPY_LOG(x)
 #endif // ENTROPY_DEBUG
 
 #include <math.h>
@@ -33,6 +51,7 @@ static size_t s_allocatedMemory = 0;
 #include <GL/glut.h>
 #include <algorithm>
 #include <ostream>
+#include <iostream>
 
 #ifdef ENTROPY_DEBUG
 #include "DebugMode.h"
