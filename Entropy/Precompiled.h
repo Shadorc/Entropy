@@ -10,9 +10,6 @@ constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
 
 constexpr int CIRCLE_VERTICES = 24;
 
-#define INT(a) static_cast<int>(a)
-#define FLOAT(a) static_cast<float>(a)
-
 #include <math.h>
 #include <vector>
 #include <GL/glut.h>

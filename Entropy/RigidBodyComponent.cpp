@@ -30,7 +30,7 @@ void RigidbodyComponent::ComputeMass()
 		const entity::Rectangle* rectangle = dynamic_cast<entity::Rectangle*>(m_entity);
 		m_massData.mass = rectangle->GetWidth() * rectangle->GetHeight() * m_material.density * MASS_METER_SQUARE;
 		m_massData.invMass = (m_massData.mass > 0) ? (1.0f / m_massData.mass) : 0.0f;
-		m_massData.inertia = rectangle->GetWidth() * FLOAT(pow(rectangle->GetHeight(), 3.0f)) / 12; // TODO
+		m_massData.inertia = rectangle->GetWidth() * powf(rectangle->GetHeight(), 3.0f) / 12; // TODO
 		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
 		break;
 	}

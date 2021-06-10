@@ -27,20 +27,20 @@ private:
 	const int m_level;
 	std::vector<T*> m_objects;
 	const AABB m_aabb;
-	QuadTree<T>* m_nodes[INT(Quadrant::COUNT)];
+	QuadTree<T>* m_nodes[(int) Quadrant::COUNT];
 
 	void Split()
 	{
 		float subWidth = m_aabb.GetWidth() / 2.0f;
 		float subHeight = m_aabb.GetHeight() / 2.0f;
 
-		m_nodes[INT(Quadrant::TOP_LEFT)] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int) Quadrant::TOP_LEFT] = new QuadTree<T>(m_level + 1,
 			AABB(m_aabb.min, m_aabb.min + Vector2(subWidth, subHeight)));
-		m_nodes[INT(Quadrant::TOP_RIGHT)] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int) Quadrant::TOP_RIGHT] = new QuadTree<T>(m_level + 1,
 			AABB(m_aabb.min + Vector2(subWidth, 0), m_aabb.max - Vector2(0, subHeight)));
-		m_nodes[INT(Quadrant::BOTTOM_LEFT)] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int)Quadrant::BOTTOM_LEFT] = new QuadTree<T>(m_level + 1,
 			AABB(m_aabb.min + Vector2(0, subHeight), m_aabb.max - Vector2(subWidth, 0)));
-		m_nodes[INT(Quadrant::BOTTOM_RIGHT)] = new QuadTree<T>(m_level + 1,
+		m_nodes[(int)Quadrant::BOTTOM_RIGHT] = new QuadTree<T>(m_level + 1,
 			AABB(m_aabb.min + Vector2(subWidth, subHeight), m_aabb.max));
 	}
 
@@ -89,7 +89,7 @@ private:
 
 		if (quadrant != Quadrant::INVALID && m_nodes[0] != nullptr)
 		{
-			m_nodes[INT(quadrant)]->Search(returnObjects, object);
+			m_nodes[(int) quadrant]->Search(returnObjects, object);
 		}
 
 		returnObjects.insert(returnObjects.end(), m_objects.begin(), m_objects.end());
@@ -150,7 +150,7 @@ public:
 	{
 		m_objects.clear();
 
-		for (int i = 0; i < INT(Quadrant::COUNT); ++i)
+		for (int i = 0; i < (int) Quadrant::COUNT; ++i)
 		{
 			if (m_nodes[i] != nullptr)
 			{
@@ -168,7 +168,7 @@ public:
 			Quadrant quadrant = GetQuadrant(object);
 			if (quadrant != Quadrant::INVALID)
 			{
-				m_nodes[INT(quadrant)]->Insert(object);
+				m_nodes[(int) quadrant]->Insert(object);
 				return;
 			}
 		}
@@ -188,7 +188,7 @@ public:
 				Quadrant quadrant = GetQuadrant(m_objects[i]);
 				if (quadrant != Quadrant::INVALID)
 				{
-					m_nodes[INT(quadrant)]->Insert(m_objects[i]);
+					m_nodes[(int) quadrant]->Insert(m_objects[i]);
 					m_objects.erase(m_objects.begin() + i);
 				}
 				else

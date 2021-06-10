@@ -157,7 +157,7 @@ static const float alpha = 0.95f;
 void Sandbox::OnLoop()
 {
     int now = glutGet(GLUT_ELAPSED_TIME);
-    float elapsed = FLOAT(now - m_lastLoopTime) / CLOCKS_PER_SEC;
+    float elapsed = (float) (now - m_lastLoopTime) / CLOCKS_PER_SEC;
 
 #ifdef _DEBUG
     if (!IsZero(elapsed))
@@ -207,7 +207,7 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
     case GLUT_LEFT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Circle* circle = new entity::Circle(FLOAT(x), FLOAT(y), 20);
+            entity::Circle* circle = new entity::Circle((float) x, (float) y, 20.0f);
             circle->AddComponent(new RigidbodyComponent(circle, ROCK));
             circle->AddComponent(new GravityComponent(circle));
             AddEntity(circle);
@@ -216,7 +216,7 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
     case GLUT_RIGHT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Rectangle* rectangle = new entity::Rectangle(FLOAT(x), FLOAT(y), 40, 40);
+            entity::Rectangle* rectangle = new entity::Rectangle((float) x, (float) y, 40.0f, 40.0f);
             rectangle->AddComponent(new RigidbodyComponent(rectangle, ROCK));
             rectangle->AddComponent(new GravityComponent(rectangle));
             AddEntity(rectangle);

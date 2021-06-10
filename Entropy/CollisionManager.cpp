@@ -197,5 +197,5 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 void CollisionManager::SetRootSize(int width, int height)
 {
     delete m_quadTree;
-	m_quadTree = new QuadTree<Entity>(AABB(Vector2(), Vector2(FLOAT(width), FLOAT(height))));
+	m_quadTree = new QuadTree<Entity>(AABB(Vector2(), Vector2((float) width, (float) height)));
 }
