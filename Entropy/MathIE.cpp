@@ -1,10 +1,5 @@
 #include "Precompiled.h"
 
-float Pythagore(float a, float b)
-{
-	return sqrtf(a * a + b * b);
-}
-
 int Rand(int max)
 {
 	return rand() % max + 1;

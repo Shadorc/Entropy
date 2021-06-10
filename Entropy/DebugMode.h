@@ -1,11 +1,12 @@
-#ifdef _DEBUG
 #pragma once
 
+#ifdef ENTROPY_DEBUG
 enum class DebugOption
 {
     PERFORMANCE_INFO,
     SHOW_QUADTREE,
     SHOW_AABB,
+    SHOW_VELOCITY,
     COUNT
 };
 
@@ -20,4 +21,4 @@ public:
     void Enable(DebugOption option);
     bool IsEnabled(DebugOption option) const;
 };
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG

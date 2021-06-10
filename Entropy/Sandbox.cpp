@@ -7,20 +7,22 @@ constexpr float MAX_ACCUMULATOR_TIME = 0.2f;
 Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
-    m_collisionManager(new CollisionManager(this))
+    m_collisionManager(ENTROPY_NEW(CollisionManager, this))
     , m_entities()
     , m_updating(false)
     , m_fps(0)
     , m_lastLoopTime(0)
     , m_accumulatorTime(0)
-    DEBUG(, m_debugMode())
+#ifdef ENTROPY_DEBUG
+    , m_debugMode()
+#endif // ENTROPY_DEBUG
 {
     instance = this;
 }
 
 Sandbox::~Sandbox()
 {
-    delete m_collisionManager;
+    ENTROPY_DELETE(m_collisionManager);
     instance = nullptr;
 }
 
@@ -33,7 +35,9 @@ void Sandbox::Start()
     glutVisibilityFunc(&OnVisibleWrapper);
     glutMouseFunc(&OnMouseWrapper);
     glutKeyboardFunc(&OnKeyboardWrapper);
-    DEBUG(glutSpecialFunc(&OnSpecialKeyboardWrapper);)
+#ifdef ENTROPY_DEBUG
+    glutSpecialFunc(&OnSpecialKeyboardWrapper);
+#endif // ENTROPY_DEBUG
 }
 
 void Sandbox::Stop()
@@ -45,7 +49,9 @@ void Sandbox::Stop()
     glutMouseFunc(nullptr);
     glutKeyboardFunc(nullptr);
     glutIdleFunc(nullptr);
-    DEBUG(glutSpecialFunc(nullptr);)
+#ifdef ENTROPY_DEBUG
+    glutSpecialFunc(nullptr);
+#endif // ENTROPY_DEBUG
 }
 
 void Sandbox::Update(float deltaTime)
@@ -67,38 +73,68 @@ void Sandbox::Repaint() const
         entity->Paint();
     }
 
-    DEBUG(RepaintDebug();)
+#ifdef ENTROPY_DEBUG
+    RepaintDebug();
+#endif // ENTROPY_DEBUG
 
     glutSwapBuffers();
 }
 
-DEBUG(
-    static char fps[4];
-    void Sandbox::RepaintDebug() const
+#ifdef ENTROPY_DEBUG
+static char s_strBuffer[64];
+static std::vector<const char*> texts = {
+    "F1: Show FPS",
+    "F2: Show quadtree",
+    "F3: Show AABB",
+    "F4: Show velocity",
+    "Left clic: Spawn circle",
+    "Right clic: Spawn rectangle"
+};
+void Sandbox::RepaintDebug() const
+{
+    for (int i = 0; i < texts.size(); ++i)
     {
-        if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
-        {
-            glColor3f(0.0f, 1.0f, 0.0f);
-            sprintf_s(fps, "%.0f", round(m_fps));
-            RenderText(5, 20, fps);
-        }
+        RenderText(5.0f, (i + 1) * 15.0f, texts[i]);
+    }
 
-        if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
-        {
-            glColor3f(0.0f, 1.0f, 1.0f);
-            RenderQuadTree(m_collisionManager->GetRootQuadTree());
-        }
+    if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
+    {
+        glColor3f(0.0f, 1.0f, 0.0f);
+        sprintf_s(s_strBuffer, "FPS: %.0f", round(m_fps));
+        RenderText(5.0f, HEIGHT - 20.0f, s_strBuffer);
+        sprintf_s(s_strBuffer, "RAM: %zu bytes", s_allocatedMemory);
+        RenderText(5.0f, HEIGHT - 5.0f, s_strBuffer);
+    }
 
-        if (m_debugMode.IsEnabled(DebugOption::SHOW_AABB))
+    if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
+    {
+        glColor3f(0.0f, 1.0f, 1.0f);
+        RenderQuadTree(m_collisionManager->GetRootQuadTree());
+    }
+
+    if (m_debugMode.IsEnabled(DebugOption::SHOW_AABB))
+    {
+        glColor3f(1.0f, 0.0f, 0.0f);
+        for (Entity* entity : m_entities)
         {
-            glColor3f(1.0f, 0.0f, 0.0f);
-            for (Entity* entity : m_entities)
-            {
-                RenderAABB(entity->GetAABB());
-            }
+            RenderAABB(entity->GetAABB());
         }
     }
-)
+
+    if (m_debugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
+    {
+        for (Entity* entity : m_entities)
+        {
+            RenderLine(
+                entity->position.x, 
+                entity->position.y,
+                entity->position.x + entity->velocity.x,
+                entity->position.y + entity->velocity.y 
+            );
+        }
+    }
+}
+#endif // ENTROPY_DEBUG
 
 std::vector<Entity*> Sandbox::GetEntities() const
 {
@@ -123,14 +159,14 @@ static const float alpha = 0.95f;
 void Sandbox::OnLoop()
 {
     int now = glutGet(GLUT_ELAPSED_TIME);
-    float elapsed = FLOAT(now - m_lastLoopTime) / CLOCKS_PER_SEC;
+    float elapsed = (float) (now - m_lastLoopTime) / CLOCKS_PER_SEC;
 
-DEBUG(
+#ifdef ENTROPY_DEBUG
     if (!IsZero(elapsed))
     {
         m_fps = alpha * m_fps + (1.0f - alpha) * (1.0f / elapsed);
     }
-)
+#endif
 
     m_accumulatorTime += elapsed;
     m_lastLoopTime = now;
@@ -173,18 +209,18 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
     case GLUT_LEFT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Circle* circle = new entity::Circle(FLOAT(x), FLOAT(y), 20);
-            circle->AddComponent(new RigidbodyComponent(circle, ROCK));
-            circle->AddComponent(new GravityComponent(circle));
+            entity::Circle* circle = ENTROPY_NEW(entity::Circle, (float) x, (float) y, 20.0f);
+            circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle, ROCK));
+            circle->AddComponent(ENTROPY_NEW(GravityComponent, circle));
             AddEntity(circle);
         }
         break;
     case GLUT_RIGHT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Rectangle* rectangle = new entity::Rectangle(FLOAT(x), FLOAT(y), 40, 40);
-            rectangle->AddComponent(new RigidbodyComponent(rectangle, ROCK));
-            rectangle->AddComponent(new GravityComponent(rectangle));
+            entity::Rectangle* rectangle = ENTROPY_NEW(entity::Rectangle, (float) x, (float) y, 40.0f, 40.0f);
+            rectangle->AddComponent(ENTROPY_NEW(RigidbodyComponent, rectangle, ROCK));
+            rectangle->AddComponent(ENTROPY_NEW(GravityComponent, rectangle));
             AddEntity(rectangle);
         }
         break;
@@ -204,29 +240,32 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
     }
 }
 
-DEBUG(
-    void Sandbox::OnSpecialKeyboard(int key, int x, int y)
+#ifdef ENTROPY_DEBUG
+void Sandbox::OnSpecialKeyboard(int key, int x, int y)
+{
+    switch (key)
     {
-        switch (key)
-        {
-        case GLUT_KEY_F1:
-        {
-            m_debugMode.Enable(DebugOption::PERFORMANCE_INFO);
-            break;
-        }
-        case GLUT_KEY_F2:
-        {
-            m_debugMode.Enable(DebugOption::SHOW_QUADTREE);
-            break;
-        }
-        case GLUT_KEY_F3:
-        {
-            m_debugMode.Enable(DebugOption::SHOW_AABB);
-            break;
-        }
-        }
+    case GLUT_KEY_F1:
+    {
+        m_debugMode.Enable(DebugOption::PERFORMANCE_INFO);
+        break;
     }
-)
+    case GLUT_KEY_F2:
+    {
+        m_debugMode.Enable(DebugOption::SHOW_QUADTREE);
+        break;
+    }
+    case GLUT_KEY_F3:
+    {
+        m_debugMode.Enable(DebugOption::SHOW_AABB);
+        break;
+    }
+    case GLUT_KEY_F4:
+        m_debugMode.Enable(DebugOption::SHOW_VELOCITY);
+        break;
+    }
+}
+#endif // ENTROPY_DEBUG
 
 /* 
  * Static functions which are passed to Glut function callbacks 
@@ -257,9 +296,9 @@ void Sandbox::OnKeyboardWrapper(unsigned char key, int x, int y)
     instance->OnKeyboard(key, x, y);
 }
 
-DEBUG(
-    void Sandbox::OnSpecialKeyboardWrapper(int key, int x, int y)
-    {
-        instance->OnSpecialKeyboard(key, x, y);
-    }
-)
+#ifdef ENTROPY_DEBUG
+void Sandbox::OnSpecialKeyboardWrapper(int key, int x, int y)
+{
+    instance->OnSpecialKeyboard(key, x, y);
+}
+#endif // ENTROPY_DEBUG

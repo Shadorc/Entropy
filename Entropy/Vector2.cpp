@@ -1,5 +1,3 @@
-#include <ostream>
-
 #include "Precompiled.h"
 
 const Vector2 Vector2::ZERO = Vector2(0, 0);

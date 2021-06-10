@@ -5,28 +5,57 @@ constexpr int HEIGHT = 720;
 
 constexpr float DELTA_TIME = 1.0f / 60.0f;		// Target 60 FPS
 
-constexpr float PENETRATION_PERCENT = 0.4f;		// Penetration percentage to correct
+constexpr float PENETRATION_PERCENT = 0.8f;		// Penetration percentage to correct
 constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
 
 constexpr int CIRCLE_VERTICES = 24;
 
-#define INT(a) static_cast<int>(a)
-#define FLOAT(a) static_cast<float>(a)
-
-#ifdef _DEBUG 
-#define DEBUG(...) __VA_ARGS__
-#else 
-#define DEBUG(...)
+#ifdef _DEBUG
+#define ENTROPY_DEBUG
 #endif
+
+#ifdef ENTROPY_DEBUG
+static size_t s_allocatedMemory = 0;
+#endif
+
+#ifdef ENTROPY_DEBUG
+#define ENTROPY_NEW(x, ...) ([&]() {\
+	s_allocatedMemory += sizeof(x);\
+	return new x(__VA_ARGS__);\
+})()
+#else
+#define ENTROPY_NEW(x, ...) ([&]() {\
+	return new x(__VA_ARGS__);\
+})()
+#endif
+
+#ifdef ENTROPY_DEBUG
+#define ENTROPY_DELETE(x) ([&]() {\
+	s_allocatedMemory -= sizeof(x);\
+	return delete x;\
+})()
+#else
+#define ENTROPY_DELETE(x) ([&]() {\
+	return delete x;\
+})()
+#endif
+
+#ifdef ENTROPY_DEBUG
+#define ENTROPY_LOG(x) std::cout << x << std::endl;
+#else
+#define ENTROPY_LOG(x)
+#endif // ENTROPY_DEBUG
 
 #include <math.h>
 #include <vector>
 #include <GL/glut.h>
 #include <algorithm>
+#include <ostream>
+#include <iostream>
 
-#ifdef _DEBUG
+#ifdef ENTROPY_DEBUG
 #include "DebugMode.h"
-#endif // _DEBUG
+#endif // ENTROPY_DEBUG
 
 #include "Render.h"
 #include "Vector2.h"

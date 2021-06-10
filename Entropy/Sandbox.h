@@ -2,7 +2,10 @@
 
 #include <vector>
 
-DEBUG(class DebugMode;)
+#ifdef ENTROPY_DEBUG
+class DebugMode;
+#endif // ENTROPY_DEBUG
+
 class CollisionManager;
 class Entity;
 class Sandbox
@@ -14,9 +17,13 @@ private:
 	float m_fps;
 	int m_lastLoopTime;
 	float m_accumulatorTime;
-	DEBUG(DebugMode m_debugMode;)
+#ifdef ENTROPY_DEBUG
+	DebugMode m_debugMode;
+#endif // ENTROPY_DEBUG
 
-	DEBUG(void RepaintDebug() const;)
+#ifdef ENTROPY_DEBUG
+	void RepaintDebug() const;
+#endif // ENTROPY_DEBUG
 
 protected:
 	static Sandbox* instance;
@@ -39,7 +46,9 @@ public:
 	void OnVisible(int visibility);
 	void OnMouse(int button, int state, int x, int y);
 	void OnKeyboard(unsigned char key, int x, int y);
-	DEBUG(void OnSpecialKeyboard(int key, int x, int y);)
+#ifdef ENTROPY_DEBUG
+	void OnSpecialKeyboard(int key, int x, int y);
+#endif // ENTROPY_DEBUG
 
 	/* Static functions which are passed to Glut function callbacks */
 	static void OnLoopWrapper();
@@ -47,6 +56,8 @@ public:
 	static void OnVisibleWrapper(int visibility);
 	static void OnMouseWrapper(int button, int state, int x, int y);
 	static void OnKeyboardWrapper(unsigned char key, int x, int y);
-	DEBUG(static void OnSpecialKeyboardWrapper(int key, int x, int y);)
+#ifdef ENTROPY_DEBUG
+	static void OnSpecialKeyboardWrapper(int key, int x, int y);
+#endif // ENTROPY_DEBUG
 };
 

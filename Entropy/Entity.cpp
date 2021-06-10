@@ -1,9 +1,9 @@
 #include "Precompiled.h"
 
-static int id = 0;
+static int s_id = 0;
 
 Entity::Entity(float x, float y) 
-	: m_id(id++)
+	: m_id(s_id++)
 	, position(x, y)
 	, velocity()
 	, m_rigidbodyComponentCache(nullptr)
@@ -13,10 +13,10 @@ Entity::Entity(float x, float y)
 
 Entity::~Entity()
 {
-	delete m_rigidbodyComponentCache;
+	ENTROPY_DELETE(m_rigidbodyComponentCache);
 	for (Component* component : m_components)
 	{
-		delete component;
+		ENTROPY_DELETE(component);
 	}
 	m_components.clear();
 }

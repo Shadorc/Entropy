@@ -22,7 +22,7 @@ private:
 public:
 	RigidbodyComponent(Entity* entity, Material material);
 
-	void AddForce(Vector2 force);
+	void AddForce(const Vector2& force);
 	void Update(float deltaTime) override;
 
 	MassData GetMassData() const;

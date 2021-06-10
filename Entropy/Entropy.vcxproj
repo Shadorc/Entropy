@@ -26,7 +26,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DebugMode.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Entropy.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="GravityComponent.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Matrix22.cpp" />

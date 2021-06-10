@@ -9,12 +9,7 @@ CollisionManager::CollisionManager(const Sandbox* sandbox)
 
 CollisionManager::~CollisionManager()
 {
-    delete m_quadTree;
-}
-
-const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
-{
-    return m_quadTree;
+    ENTROPY_DELETE(m_quadTree);
 }
 
 void CollisionManager::Update()
@@ -31,7 +26,7 @@ void CollisionManager::Update()
 
     UpdateQuadTree();
     BroadPhase();
-    CheckCollisions();
+    SolveCollisions();
 }
 
 void CollisionManager::UpdateQuadTree()
@@ -58,6 +53,13 @@ void CollisionManager::BroadPhase()
                 continue;
             }
 
+            // Do not check collisions between static objects
+            if (IsZero(entityA->GetRigidbodyComponent()->GetMassData().mass)
+                && IsZero(entityB->GetRigidbodyComponent()->GetMassData().mass))
+            {
+                continue;
+            }
+
             if (entityA->GetAABB().IntersectsWith(entityB->GetAABB()))
             {
                 m_pairs.emplace_back(entityA, entityB);
@@ -79,8 +81,8 @@ void CollisionManager::BroadPhase()
 
         while (i < m_pairs.size())
         {
-            const Pair<Entity>& potentialDup = m_pairs[i];
-            if (pair.left == potentialDup.right && pair.right == potentialDup.left)
+            const Pair<Entity>& otherPair = m_pairs[i];
+            if (pair.left == otherPair.right && pair.right == otherPair.left)
             {
                 ++i;
             }
@@ -92,35 +94,25 @@ void CollisionManager::BroadPhase()
     }
 }
 
-void CollisionManager::CheckCollisions()
+void CollisionManager::SolveCollisions()
 {
     for (Pair<Entity>& pair : m_uniquePairs)
     {
-        // Do not check collisions between static objects
-        if (IsZero(pair.left->GetRigidbodyComponent()->GetMassData().mass) 
-            && IsZero(pair.right->GetRigidbodyComponent()->GetMassData().mass))
-        {
-            continue;
-        }
-
         const Collision& manifold = Solve(pair.left, pair.right);
         if (!IsZero(manifold.penetration))
         {
-            ResolveCollision(manifold);
-            PositionalCorrection(manifold);
+            ApplyImpulses(manifold);
+            CorrectPosition(manifold);
         }
     }
 }
 
-void CollisionManager::ResolveCollision(const Collision& manifold)
+void CollisionManager::ApplyImpulses(const Collision& manifold)
 {
     Entity* entityA = manifold.entityA;
     Entity* entityB = manifold.entityB;
 
-    // Calculate relative velocity
     const Vector2& relativVelocity = entityB->velocity - entityA->velocity;
-
-    // Calculate relative velocity in terms of the normal direction
     const float velAlongNormal = relativVelocity.Dot(manifold.normal);
 
     // Do not resolve if velocities are separating
@@ -129,37 +121,45 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
         return;
     }
 
-    const RigidbodyComponent* rigidbodyA = entityA->GetRigidbodyComponent();
-    const RigidbodyComponent* rigidbodyB = entityB->GetRigidbodyComponent();
+    const auto& rigidbodyA = entityA->GetRigidbodyComponent();
+    const auto& rigidbodyB = entityB->GetRigidbodyComponent();
     const MassData& massA = rigidbodyA->GetMassData();
     const MassData& massB = rigidbodyB->GetMassData();
 
-    // Calculate impulse
-    const float restitution = std::min(rigidbodyA->GetMaterial().restitution, rigidbodyB->GetMaterial().restitution);
-    const float normalImpulseScalar = -(1 + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
+    // Calculate restitution impulse
+    float restitution = sqrtf(rigidbodyA->GetMaterial().restitution * rigidbodyB->GetMaterial().restitution);
+    
+    // Determine if we should perform a resting collision or not
+    // The idea is if the only thing moving this object is gravity, then the collision should be performed without any restitution
+    // TODO: Fix
+    if (Equal(relativVelocity.y, GravityComponent::GRAVITY.y * DELTA_TIME))
+    {
+        restitution = 0.0f;
+    }
+
+    const float normalImpulseScalar = -(1.0f + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
     if (!IsZero(normalImpulseScalar))
     {
         const Vector2& impulse = manifold.normal * normalImpulseScalar;
 
         //Apply impulse
-        const float massSum = massA.mass + massB.mass;
-        const float ratioA = massA.mass / massSum;
-        entityA->velocity -= impulse * ratioA;
-        const float ratioB = massB.mass / massSum;
-        entityB->velocity += impulse * ratioB;
+        entityA->velocity -= impulse * massA.invMass;
+        entityB->velocity += impulse * massB.invMass;
     }
 
-    // Compute friction factors
-    const float staticFriction = Pythagore(rigidbodyA->GetFrictionData().staticFactor, rigidbodyB->GetFrictionData().staticFactor);
-    const float dynamicFriction = Pythagore(rigidbodyA->GetFrictionData().dynamicFactor, rigidbodyB->GetFrictionData().dynamicFactor);
-
-    // Calculate friction
+    // Calculate friction vector
     Vector2 tangent = relativVelocity - relativVelocity.Dot(manifold.normal) * manifold.normal;
-    tangent.Normalize();
-
-    const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
-    if (!IsZero(frictionImpulseScalar))
+    const float tangentLen = tangent.Length();
+    if (!IsZero(tangentLen))
     {
+        // Normalize tangent with the already calculated length
+        tangent /= tangentLen;
+
+        const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
+
+        const float staticFriction = sqrtf(rigidbodyA->GetFrictionData().staticFactor * rigidbodyB->GetFrictionData().staticFactor);
+        const float dynamicFriction = sqrtf(rigidbodyA->GetFrictionData().dynamicFactor * rigidbodyB->GetFrictionData().dynamicFactor);
+            
         // Clamp magnitude of friction and create friction impulse vector
         Vector2 friction;
         if (abs(frictionImpulseScalar) < normalImpulseScalar * staticFriction)
@@ -177,19 +177,22 @@ void CollisionManager::ResolveCollision(const Collision& manifold)
     }
 }
 
-void CollisionManager::PositionalCorrection(const Collision& manifold)
+void CollisionManager::CorrectPosition(const Collision& manifold)
 {
-    const RigidbodyComponent* rigidbodyA = manifold.entityA->GetRigidbodyComponent();
-    const RigidbodyComponent* rigidbodyB = manifold.entityB->GetRigidbodyComponent();
-    float invMassA = rigidbodyA->GetMassData().invMass;
-    float invMassB = rigidbodyB->GetMassData().invMass;
+    const float invMassA = manifold.entityA->GetRigidbodyComponent()->GetMassData().invMass;
+    const float invMassB = manifold.entityB->GetRigidbodyComponent()->GetMassData().invMass;
     const Vector2& correction = (std::max(manifold.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * manifold.normal * PENETRATION_PERCENT;
     manifold.entityA->position -= correction * invMassA;
     manifold.entityB->position += correction * invMassB;
 }
 
+const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
+{
+    return m_quadTree;
+}
+
 void CollisionManager::SetRootSize(int width, int height)
 {
-    delete m_quadTree;
-	m_quadTree = new QuadTree<Entity>(AABB(Vector2(), Vector2(FLOAT(width), FLOAT(height))));
+    ENTROPY_DELETE(m_quadTree);
+	m_quadTree = ENTROPY_NEW(QuadTree<Entity>, AABB(Vector2(), Vector2((float) width, (float) height)));
 }

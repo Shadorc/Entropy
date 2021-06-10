@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-CollisionCallback Dispatch[INT(EntityType::COUNT)][INT(EntityType::COUNT)] =
+CollisionCallback Dispatch[(int) EntityType::COUNT][(int) EntityType::COUNT] =
 {
   {
 	CircleToCircle, CircleToRectangle
@@ -13,7 +13,7 @@ CollisionCallback Dispatch[INT(EntityType::COUNT)][INT(EntityType::COUNT)] =
 Collision Solve(Entity* entityA, Entity* entityB)
 {
 	Collision manifold(entityA, entityB);
-	Dispatch[INT(entityA->GetType())][INT(entityB->GetType())](manifold);
+	Dispatch[(int) entityA->GetType()][(int) entityB->GetType()](manifold);
 	return manifold;
 }
 
