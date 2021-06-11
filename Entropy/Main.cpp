@@ -12,15 +12,15 @@ int main(int argc, char** argv)
 
 	const int wallSize = 25;
 	entity::Rectangle* floor = ENTROPY_NEW(entity::Rectangle, WIDTH / 2.0f, HEIGHT - wallSize / 2.0f, WIDTH - wallSize * 2.0f, wallSize);
-	floor->AddComponent(ENTROPY_NEW(RigidbodyComponent, floor, STATIC));
+	floor->AddComponent(ENTROPY_NEW(RigidbodyComponent, floor, MATERIAL_STATIC));
 	sandbox.AddEntity(floor);
 
 	entity::Rectangle* leftWall = ENTROPY_NEW(entity::Rectangle, wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
-	leftWall->AddComponent(ENTROPY_NEW(RigidbodyComponent, leftWall, STATIC));
+	leftWall->AddComponent(ENTROPY_NEW(RigidbodyComponent, leftWall, MATERIAL_STATIC));
 	sandbox.AddEntity(leftWall);
 	
 	entity::Rectangle* rightWall = ENTROPY_NEW(entity::Rectangle, WIDTH - wallSize / 2.0f, HEIGHT / 2.0f, wallSize, HEIGHT);
-	rightWall->AddComponent(ENTROPY_NEW(RigidbodyComponent, rightWall, STATIC));
+	rightWall->AddComponent(ENTROPY_NEW(RigidbodyComponent, rightWall, MATERIAL_STATIC));
 	sandbox.AddEntity(rightWall);
 
 	sandbox.Start();
