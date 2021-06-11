@@ -4,7 +4,6 @@
 
 namespace entity
 {
-	class Circle;
 	class Rectangle : public Entity
 	{
 	private:
