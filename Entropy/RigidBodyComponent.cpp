@@ -34,6 +34,49 @@ void RigidbodyComponent::ComputeMass()
 		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
 		break;
 	}
+	case EntityType::POLYGON:
+	{
+		const entity::Polygon* polygon = dynamic_cast<entity::Polygon*>(m_entity);
+
+		// Calculate centroid and moment of interia
+		Vector2 centroid;
+		float area = 0.0f;
+		float inertia = 0.0f;
+
+		for (unsigned int vertexIdx1 = 0; vertexIdx1 < polygon->GetVertexCount(); ++vertexIdx1)
+		{
+			// Triangle vertices, third vertex implied as (0, 0)
+			const Vector2& vertex1 = polygon->GetVertex(vertexIdx1);
+			unsigned int vertexIdx2 = (vertexIdx1 + 1) % polygon->GetVertexCount();
+			const Vector2& vertex2 = polygon->GetVertex(vertexIdx2);
+
+			float z = vertex1.Cross(vertex2);
+			float triangleArea = z / 2.0f;
+
+			area += triangleArea;
+
+			// Use area to weight the centroid average, not just vertex position
+			centroid += triangleArea * (vertex1 + vertex2) / 3.0f;
+
+			float intx2 = vertex1.x * vertex1.x + vertex2.x * vertex1.x + vertex2.x * vertex2.x;
+			float inty2 = vertex1.y * vertex1.y + vertex2.y * vertex1.y + vertex2.y * vertex2.y;
+			inertia += z * (intx2 + inty2) / 12.0f;
+		}
+
+		centroid /= area;
+
+		// Translate vertices to centroid (make the centroid (0, 0) for the polygon in model space)
+		// Not really necessary, but I like doing this anyway
+		for (unsigned int i = 0; i < polygon->GetVertexCount(); ++i)
+		{
+			polygon->GetVertex(i) -= centroid;
+		}
+
+		m_massData.mass = m_materialData.density * area;
+		m_massData.invMass = (m_massData.mass > 0.0f) ? (1.0f / m_massData.mass) : 0.0f;
+		m_massData.inertia = inertia * m_materialData.density;
+		m_massData.invInertia = (m_massData.inertia > 0.0f) ? (1.0f / m_massData.inertia) : 0.0f;
+	}
 	}
 }
 
