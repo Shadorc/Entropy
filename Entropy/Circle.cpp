@@ -28,4 +28,15 @@ EntityType entity::Circle::GetType() const
 void entity::Circle::Paint() const
 {
     RenderCircle(position.x, position.y, m_radius);
+
+    // Render line within circle so orientation is visible
+    glBegin(GL_LINE_STRIP);
+    Vector2 radius = Vector2(-sinf(orientation), cosf(orientation));
+    radius *= m_radius;
+    radius += position;
+    const Position& pos = ToNormalizedSpace(position.x, position.y);
+    const Position& rad = ToNormalizedSpace(radius.x, radius.y);
+    glVertex2f(pos.x, pos.y);
+    glVertex2f(rad.x, rad.y);
+    glEnd();
 }

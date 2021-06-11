@@ -1,11 +1,5 @@
 #include "Precompiled.h"
 
-struct Position
-{
-	float x;
-	float y;
-};
-
 Position ToNormalizedSpace(float x, float y)
 {
 	return { 2 * x / WIDTH - 1, 1 - 2 * y / HEIGHT };
