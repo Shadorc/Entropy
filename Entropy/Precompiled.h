@@ -42,9 +42,18 @@ static size_t s_allocatedMemory = 0;
 #endif
 
 #ifdef ENTROPY_DEBUG
-#define ENTROPY_LOG(x) std::cout << x << std::endl;
+#define ENTROPY_LOG(x) std::cout << x << std::endl
 #else
 #define ENTROPY_LOG(x)
+#endif // ENTROPY_DEBUG
+
+#ifdef ENTROPY_DEBUG
+#define ENTROPY_ASSERT(x) {\
+	ENTROPY_LOG(x);\
+	assert(0);\
+}
+#else
+#define ENTROPY_ASSERT(x)
 #endif // ENTROPY_DEBUG
 
 #include <math.h>
@@ -53,6 +62,7 @@ static size_t s_allocatedMemory = 0;
 #include <algorithm>
 #include <ostream>
 #include <iostream>
+#include <assert.h>
 
 #ifdef ENTROPY_DEBUG
 #include "DebugMode.h"

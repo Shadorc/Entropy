@@ -4,13 +4,6 @@
 #include "Vector2.h"
 #include <vector>
 
-class Component;
-class RigidbodyComponent;
-namespace entity 
-{
-	class Circle;
-	class Rectangle;
-}
 
 enum class EntityType
 {
@@ -19,6 +12,8 @@ enum class EntityType
 	COUNT
 };
 
+class Component;
+class RigidbodyComponent;
 class Entity: public AABBObject
 {
 private:

@@ -35,6 +35,8 @@ void RigidbodyComponent::ComputeMass()
 		break;
 	}
 	}
+
+	ENTROPY_ASSERT("Unknown entity type");
 }
 
 void RigidbodyComponent::Update(float deltaTime)
