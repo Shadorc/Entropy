@@ -158,7 +158,7 @@
     <ClInclude Include="MassData.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
+    <ClInclude Include="MaterialData.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
     <ClInclude Include="FrictionData.h">

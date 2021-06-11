@@ -46,7 +46,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="FrictionData.h" />
     <ClInclude Include="MassData.h" />
-    <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialData.h" />
     <ClInclude Include="MathIE.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Precompiled.h" />

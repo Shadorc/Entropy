@@ -2,10 +2,10 @@
 
 constexpr float MASS_METER_SQUARE = 1.0f / 1000.0f; // kg.m-2
 
-RigidbodyComponent::RigidbodyComponent(Entity* entity, Material material)
+RigidbodyComponent::RigidbodyComponent(Entity* entity, MaterialData materialData)
 	: Component(entity)
 	, m_massData()
-	, m_material(material)
+	, m_materialData(materialData)
 	, m_frictionData({ 0.1f, 0.05f })
 {
 	ComputeMass();
@@ -19,7 +19,7 @@ void RigidbodyComponent::ComputeMass()
 	{
 		const entity::Circle* circle = dynamic_cast<entity::Circle*>(m_entity);
 		const float radiusSq = circle->GetRadius() * circle->GetRadius();
-		m_massData.mass = PI * radiusSq * m_material.density * MASS_METER_SQUARE;
+		m_massData.mass = PI * radiusSq * m_materialData.density * MASS_METER_SQUARE;
 		m_massData.invMass = (m_massData.mass > 0) ? (1.0f / m_massData.mass) : 0.0f;
 		m_massData.inertia = m_massData.mass * radiusSq;
 		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
@@ -28,7 +28,7 @@ void RigidbodyComponent::ComputeMass()
 	case EntityType::RECTANGLE:
 	{
 		const entity::Rectangle* rectangle = dynamic_cast<entity::Rectangle*>(m_entity);
-		m_massData.mass = rectangle->GetWidth() * rectangle->GetHeight() * m_material.density * MASS_METER_SQUARE;
+		m_massData.mass = rectangle->GetWidth() * rectangle->GetHeight() * m_materialData.density * MASS_METER_SQUARE;
 		m_massData.invMass = (m_massData.mass > 0) ? (1.0f / m_massData.mass) : 0.0f;
 		m_massData.inertia = rectangle->GetWidth() * powf(rectangle->GetHeight(), 3.0f) / 12; // TODO
 		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
@@ -61,9 +61,9 @@ MassData RigidbodyComponent::GetMassData() const
 	return m_massData;
 }
 
-Material RigidbodyComponent::GetMaterial() const
+MaterialData RigidbodyComponent::GetMaterialData() const
 {
-	return m_material;
+	return m_materialData;
 }
 
 FrictionData RigidbodyComponent::GetFrictionData() const

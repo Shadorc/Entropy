@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "Vector2.h"
 #include "MassData.h"
-#include "Material.h"
+#include "MaterialData.h"
 #include "FrictionData.h"
 
 class Entity;
@@ -13,20 +13,20 @@ class RigidbodyComponent: public Component
 {
 private:
 	MassData m_massData;
-	Material m_material;
+	MaterialData m_materialData;
 	FrictionData m_frictionData;
 	std::vector<Vector2> m_forces;
 
 	void ComputeMass();
 
 public:
-	RigidbodyComponent(Entity* entity, Material material);
+	RigidbodyComponent(Entity* entity, MaterialData material);
 
 	void AddForce(const Vector2& force);
 	void Update(float deltaTime) override;
 
 	MassData GetMassData() const;
-	Material GetMaterial() const;
+	MaterialData GetMaterialData() const;
 	FrictionData GetFrictionData() const;
 };
 
