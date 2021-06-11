@@ -34,12 +34,12 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
 
     for (unsigned int i = 0; i < m_vertexCount; ++i)
     {
-        const Vector2& v = m_vertices[i];
-        float projection = v.Dot(dir);
+        const Vector2& vertex = m_vertices[i];
+        float projection = vertex.Dot(dir);
 
         if (projection > bestProjection)
         {
-            bestVertex = v;
+            bestVertex = vertex;
             bestProjection = projection;
         }
     }

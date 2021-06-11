@@ -108,6 +108,9 @@
     <ClCompile Include="DebugMode.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Polygon.cpp">
+      <Filter>Fichiers sources\entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sandbox.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="MaterialData.h">
       <Filter>Fichiers d%27en-tête\physic\data</Filter>
+    </ClInclude>
+    <ClInclude Include="Polygon.h">
+      <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

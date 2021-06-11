@@ -31,6 +31,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Matrix22.cpp" />
     <ClCompile Include="MathIE.cpp" />
+    <ClCompile Include="Polygon.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="MaterialData.h" />
     <ClInclude Include="MathIE.h" />
     <ClInclude Include="Pair.h" />
+    <ClInclude Include="Polygon.h" />
     <ClInclude Include="Precompiled.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
