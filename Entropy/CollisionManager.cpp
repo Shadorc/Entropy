@@ -115,8 +115,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
     Entity* entityA = collision.entityA;
     Entity* entityB = collision.entityB;
 
-    const Vector2& relativVelocity = entityB->velocity - entityA->velocity;
-    const float velAlongNormal = relativVelocity.Dot(collision.normal);
+    const Vector2& relativeVelocity = entityB->velocity - entityA->velocity;
+    const float velAlongNormal = relativeVelocity.Dot(collision.normal);
 
     // Do not resolve if velocities are separating
     if (velAlongNormal > 0)
@@ -135,7 +135,7 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
     // Determine if we should perform a resting collision or not
     // The idea is if the only thing moving this object is gravity, then the collision should be performed without any restitution
     // TODO: Fix
-    if (Equal(relativVelocity.y, GravityComponent::GRAVITY.y * DELTA_TIME))
+    if (Equal(relativeVelocity.y, GravityComponent::GRAVITY.y * DELTA_TIME))
     {
         restitution = 0.0f;
     }
@@ -151,14 +151,14 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
     }
 
     // Calculate friction vector
-    Vector2 tangent = relativVelocity - relativVelocity.Dot(collision.normal) * collision.normal;
+    Vector2 tangent = relativeVelocity - relativeVelocity.Dot(collision.normal) * collision.normal;
     const float tangentLen = tangent.Length();
     if (!IsZero(tangentLen))
     {
         // Normalize tangent with the already calculated length
         tangent /= tangentLen;
 
-        const float frictionImpulseScalar = -relativVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
+        const float frictionImpulseScalar = -relativeVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
 
         const float staticFriction = sqrtf(rigidbodyA->GetFrictionData().staticFactor * rigidbodyB->GetFrictionData().staticFactor);
         const float dynamicFriction = sqrtf(rigidbodyA->GetFrictionData().dynamicFactor * rigidbodyB->GetFrictionData().dynamicFactor);
