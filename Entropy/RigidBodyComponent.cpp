@@ -95,8 +95,7 @@ void RigidbodyComponent::Update(float deltaTime)
 	m_entity->velocity += acceleration * deltaTime;
 	m_entity->position += m_entity->velocity * deltaTime;
 
-	float torque = 0.0f; // TODO
-	m_entity->angularVelocity += torque * m_massData.invInertia * deltaTime;
+	m_entity->angularVelocity += m_entity->torque * m_massData.invInertia * deltaTime;
 	m_entity->orientation += m_entity->angularVelocity * deltaTime;
 
 	m_forces.clear();

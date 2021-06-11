@@ -32,6 +32,7 @@ public:
 	Vector2 velocity;
 	float orientation;
 	float angularVelocity;
+	float torque;
 
 	unsigned int GetId() const;
 	virtual AABB GetAABB() const = 0;
