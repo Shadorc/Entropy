@@ -77,9 +77,9 @@ void RigidbodyComponent::ComputeMass()
 		m_massData.inertia = inertia * m_materialData.density;
 		m_massData.invInertia = (m_massData.inertia > 0.0f) ? (1.0f / m_massData.inertia) : 0.0f;
 	}
+	default:
+		ENTROPY_ASSERT(false, "Unknown entity type");
 	}
-
-	ENTROPY_ASSERT("Unknown entity type");
 }
 
 void RigidbodyComponent::Update(float deltaTime)

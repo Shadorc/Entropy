@@ -21,8 +21,8 @@ private:
 	void BroadPhase();
 	void UpdateQuadTree();
 	void SolveCollisions();
-	void ApplyImpulses(const Collision& manifold);
-	void CorrectPosition(const Collision& manifold);
+	void ApplyImpulses(const Collision& collision);
+	void CorrectPosition(const Collision& collision);
 
 public:
 	CollisionManager(const Sandbox* sandbox);
