@@ -101,22 +101,22 @@ void CollisionManager::SolveCollisions()
 {
     for (Pair<Entity>& pair : m_uniquePairs)
     {
-        const Collision& manifold = Solve(pair.left, pair.right);
-        if (!IsZero(manifold.penetration))
+        const Collision& collision = Solve(pair.left, pair.right);
+        if (!IsZero(collision.penetration))
         {
-            ApplyImpulses(manifold);
-            CorrectPosition(manifold);
+            ApplyImpulses(collision);
+            CorrectPosition(collision);
         }
     }
 }
 
-void CollisionManager::ApplyImpulses(const Collision& manifold)
+void CollisionManager::ApplyImpulses(const Collision& collision)
 {
-    Entity* entityA = manifold.entityA;
-    Entity* entityB = manifold.entityB;
+    Entity* entityA = collision.entityA;
+    Entity* entityB = collision.entityB;
 
     const Vector2& relativVelocity = entityB->velocity - entityA->velocity;
-    const float velAlongNormal = relativVelocity.Dot(manifold.normal);
+    const float velAlongNormal = relativVelocity.Dot(collision.normal);
 
     // Do not resolve if velocities are separating
     if (velAlongNormal > 0)
@@ -143,7 +143,7 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
     const float normalImpulseScalar = -(1.0f + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
     if (!IsZero(normalImpulseScalar))
     {
-        const Vector2& impulse = manifold.normal * normalImpulseScalar;
+        const Vector2& impulse = collision.normal * normalImpulseScalar;
 
         //Apply impulse
         entityA->velocity -= impulse * massA.invMass;
@@ -151,7 +151,7 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
     }
 
     // Calculate friction vector
-    Vector2 tangent = relativVelocity - relativVelocity.Dot(manifold.normal) * manifold.normal;
+    Vector2 tangent = relativVelocity - relativVelocity.Dot(collision.normal) * collision.normal;
     const float tangentLen = tangent.Length();
     if (!IsZero(tangentLen))
     {
@@ -180,13 +180,13 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
     }
 }
 
-void CollisionManager::CorrectPosition(const Collision& manifold)
+void CollisionManager::CorrectPosition(const Collision& collision)
 {
-    const float invMassA = manifold.entityA->GetRigidbodyComponent()->GetMassData().invMass;
-    const float invMassB = manifold.entityB->GetRigidbodyComponent()->GetMassData().invMass;
-    const Vector2& correction = (std::max(manifold.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * manifold.normal * PENETRATION_PERCENT;
-    manifold.entityA->position -= correction * invMassA;
-    manifold.entityB->position += correction * invMassB;
+    const float invMassA = collision.entityA->GetRigidbodyComponent()->GetMassData().invMass;
+    const float invMassB = collision.entityB->GetRigidbodyComponent()->GetMassData().invMass;
+    const Vector2& correction = (std::max(collision.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * collision.normal * PENETRATION_PERCENT;
+    collision.entityA->position -= correction * invMassA;
+    collision.entityB->position += correction * invMassB;
 }
 
 const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const

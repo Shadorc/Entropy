@@ -12,9 +12,9 @@ CollisionCallback Dispatch[(int) EntityType::COUNT][(int) EntityType::COUNT] =
 
 Collision Solve(Entity* entityA, Entity* entityB)
 {
-	Collision manifold(entityA, entityB);
-	Dispatch[(int) entityA->GetType()][(int) entityB->GetType()](manifold);
-	return manifold;
+	Collision collision(entityA, entityB);
+	Dispatch[(int) entityA->GetType()][(int) entityB->GetType()](collision);
+	return collision;
 }
 
 void CircleToCircle(Collision& collision)
