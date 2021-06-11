@@ -130,7 +130,7 @@ void CollisionManager::ApplyImpulses(const Collision& manifold)
     const MassData& massB = rigidbodyB->GetMassData();
 
     // Calculate restitution impulse
-    float restitution = sqrtf(rigidbodyA->GetMaterial().restitution * rigidbodyB->GetMaterial().restitution);
+    float restitution = sqrtf(rigidbodyA->GetMaterialData().restitution * rigidbodyB->GetMaterialData().restitution);
     
     // Determine if we should perform a resting collision or not
     // The idea is if the only thing moving this object is gravity, then the collision should be performed without any restitution

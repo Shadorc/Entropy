@@ -52,6 +52,9 @@
     <Filter Include="Fichiers d%27en-tête\physic">
       <UniqueIdentifier>{cd6bc469-2144-485d-beb3-fdd943897aef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\physic\data">
+      <UniqueIdentifier>{45237846-8b75-440f-aefe-03e275b14b11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -158,15 +161,6 @@
     <ClInclude Include="CollisionResolver.h">
       <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
-    <ClInclude Include="MassData.h">
-      <Filter>Fichiers d%27en-tête\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Fichiers d%27en-tête\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="FrictionData.h">
-      <Filter>Fichiers d%27en-tête\entity</Filter>
-    </ClInclude>
     <ClInclude Include="Pair.h">
       <Filter>Fichiers d%27en-tête\util</Filter>
     </ClInclude>
@@ -175,6 +169,15 @@
     </ClInclude>
     <ClInclude Include="MathIE.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
+    </ClInclude>
+    <ClInclude Include="FrictionData.h">
+      <Filter>Fichiers d%27en-tête\physic\data</Filter>
+    </ClInclude>
+    <ClInclude Include="MassData.h">
+      <Filter>Fichiers d%27en-tête\physic\data</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialData.h">
+      <Filter>Fichiers d%27en-tête\physic\data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

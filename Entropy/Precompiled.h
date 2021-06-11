@@ -75,6 +75,6 @@ static size_t s_allocatedMemory = 0;
 #include "RigidbodyComponent.h"
 #include "Sandbox.h"
 #include "MassData.h"
-#include "Material.h"
+#include "MaterialData.h"
 #include "Pair.h"
 #include "MathIE.h"

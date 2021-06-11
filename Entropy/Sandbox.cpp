@@ -87,8 +87,8 @@ static std::vector<const char*> texts = {
     "F2: Show quadtree",
     "F3: Show AABB",
     "F4: Show velocity",
-    "Left clic: Spawn circle",
-    "Right clic: Spawn rectangle"
+    "Left click: Spawn circle",
+    "Right click: Spawn rectangle"
 };
 void Sandbox::RepaintDebug() const
 {
@@ -209,8 +209,8 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
     case GLUT_LEFT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Circle* circle = ENTROPY_NEW(entity::Circle, (float) x, (float) y, 20.0f);
-            circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle, ROCK));
+            entity::Circle* circle = ENTROPY_NEW(entity::Circle, (float) x, (float) y, (float) Rand(10, 40));
+            circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle, MATERIAL_ROCK));
             circle->AddComponent(ENTROPY_NEW(GravityComponent, circle));
             AddEntity(circle);
         }
@@ -218,8 +218,8 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
     case GLUT_RIGHT_BUTTON:
         if (state == GLUT_UP)
         {
-            entity::Rectangle* rectangle = ENTROPY_NEW(entity::Rectangle, (float) x, (float) y, 40.0f, 40.0f);
-            rectangle->AddComponent(ENTROPY_NEW(RigidbodyComponent, rectangle, ROCK));
+            entity::Rectangle* rectangle = ENTROPY_NEW(entity::Rectangle, (float) x, (float) y, (float) Rand(30, 80), (float) Rand(30, 80));
+            rectangle->AddComponent(ENTROPY_NEW(RigidbodyComponent, rectangle, MATERIAL_ROCK));
             rectangle->AddComponent(ENTROPY_NEW(GravityComponent, rectangle));
             AddEntity(rectangle);
         }
