@@ -28,19 +28,24 @@ void CircleToCircle(Collision& collision)
 
 	if (deltaLenSq >= sumRadius * sumRadius)
 	{
+		collision.contactCount = 0;
 		return;
 	}
+
+	collision.contactCount = 1;
 
 	if (IsZero(deltaLenSq))
 	{
 		collision.penetration = circleA->GetRadius();
 		collision.normal = Vector2(1, 0);
+		collision.contacts.push_back(circleA->position);
 	}
 	else
 	{
 		float deltaLen = sqrtf(deltaLenSq);
 		collision.penetration = sumRadius - deltaLen;
 		collision.normal = deltaPos / deltaLen;
+		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->position);
 	}
 }
 

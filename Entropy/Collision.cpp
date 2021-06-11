@@ -5,5 +5,7 @@ Collision::Collision(Entity* entityA, Entity* entityB)
 	, entityB(entityB)
 	, penetration(0)
 	, normal(Vector2::ZERO)
+	, contactCount(0)
+	, contacts()
 {
 }

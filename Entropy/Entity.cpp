@@ -36,6 +36,14 @@ void Entity::AddComponent(Component* component)
 	m_components.push_back(component);
 }
 
+void Entity::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector)
+{
+	const RigidbodyComponent* rigidbody = GetRigidbodyComponent();
+	ENTROPY_ASSERT(rigidbody, "Rigidbody absent");
+	velocity += rigidbody->GetMassData().invMass * impulse;
+	angularVelocity += rigidbody->GetMassData().invInertia * contactVector.Cross(impulse);
+}
+
 unsigned int Entity::GetId() const
 {
 	return m_id;

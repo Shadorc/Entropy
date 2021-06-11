@@ -53,6 +53,7 @@ public:
 	RigidbodyComponent* GetRigidbodyComponent() const;
 
 	void AddComponent(Component* component);
+	void ApplyImpulse(const Vector2& impulse, const Vector2& contactVector);
 	virtual void Update(float deltaTime);
 	virtual void Paint() const = 0;
 

@@ -6,14 +6,19 @@ entity::Polygon::Polygon(float x, float y)
 
 }
 
-Vector2 entity::Polygon::GetVertex(unsigned int index) const
+Matrix22 entity::Polygon::GetOrientationMatrix() const
 {
-    return m_vertices[index];
+    return m_orientationMatrix;
 }
 
 unsigned int entity::Polygon::GetVertexCount() const
 {
     return m_vertexCount;
+}
+
+Vector2 entity::Polygon::GetVertex(unsigned int index) const
+{
+    return m_vertices[index];
 }
 
 AABB entity::Polygon::GetAABB() const
@@ -50,9 +55,9 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
 void entity::Polygon::Paint() const
 {
     glBegin(GL_LINE_LOOP);
-    for (int i = 0; i < m_vertexCount; ++i)
+    for (unsigned int i = 0; i < m_vertexCount; ++i)
     {
-        const Vector2& vector = position + u * m_vertices[i];
+        const Vector2& vector = position + m_orientationMatrix * m_vertices[i];
         glVertex2f(vector.x, vector.y);
     }
     glEnd();

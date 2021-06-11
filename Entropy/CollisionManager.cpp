@@ -102,7 +102,7 @@ void CollisionManager::SolveCollisions()
     for (Pair<Entity>& pair : m_uniquePairs)
     {
         const Collision& collision = Solve(pair.left, pair.right);
-        if (!IsZero(collision.penetration))
+        if (collision.contactCount > 0)
         {
             ApplyImpulses(collision);
             CorrectPosition(collision);
@@ -115,68 +115,95 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
     Entity* entityA = collision.entityA;
     Entity* entityB = collision.entityB;
 
-    const Vector2& relativeVelocity = entityB->velocity - entityA->velocity;
-    const float velAlongNormal = relativeVelocity.Dot(collision.normal);
-
-    // Do not resolve if velocities are separating
-    if (velAlongNormal > 0)
-    {
-        return;
-    }
-
     const auto& rigidbodyA = entityA->GetRigidbodyComponent();
     const auto& rigidbodyB = entityB->GetRigidbodyComponent();
     const MassData& massA = rigidbodyA->GetMassData();
     const MassData& massB = rigidbodyB->GetMassData();
 
-    // Calculate restitution impulse
+    const float staticFriction = sqrtf(rigidbodyA->GetFrictionData().staticFactor * rigidbodyB->GetFrictionData().staticFactor);
+    const float dynamicFriction = sqrtf(rigidbodyA->GetFrictionData().dynamicFactor * rigidbodyB->GetFrictionData().dynamicFactor);
+
     float restitution = sqrtf(rigidbodyA->GetMaterialData().restitution * rigidbodyB->GetMaterialData().restitution);
-    
-    // Determine if we should perform a resting collision or not
-    // The idea is if the only thing moving this object is gravity, then the collision should be performed without any restitution
-    // TODO: Fix
-    if (Equal(relativeVelocity.y, GravityComponent::GRAVITY.y * DELTA_TIME))
+    for (unsigned int i = 0; i < collision.contactCount; ++i)
     {
-        restitution = 0.0f;
+        // Calculate radii from COM to contact
+        const Vector2& radiusA = collision.contacts[i] - entityA->position;
+        const Vector2& radiusB = collision.contacts[i] - entityB->position;
+
+        const Vector2& relativeVelocity = 
+            entityB->velocity + Vector2::Cross(entityB->angularVelocity, radiusB) 
+            - (entityA->velocity + Vector2::Cross(entityA->angularVelocity, radiusA));
+
+        // Determine if we should perform a resting collision or not
+        // The idea is if the only thing moving this object is gravity,
+        // then the collision should be performed without any restitution
+        if (Equal(relativeVelocity.y, DELTA_TIME * GravityComponent::GRAVITY.y))
+        {
+            restitution = 0.0f;
+            break;
+        }
     }
 
-    const float normalImpulseScalar = -(1.0f + restitution) * velAlongNormal / (massA.invMass + massB.invMass);
-    if (!IsZero(normalImpulseScalar))
+    for (unsigned int i = 0; i < collision.contactCount; ++i)
     {
-        const Vector2& impulse = collision.normal * normalImpulseScalar;
+        const Vector2& radiusA = collision.contacts[i] - entityA->position;
+        const Vector2& radiusB = collision.contacts[i] - entityB->position;
 
-        //Apply impulse
-        entityA->velocity -= impulse * massA.invMass;
-        entityB->velocity += impulse * massB.invMass;
-    }
+        Vector2 relativeVelocity = 
+            entityB->velocity + Vector2::Cross(entityB->angularVelocity, radiusB)
+            - (entityA->velocity + Vector2::Cross(entityA->angularVelocity, radiusA));
+        const float velAlongNormal = relativeVelocity.Dot(collision.normal);
 
-    // Calculate friction vector
-    Vector2 tangent = relativeVelocity - relativeVelocity.Dot(collision.normal) * collision.normal;
-    const float tangentLen = tangent.Length();
-    if (!IsZero(tangentLen))
-    {
-        // Normalize tangent with the already calculated length
-        tangent /= tangentLen;
-
-        const float frictionImpulseScalar = -relativeVelocity.Dot(tangent) / (massA.invMass + massB.invMass);
-
-        const float staticFriction = sqrtf(rigidbodyA->GetFrictionData().staticFactor * rigidbodyB->GetFrictionData().staticFactor);
-        const float dynamicFriction = sqrtf(rigidbodyA->GetFrictionData().dynamicFactor * rigidbodyB->GetFrictionData().dynamicFactor);
-            
-        // Clamp magnitude of friction and create friction impulse vector
-        Vector2 friction;
-        if (abs(frictionImpulseScalar) < normalImpulseScalar * staticFriction)
+        // Do not resolve if velocities are separating
+        if (velAlongNormal > 0)
         {
-            friction = frictionImpulseScalar * tangent;
-        }
-        else
-        {
-            friction = -normalImpulseScalar * tangent * dynamicFriction;
+            return;
         }
 
-        // Apply friction
-        entityA->velocity -= massA.invMass * friction;
-        entityB->velocity += massB.invMass * friction;
+        float radiusAcrossNormal = radiusA.Cross(collision.normal);
+        float radiusBcrossNormal = radiusB.Cross(collision.normal);
+        float invMassSum = massA.invMass + massB.invMass 
+            + sqrtf(radiusAcrossNormal) * massA.invInertia 
+            + sqrtf(radiusBcrossNormal) * massB.invInertia;
+
+        float normalImpulseScalar = -(1.0f + restitution) * velAlongNormal / (invMassSum * collision.contactCount);
+        if (!IsZero(normalImpulseScalar))
+        {
+            // Apply normal impulse
+            const Vector2& normalImpulse = collision.normal * normalImpulseScalar;
+            entityA->ApplyImpulse(-normalImpulse, radiusA);
+            entityB->ApplyImpulse(normalImpulse, radiusB);
+        }
+
+        // Update relative velocity
+        relativeVelocity =
+            entityB->velocity + Vector2::Cross(entityB->angularVelocity, radiusB)
+            - (entityA->velocity + Vector2::Cross(entityA->angularVelocity, radiusA));
+
+        Vector2 tangent = relativeVelocity - (collision.normal * relativeVelocity.Dot(collision.normal));
+        const float tangentLen = tangent.Length();
+        if (!IsZero(tangentLen))
+        {
+            // Normalize the tangent with its pre-calculated length
+            tangent /= tangentLen;
+
+            const float frictionImpulseScalar = -relativeVelocity.Dot(tangent) / (invMassSum * collision.contactCount);
+
+            // Clamp magnitude of friction and create friction impulse vector
+            Vector2 frictionImpulse;
+            if (abs(frictionImpulseScalar) < normalImpulseScalar * staticFriction)
+            {
+                frictionImpulse = tangent * frictionImpulseScalar;
+            }
+            else
+            {
+                frictionImpulse = tangent * -normalImpulseScalar * dynamicFriction;
+            }
+
+            // Apply friction impulse
+            entityA->ApplyImpulse(-frictionImpulse, radiusA);
+            entityB->ApplyImpulse(frictionImpulse, radiusB);
+        }
     }
 }
 

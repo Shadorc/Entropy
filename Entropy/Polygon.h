@@ -9,6 +9,7 @@ namespace entity
 	class Polygon : public Entity
 	{
 		private:
+			Matrix22 m_orientationMatrix;
 			unsigned int m_vertexCount;
 			std::array<Vector2, MAX_POLYGON_VERTICES> m_vertices;
 			std::array<Vector2, MAX_POLYGON_VERTICES> m_normals;
@@ -16,8 +17,9 @@ namespace entity
 		public:
 			Polygon(float x, float y);
 
-			Vector2 GetVertex(unsigned int index) const;
+			Matrix22 GetOrientationMatrix() const;
 			unsigned int GetVertexCount() const;
+			Vector2 GetVertex(unsigned int index) const;
 			AABB GetAABB() const override;
 			EntityType GetType() const override;
 
