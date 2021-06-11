@@ -48,10 +48,12 @@ static size_t s_allocatedMemory = 0;
 #endif // ENTROPY_DEBUG
 
 #ifdef ENTROPY_DEBUG
-#define ENTROPY_ASSERT(x) {\
-	ENTROPY_LOG(x);\
-	assert(0);\
-}
+#define ENTROPY_ASSERT(condition, reason) \
+	if (!(condition)) \
+	{ \
+		ENTROPY_LOG(reason); \
+		assert(condition); \
+	}
 #else
 #define ENTROPY_ASSERT(x)
 #endif // ENTROPY_DEBUG
