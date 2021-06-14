@@ -109,14 +109,13 @@ void CircleToPolygon(Collision& collision)
 		v1 = polygonB->GetOrientationMatrix() * v1 + polygonB->position;
 		collision.contacts.push_back(v1);
 	}
-
 	// Closest to v2
 	else if (dot2 <= 0.0f)
 	{
 		if (center.DistanceSq(v2) > circleA->GetRadius() * circleA->GetRadius())
 		{
 			return;
-					}
+		}
 
 		Vector2 n = v2 - center;
 		v2 = polygonB->GetOrientationMatrix() * v2 + polygonB->position;
@@ -125,7 +124,6 @@ void CircleToPolygon(Collision& collision)
 		n.Normalize();
 		collision.normal = n;
 	}
-
 	// Closest to face
 	else
 	{
