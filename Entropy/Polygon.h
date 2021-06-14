@@ -25,6 +25,9 @@ namespace entity
 
 			Vector2 GetSupport(const Vector2& dir) const;
 
+			// TODO
+			void SetBox(float halfW, float halfH);
+
 			void Paint() const;
 	};
 }

@@ -79,6 +79,18 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
     return bestVertex;
 }
 
+void entity::Polygon::SetBox(float halfW, float halfH)
+{
+    m_vertices.emplace_back(-halfW, -halfH);
+    m_vertices.emplace_back(halfW, -halfH);
+    m_vertices.emplace_back(halfW, halfH);
+    m_vertices.emplace_back(-halfW, halfH);
+    m_normals.emplace_back(0.0f, -1.0f);
+    m_normals.emplace_back(1.0f, 0.0f);
+    m_normals.emplace_back(0.0f, 1.0f);
+    m_normals.emplace_back(-1.0f, 0.0f);
+}
+
 void entity::Polygon::Paint() const
 {
     glBegin(GL_LINE_LOOP);
