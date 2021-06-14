@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-const Vector2 GravityComponent::GRAVITY = Vector2(0.0f, 50.0f);
+const Vector2 GravityComponent::GRAVITY = Vector2(0.0f, 9.8f * 10.0f);
 
 GravityComponent::GravityComponent(Entity* entity)
 	: Component(entity)
