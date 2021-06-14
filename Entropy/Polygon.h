@@ -10,7 +10,6 @@ namespace entity
 	{
 		private:
 			Matrix22 m_orientationMatrix;
-			unsigned int m_vertexCount;
 			std::array<Vector2, MAX_POLYGON_VERTICES> m_vertices;
 			std::array<Vector2, MAX_POLYGON_VERTICES> m_normals;
 
@@ -20,6 +19,7 @@ namespace entity
 			Matrix22 GetOrientationMatrix() const;
 			unsigned int GetVertexCount() const;
 			Vector2 GetVertex(unsigned int index) const;
+			Vector2 GetNormal(unsigned int index) const;
 			AABB GetAABB() const override;
 			EntityType GetType() const override;
 
