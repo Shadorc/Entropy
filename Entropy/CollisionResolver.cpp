@@ -52,8 +52,7 @@ void CircleToPolygon(Collision& collision)
 	entity::Polygon* polygonB = dynamic_cast<entity::Polygon*>(collision.entityB);
 
 	// Transform circle center to Polygon model space
-	Vector2 center = circleA->position;
-	center = polygonB->GetOrientationMatrix().Transpose() * (center - polygonB->position);
+	const Vector2& center = polygonB->GetOrientationMatrix().Transpose() * (circleA->position - polygonB->position);
 
 	// Find edge with minimum penetration
 	// Exact concept as using support points in Polygon vs Polygon
