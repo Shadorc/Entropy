@@ -14,7 +14,8 @@ namespace entity
 			std::vector<Vector2> m_normals;
 
 		public:
-			Polygon(float x, float y);
+			// Rectangle
+			Polygon(float x, float y, float width, float height);
 
 			Matrix22 GetOrientationMatrix() const;
 			size_t GetVertexCount() const;
@@ -24,9 +25,6 @@ namespace entity
 			EntityType GetType() const override;
 
 			Vector2 GetSupport(const Vector2& dir) const;
-
-			// TODO
-			void SetBox(float halfW, float halfH);
 
 			void Paint() const;
 	};
