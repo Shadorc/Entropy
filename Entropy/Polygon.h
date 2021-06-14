@@ -16,6 +16,7 @@ namespace entity
 		public:
 			// Rectangle
 			Polygon(float x, float y, float width, float height);
+			Polygon(float x, float y, std::vector<Vector2>& vertices);
 
 			Matrix22 GetOrientationMatrix() const;
 			size_t GetVertexCount() const;

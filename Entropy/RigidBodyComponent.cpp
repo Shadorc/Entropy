@@ -56,17 +56,9 @@ void RigidbodyComponent::ComputeMass()
 
 		centroid /= area;
 
-		// Translate vertices to centroid (make the centroid (0, 0) for the polygon in model space)
-		// Not really necessary, but I like doing this anyway
-		// TODO: This code probably does nothing dues to GetVertex
-		for (size_t i = 0; i < polygon->GetVertexCount(); ++i)
-		{
-			polygon->GetVertex(i) -= centroid;
-		}
-
-		m_massData.mass = m_materialData.density * area;
+		m_massData.mass = m_materialData.density * area * MASS_METER_SQUARE;
 		m_massData.invMass = (m_massData.mass > 0.0f) ? (1.0f / m_massData.mass) : 0.0f;
-		m_massData.inertia = inertia * m_materialData.density;
+		m_massData.inertia = inertia * m_materialData.density * MASS_METER_SQUARE;
 		m_massData.invInertia = (m_massData.inertia > 0.0f) ? (1.0f / m_massData.inertia) : 0.0f;
 		break;
 	}

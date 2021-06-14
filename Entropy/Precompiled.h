@@ -1,5 +1,7 @@
 #pragma once
 
+typedef unsigned int uint;
+
 constexpr unsigned int WIDTH = 720;
 constexpr unsigned int HEIGHT = 720;
 

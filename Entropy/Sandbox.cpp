@@ -88,7 +88,7 @@ static std::vector<const char*> texts = {
     "F3: Show AABB",
     "F4: Show velocity",
     "Left click: Spawn circle",
-    "Right click: Spawn rectangle"
+    "Right click: Spawn polygon"
 };
 void Sandbox::RepaintDebug() const
 {
@@ -215,6 +215,22 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
             circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle, MATERIAL_ROCK));
             circle->AddComponent(ENTROPY_NEW(GravityComponent, circle));
             AddEntity(circle);
+        }
+        break;
+    case GLUT_RIGHT_BUTTON:
+        if (state == GLUT_UP)
+        {
+            std::vector<Vector2> vertices;
+            const int size = Rand(50, 100);
+            const uint vertexCount = Rand(3, 25);
+            for (uint i = 0; i < vertexCount; ++i)
+            {
+                vertices.emplace_back((float)Rand(-size, size), (float)Rand(-size, size));
+            }
+            entity::Polygon* polygon = ENTROPY_NEW(entity::Polygon, (float)x, (float)y, vertices);
+            polygon->AddComponent(ENTROPY_NEW(RigidbodyComponent, polygon, MATERIAL_ROCK));
+            polygon->AddComponent(ENTROPY_NEW(GravityComponent, polygon));
+            AddEntity(polygon);
         }
         break;
     }
