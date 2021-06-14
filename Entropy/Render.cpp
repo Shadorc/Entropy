@@ -1,24 +1,16 @@
 #include "Precompiled.h"
 
-Position ToNormalizedSpace(float x, float y)
-{
-	return { 2 * x / WIDTH - 1, 1 - 2 * y / HEIGHT };
-}
-
 void RenderLine(float x1, float y1, float x2, float y2)
 {
-	const Position& startPos = ToNormalizedSpace(x1, y1);
-	const Position& endPos = ToNormalizedSpace(x2, y2);
 	glBegin(GL_LINES);
-	glVertex2f(startPos.x, startPos.y);
-	glVertex2f(endPos.x, endPos.y);
+	glVertex2f(x1, y1);
+	glVertex2f(x2, y2);
 	glEnd();
 }
 
 void RenderText(float x, float y, const char* str)
 {
-	const Position& pos = ToNormalizedSpace(x, y);
-	glRasterPos2f(pos.x, pos.y);
+	glRasterPos2f(x, y);
 	for (int i = 0; i < std::strlen(str); ++i)
 	{
 		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *(str + i));
@@ -27,30 +19,26 @@ void RenderText(float x, float y, const char* str)
 
 void RenderRectangle(float x, float y, float width, float height)
 {
-	const Position& pos = ToNormalizedSpace(x, y);
-	float nWidth = width / WIDTH;
-	float nHeight = height / HEIGHT;
+	const float halfW = width / 2.0f;
+	const float halfH = height/ 2.0f;
 	glBegin(GL_LINE_LOOP);
-	glVertex2f(pos.x - nWidth, pos.y - nHeight);
-	glVertex2f(pos.x + nWidth, pos.y - nHeight);
-	glVertex2f(pos.x + nWidth, pos.y + nHeight);
-	glVertex2f(pos.x - nWidth, pos.y + nHeight);
+	glVertex2f(x - halfW, y - halfH);
+	glVertex2f(x + halfW, y - halfH);
+	glVertex2f(x + halfW, y + halfH);
+	glVertex2f(x - halfW, y + halfH);
 	glEnd();
 }
 
+static constexpr float ARC = TWICE_PI / CIRCLE_VERTICES;
 void RenderCircle(float x, float y, float radius)
 {
-	const Position& pos = ToNormalizedSpace(x, y);
-	const float radiusX = radius * 2.0f / WIDTH;
-	const float radiusY = radius * 2.0f / HEIGHT;
-
 	glBegin(GL_LINE_LOOP);
 	for (int i = 0; i < CIRCLE_VERTICES; i++)
 	{
-		float theta = TWICE_PI * i / CIRCLE_VERTICES;
-		float x = radiusX * cosf(theta);
-		float y = radiusY * sinf(theta);
-		glVertex2f(x + pos.x, y + pos.y);
+		const float theta = i * ARC;
+		const float radX = radius * cosf(theta);
+		const float radY = radius * sinf(theta);
+		glVertex2f(radX + x, radY + y);
 	}
 	glEnd();
 }

@@ -101,7 +101,6 @@ void Sandbox::RepaintDebug() const
     if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
     {
         glColor3f(0.5f, 0.5f, 0.9f);
-        glColor3f(0.0f, 1.0f, 0.0f);
         sprintf_s(s_strBuffer, "FPS: %.0f", round(m_fps));
         RenderText(5.0f, HEIGHT - 20.0f, s_strBuffer);
         sprintf_s(s_strBuffer, "RAM: %zu bytes", s_allocatedMemory);
@@ -125,6 +124,7 @@ void Sandbox::RepaintDebug() const
 
     if (m_debugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
     {
+        glColor3f(0.0f, 0.0f, 1.0f);
         for (Entity* entity : m_entities)
         {
             RenderLine(
