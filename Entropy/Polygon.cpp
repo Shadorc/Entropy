@@ -30,7 +30,28 @@ Vector2 entity::Polygon::GetNormal(unsigned int index) const
 
 AABB entity::Polygon::GetAABB() const
 {
-	return AABB(Vector2(), Vector2());
+    Vector2 start;
+    Vector2 end;
+    for (int i = 0; i < m_vertices.size(); ++i) {
+        const Vector2& vertex = m_vertices[i];
+        if (vertex.x < start.x)
+        {
+            start.x = vertex.x;
+        }
+        if (vertex.y < start.y)
+        {
+            start.y = vertex.y;
+        }
+        if (vertex.x > end.x)
+        {
+            end.x = vertex.x;
+        }
+        if (vertex.y > end.y)
+        {
+            end.y = vertex.y;
+        }
+    }
+	return AABB(start, end);
 }
 
 EntityType entity::Polygon::GetType() const
