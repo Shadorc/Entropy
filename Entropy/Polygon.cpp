@@ -30,25 +30,25 @@ Vector2 entity::Polygon::GetNormal(size_t index) const
 
 AABB entity::Polygon::GetAABB() const
 {
-    Vector2 start;
-    Vector2 end;
-    for (int i = 0; i < m_vertices.size(); ++i) {
-        const Vector2& vertex = m_vertices[i];
-        if (vertex.x < start.x)
+    Vector2 start(FLT_MAX, FLT_MAX);
+    Vector2 end(-FLT_MAX, -FLT_MAX);
+    for (const Vector2& vertex : m_vertices) {
+        const Vector2& vector = position + m_orientationMatrix * vertex;
+        if (vector.x < start.x)
         {
-            start.x = vertex.x;
+            start.x = vector.x;
         }
-        if (vertex.y < start.y)
+        if (vector.y < start.y)
         {
-            start.y = vertex.y;
+            start.y = vector.y;
         }
-        if (vertex.x > end.x)
+        if (vector.x > end.x)
         {
-            end.x = vertex.x;
+            end.x = vector.x;
         }
-        if (vertex.y > end.y)
+        if (vector.y > end.y)
         {
-            end.y = vertex.y;
+            end.y = vector.y;
         }
     }
 	return AABB(start, end);
