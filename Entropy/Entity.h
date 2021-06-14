@@ -29,6 +29,7 @@ public:
 
 	Vector2 position;
 	Vector2 velocity;
+	Vector2 acceleration;
 	float orientation;
 	float angularVelocity;
 	float torque;

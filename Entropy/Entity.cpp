@@ -6,9 +6,10 @@ Entity::Entity(float x, float y)
 	: m_id(s_id++)
 	, position(x, y)
 	, velocity()
-	, orientation(0)
-	, angularVelocity(0)
-	, torque(0)
+	, acceleration()
+	, orientation(0.0f)
+	, angularVelocity(0.0f)
+	, torque(0.0f)
 	, m_rigidbodyComponentCache(nullptr)
 {
 

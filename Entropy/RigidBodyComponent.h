@@ -15,7 +15,6 @@ private:
 	MassData m_massData;
 	MaterialData m_materialData;
 	FrictionData m_frictionData;
-	std::vector<Vector2> m_forces;
 
 	void ComputeMass();
 

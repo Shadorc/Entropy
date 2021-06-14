@@ -77,25 +77,24 @@ void RigidbodyComponent::ComputeMass()
 
 void RigidbodyComponent::Update(float deltaTime)
 {
-	Vector2 forcesSum;
-	for (Vector2& force : m_forces)
+	if (IsZero(m_massData.invMass))
 	{
-		forcesSum += force;
+		return;
 	}
-	
-	const Vector2& acceleration = forcesSum * m_massData.invMass;
-	m_entity->velocity += acceleration * deltaTime;
+
+	m_entity->velocity += m_entity->acceleration * deltaTime;
 	m_entity->position += m_entity->velocity * deltaTime;
 
 	m_entity->angularVelocity += m_entity->torque * m_massData.invInertia * deltaTime;
 	m_entity->orientation += m_entity->angularVelocity * deltaTime;
 
-	m_forces.clear();
+	m_entity->acceleration.Reset();
+	m_entity->torque = 0.0f;
 }
 
 void RigidbodyComponent::AddForce(const Vector2& force)
 {
-	m_forces.emplace_back(force.x, force.y);
+	m_entity->acceleration += force / m_massData.invMass;
 }
 
 MassData RigidbodyComponent::GetMassData() const

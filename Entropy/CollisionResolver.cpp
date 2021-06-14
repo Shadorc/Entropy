@@ -80,7 +80,7 @@ void CircleToPolygon(Collision& collision)
 	Vector2 v2 = polygonB->GetVertex(i2);
 
 	// Check to see if center is within polygon
-	if (separation < EPSILON)
+	if (IsZero(separation))
 	{
 		collision.normal = -(polygonB->GetOrientationMatrix() * polygonB->GetNormal(faceNormal));
 		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->position);
