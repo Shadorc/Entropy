@@ -163,8 +163,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
         float radiusAcrossNormal = radiusA.Cross(collision.normal);
         float radiusBcrossNormal = radiusB.Cross(collision.normal);
         float invMassSum = massA.invMass + massB.invMass 
-            + sqrtf(radiusAcrossNormal) * massA.invInertia 
-            + sqrtf(radiusBcrossNormal) * massB.invInertia;
+            + radiusAcrossNormal * radiusAcrossNormal * massA.invInertia
+            + radiusBcrossNormal * radiusBcrossNormal * massB.invInertia;
 
         float normalImpulseScalar = -(1.0f + restitution) * velAlongNormal / (invMassSum * collision.contacts.size());
         if (!IsZero(normalImpulseScalar))
