@@ -8,7 +8,6 @@
 enum class EntityType
 {
 	CIRCLE,
-	RECTANGLE,
 	POLYGON,
 	COUNT
 };

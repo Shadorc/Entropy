@@ -102,7 +102,7 @@ void CollisionManager::SolveCollisions()
     for (Pair<Entity>& pair : m_uniquePairs)
     {
         const Collision& collision = Solve(pair.left, pair.right);
-        if (collision.contactCount > 0)
+        if (!collision.contacts.empty())
         {
             ApplyImpulses(collision);
             CorrectPosition(collision);
@@ -124,11 +124,11 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
     const float dynamicFriction = sqrtf(rigidbodyA->GetFrictionData().dynamicFactor * rigidbodyB->GetFrictionData().dynamicFactor);
 
     float restitution = sqrtf(rigidbodyA->GetMaterialData().restitution * rigidbodyB->GetMaterialData().restitution);
-    for (unsigned int i = 0; i < collision.contactCount; ++i)
+    for (const Vector2& contact : collision.contacts)
     {
         // Calculate radii from COM to contact
-        const Vector2& radiusA = collision.contacts[i] - entityA->position;
-        const Vector2& radiusB = collision.contacts[i] - entityB->position;
+        const Vector2& radiusA = contact - entityA->position;
+        const Vector2& radiusB = contact - entityB->position;
 
         const Vector2& relativeVelocity = 
             entityB->velocity + Vector2::Cross(entityB->angularVelocity, radiusB) 
@@ -144,10 +144,10 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
         }
     }
 
-    for (unsigned int i = 0; i < collision.contactCount; ++i)
+    for (const Vector2& contact : collision.contacts)
     {
-        const Vector2& radiusA = collision.contacts[i] - entityA->position;
-        const Vector2& radiusB = collision.contacts[i] - entityB->position;
+        const Vector2& radiusA = contact - entityA->position;
+        const Vector2& radiusB = contact - entityB->position;
 
         Vector2 relativeVelocity = 
             entityB->velocity + Vector2::Cross(entityB->angularVelocity, radiusB)
@@ -166,7 +166,7 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
             + sqrtf(radiusAcrossNormal) * massA.invInertia 
             + sqrtf(radiusBcrossNormal) * massB.invInertia;
 
-        float normalImpulseScalar = -(1.0f + restitution) * velAlongNormal / (invMassSum * collision.contactCount);
+        float normalImpulseScalar = -(1.0f + restitution) * velAlongNormal / (invMassSum * collision.contacts.size());
         if (!IsZero(normalImpulseScalar))
         {
             // Apply normal impulse
@@ -187,7 +187,7 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
             // Normalize the tangent with its pre-calculated length
             tangent /= tangentLen;
 
-            const float frictionImpulseScalar = -relativeVelocity.Dot(tangent) / (invMassSum * collision.contactCount);
+            const float frictionImpulseScalar = -relativeVelocity.Dot(tangent) / (invMassSum * collision.contacts.size());
 
             // Clamp magnitude of friction and create friction impulse vector
             Vector2 frictionImpulse;

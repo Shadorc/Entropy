@@ -34,11 +34,11 @@ void RigidbodyComponent::ComputeMass()
 		float area = 0.0f;
 		float inertia = 0.0f;
 
-		for (unsigned int vertexIdx1 = 0; vertexIdx1 < polygon->GetVertexCount(); ++vertexIdx1)
+		for (size_t vertexIdx1 = 0; vertexIdx1 < polygon->GetVertexCount(); ++vertexIdx1)
 		{
 			// Triangle vertices, third vertex implied as (0, 0)
 			const Vector2& vertex1 = polygon->GetVertex(vertexIdx1);
-			unsigned int vertexIdx2 = (vertexIdx1 + 1) % polygon->GetVertexCount();
+			size_t vertexIdx2 = (vertexIdx1 + 1) % polygon->GetVertexCount();
 			const Vector2& vertex2 = polygon->GetVertex(vertexIdx2);
 
 			float z = vertex1.Cross(vertex2);
@@ -58,7 +58,8 @@ void RigidbodyComponent::ComputeMass()
 
 		// Translate vertices to centroid (make the centroid (0, 0) for the polygon in model space)
 		// Not really necessary, but I like doing this anyway
-		for (unsigned int i = 0; i < polygon->GetVertexCount(); ++i)
+		// TODO: This code probably does nothing dues to GetVertex
+		for (size_t i = 0; i < polygon->GetVertexCount(); ++i)
 		{
 			polygon->GetVertex(i) -= centroid;
 		}

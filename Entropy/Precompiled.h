@@ -10,7 +10,6 @@ constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
 constexpr unsigned int COLLISIONS_SOLVER_ITERATIONS = 10;
 
 constexpr unsigned int CIRCLE_VERTICES = 24;
-constexpr unsigned int MAX_POLYGON_VERTICES = 24;
 
 #ifdef _DEBUG
 #define ENTROPY_DEBUG

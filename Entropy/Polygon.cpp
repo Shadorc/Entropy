@@ -11,18 +11,18 @@ Matrix22 entity::Polygon::GetOrientationMatrix() const
     return m_orientationMatrix;
 }
 
-unsigned int entity::Polygon::GetVertexCount() const
+size_t entity::Polygon::GetVertexCount() const
 {
     return m_vertices.size();
 }
 
-Vector2 entity::Polygon::GetVertex(unsigned int index) const
+Vector2 entity::Polygon::GetVertex(size_t index) const
 {
     ENTROPY_ASSERT(index < m_vertices.size(), "Vertex index " << index << "out of bound (" << m_vertices.size() << ")");
     return m_vertices[index];
 }
 
-Vector2 entity::Polygon::GetNormal(unsigned int index) const
+Vector2 entity::Polygon::GetNormal(size_t index) const
 {
     ENTROPY_ASSERT(index < m_normals.size(), "Normal index " << index << "out of bound (" << m_normals.size() << ")");
     return m_normals[index];
@@ -65,9 +65,8 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
     float bestProjection = -FLT_MAX;
     Vector2 bestVertex;
 
-    for (unsigned int i = 0; i < m_vertices.size(); ++i)
+    for (const Vector2& vertex : m_vertices)
     {
-        const Vector2& vertex = m_vertices[i];
         float projection = vertex.Dot(dir);
 
         if (projection > bestProjection)
@@ -83,9 +82,9 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
 void entity::Polygon::Paint() const
 {
     glBegin(GL_LINE_LOOP);
-    for (unsigned int i = 0; i < m_vertices.size(); ++i)
+    for (const Vector2 vertex : m_vertices)
     {
-        const Vector2& vector = position + m_orientationMatrix * m_vertices[i];
+        const Vector2& vector = position + m_orientationMatrix * vertex;
         glVertex2f(vector.x, vector.y);
     }
     glEnd();

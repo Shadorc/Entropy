@@ -28,11 +28,8 @@ void CircleToCircle(Collision& collision)
 
 	if (deltaLenSq >= sumRadius * sumRadius)
 	{
-		collision.contactCount = 0;
 		return;
 	}
-
-	collision.contactCount = 1;
 
 	if (IsZero(deltaLenSq))
 	{
@@ -54,8 +51,6 @@ void CircleToPolygon(Collision& collision)
 	entity::Circle* circleA = dynamic_cast<entity::Circle*>(collision.entityA);
 	entity::Polygon* polygonB = dynamic_cast<entity::Polygon*>(collision.entityB);
 
-	collision.contactCount = 0;
-
 	// Transform circle center to Polygon model space
 	Vector2 center = circleA->position;
 	center = polygonB->GetOrientationMatrix().Transpose() * (center - polygonB->position);
@@ -63,8 +58,8 @@ void CircleToPolygon(Collision& collision)
 	// Find edge with minimum penetration
 	// Exact concept as using support points in Polygon vs Polygon
 	float separation = -FLT_MAX;
-	unsigned int faceNormal = 0;
-	for (unsigned int i = 0; i < polygonB->GetVertexCount(); ++i)
+	size_t faceNormal = 0;
+	for (size_t i = 0; i < polygonB->GetVertexCount(); ++i)
 	{
 		float s = polygonB->GetNormal(i).Dot(center - polygonB->GetVertex(i));
 
@@ -82,15 +77,14 @@ void CircleToPolygon(Collision& collision)
 
 	// Grab face's vertices
 	Vector2 v1 = polygonB->GetVertex(faceNormal);
-	unsigned int i2 = (faceNormal + 1) % polygonB->GetVertexCount();
+	size_t i2 = (faceNormal + 1) % polygonB->GetVertexCount();
 	Vector2 v2 = polygonB->GetVertex(i2);
 
 	// Check to see if center is within polygon
 	if (separation < EPSILON)
 	{
-		collision.contactCount = 1;
 		collision.normal = -(polygonB->GetOrientationMatrix() * polygonB->GetNormal(faceNormal));
-		collision.contacts[0] = collision.normal * circleA->GetRadius() + circleA->position;
+		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->position);
 		collision.penetration = circleA->GetRadius();
 		return;
 	}
@@ -108,13 +102,12 @@ void CircleToPolygon(Collision& collision)
 			return;
 		}
 
-		collision.contactCount = 1;
 		Vector2 n = v1 - center;
 		n = polygonB->GetOrientationMatrix() * n;
 		n.Normalize();
 		collision.normal = n;
 		v1 = polygonB->GetOrientationMatrix() * v1 + polygonB->position;
-		collision.contacts[0] = v1;
+		collision.contacts.push_back(v1);
 	}
 
 	// Closest to v2
@@ -125,10 +118,9 @@ void CircleToPolygon(Collision& collision)
 			return;
 					}
 
-		collision.contactCount = 1;
 		Vector2 n = v2 - center;
 		v2 = polygonB->GetOrientationMatrix() * v2 + polygonB->position;
-		collision.contacts[0] = v2;
+		collision.contacts.push_back(v2);
 		n = polygonB->GetOrientationMatrix() * n;
 		n.Normalize();
 		collision.normal = n;
@@ -145,8 +137,7 @@ void CircleToPolygon(Collision& collision)
 
 		n = polygonB->GetOrientationMatrix() * n;
 		collision.normal = -n;
-		collision.contacts[0] = collision.normal * circleA->GetRadius() + circleA->position;
-		collision.contactCount = 1;
+		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->position);
 	}
 }
 
@@ -162,10 +153,8 @@ void PolygonToPolygon(Collision& collision)
 	entity::Polygon* polygonA = dynamic_cast<entity::Polygon*>(collision.entityA);
 	entity::Polygon* polygonB = dynamic_cast<entity::Polygon*>(collision.entityB);
 
-	collision.contactCount = 0;
-
 	// Check for a separating axis with polygon polygon A's face planes
-	unsigned int faceA;
+	size_t faceA;
 	float penetrationA = FindAxisLeastPenetration(&faceA, polygonA, polygonB);
 	if (penetrationA >= 0.0f)
 	{
@@ -173,14 +162,14 @@ void PolygonToPolygon(Collision& collision)
 	}
 
 	// Check for a separating axis with polygon B's face planes
-	unsigned int faceB;
+	size_t faceB;
 	float penetrationB = FindAxisLeastPenetration(&faceB, polygonB, polygonA);
 	if (penetrationB >= 0.0f)
 	{
 		return;
 	}
 
-	unsigned int referenceIndex;
+	size_t referenceIndex;
 	bool flip; // Always point from a to b
 
 	entity::Polygon* polyRef; // Reference
@@ -256,13 +245,11 @@ void PolygonToPolygon(Collision& collision)
 	collision.normal = flip ? -refFaceNormal : refFaceNormal;
 
 	// Keep points behind reference face
-	unsigned int cp = 0; // clipped points behind reference face
 	float separation = refFaceNormal.Dot(incidentFace[0]) - refC;
 	if (separation <= 0.0f)
 	{
-		collision.contacts[cp] = incidentFace[0];
+		collision.contacts.push_back(incidentFace[0]);
 		collision.penetration = -separation;
-		++cp;
 	}
 	else
 	{
@@ -272,24 +259,20 @@ void PolygonToPolygon(Collision& collision)
 	separation = refFaceNormal.Dot(incidentFace[1]) - refC;
 	if (separation <= 0.0f)
 	{
-		collision.contacts[cp] = incidentFace[1];
-
+		collision.contacts.push_back(incidentFace[1]);
 		collision.penetration += -separation;
-		++cp;
 
 		// Average penetration
-		collision.penetration /= (float)cp;
+		collision.penetration /= (float) collision.contacts.size();
 	}
-
-	collision.contactCount = cp;
 }
 
-float FindAxisLeastPenetration(unsigned int* faceIndex, entity::Polygon* polygonA, entity::Polygon* polygonB)
+float FindAxisLeastPenetration(size_t* faceIdx, entity::Polygon* polygonA, entity::Polygon* polygonB)
 {
 	float bestDistance = -FLT_MAX;
-	unsigned int bestIndex = 0;
+	size_t bestIdx = 0;
 
-	for (unsigned int i = 0; i < polygonA->GetVertexCount(); ++i)
+	for (size_t i = 0; i < polygonA->GetVertexCount(); ++i)
 	{
 		// Retrieve a face normal from polygon A
 		Vector2 normal = polygonA->GetNormal(i);
@@ -315,26 +298,26 @@ float FindAxisLeastPenetration(unsigned int* faceIndex, entity::Polygon* polygon
 		if (penetrationDistance > bestDistance)
 		{
 			bestDistance = penetrationDistance;
-			bestIndex = i;
+			bestIdx = i;
 		}
 	}
 
-	*faceIndex = bestIndex;
+	*faceIdx = bestIdx;
 	return bestDistance;
 }
 
-void FindIncidentFace(Vector2 incidentFace[], entity::Polygon* polyRef, entity::Polygon* polyInc, unsigned int indexRef)
+void FindIncidentFace(Vector2 incidentFace[], entity::Polygon* polyRef, entity::Polygon* polyInc, size_t idxRef)
 {
-	Vector2 referenceNormal = polyRef->GetNormal(indexRef);
+	Vector2 referenceNormal = polyRef->GetNormal(idxRef);
 
 	// Calculate normal in incident's frame of reference
 	referenceNormal = polyRef->GetOrientationMatrix() * referenceNormal; // To world space
 	referenceNormal = polyInc->GetOrientationMatrix().Transpose() * referenceNormal; // To incident's model space
 
 	// Find most anti-normal face on incident polygon
-	int incidentFaceIdx = 0;
+	size_t incidentFaceIdx = 0;
 	float minDot = FLT_MAX;
-	for (unsigned int i = 0; i < polyInc->GetVertexCount(); ++i)
+	for (size_t i = 0; i < polyInc->GetVertexCount(); ++i)
 	{
 		float dot = referenceNormal.Dot(polyInc->GetNormal(i));
 		if (dot < minDot)
@@ -352,7 +335,7 @@ void FindIncidentFace(Vector2 incidentFace[], entity::Polygon* polyRef, entity::
 
 int Clip(Vector2 n, float c, Vector2 face[])
 {
-	unsigned int sp = 0;
+	int sp = 0;
 	Vector2 out[2] = {
 	  face[0],
 	  face[1]
