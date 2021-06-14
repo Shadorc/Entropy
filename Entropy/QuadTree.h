@@ -173,7 +173,7 @@ public:
 			}
 		}
 
-		m_objects.emplace_back(object);
+		m_objects.push_back(object);
 
 		if (m_objects.size() > MAX_OBJECTS && m_level < MAX_LEVELS)
 		{

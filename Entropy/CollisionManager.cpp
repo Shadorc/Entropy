@@ -20,7 +20,7 @@ void CollisionManager::Update()
     {
         if (entity->GetRigidbodyComponent() != nullptr)
         {
-            m_entities.emplace_back(entity);
+            m_entities.push_back(entity);
         }
     }
 
@@ -78,7 +78,7 @@ void CollisionManager::BroadPhase()
     while (i < m_pairs.size())
     {
         const Pair<Entity>& pair = m_pairs[i];
-        m_uniquePairs.emplace_back(pair);
+        m_uniquePairs.push_back(pair);
 
         ++i;
 

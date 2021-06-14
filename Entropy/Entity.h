@@ -34,6 +34,7 @@ public:
 	float torque;
 
 	unsigned int GetId() const;
+	// TODO: Use GetAABB(AABB& aabb) to avoid re-allocating aabb
 	virtual AABB GetAABB() const = 0;
 	virtual EntityType GetType() const = 0;
 
