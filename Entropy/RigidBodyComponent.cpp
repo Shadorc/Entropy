@@ -78,7 +78,7 @@ void RigidbodyComponent::Update(float deltaTime)
 	m_entity->position += m_entity->velocity * deltaTime;
 
 	m_entity->angularVelocity += m_entity->torque * m_massData.invInertia * deltaTime;
-	m_entity->orientation += m_entity->angularVelocity * deltaTime;
+	m_entity->Rotate(m_entity->angularVelocity * deltaTime);
 
 	m_entity->acceleration.Reset();
 	m_entity->torque = 0.0f;

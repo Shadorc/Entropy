@@ -22,6 +22,7 @@ private:
 protected:
 	const unsigned int m_id;
 	std::vector<Component*> m_components;
+	float m_orientation;
 
 public:
 	Entity(float x, float y);
@@ -30,12 +31,10 @@ public:
 	Vector2 position;
 	Vector2 velocity;
 	Vector2 acceleration;
-	float orientation;
 	float angularVelocity;
 	float torque;
 
 	unsigned int GetId() const;
-	// TODO: Use GetAABB(AABB& aabb) to avoid re-allocating aabb
 	virtual AABB GetAABB() const = 0;
 	virtual EntityType GetType() const = 0;
 
@@ -56,6 +55,7 @@ public:
 
 	void AddComponent(Component* component);
 	void ApplyImpulse(const Vector2& impulse, const Vector2& contactVector);
+	virtual void Rotate(float angle) = 0;
 	virtual void Update(float deltaTime);
 	virtual void Paint() const = 0;
 

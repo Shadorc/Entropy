@@ -16,6 +16,8 @@ namespace entity
 			AABB GetAABB() const override;
 			EntityType GetType() const override;
 
+			void Rotate(float angle) override;
+
 			void Paint() const;
 	};
 }

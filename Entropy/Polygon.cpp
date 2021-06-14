@@ -188,6 +188,12 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
     return bestVertex;
 }
 
+void entity::Polygon::Rotate(float angle)
+{
+    m_orientation += angle;
+    m_orientationMatrix.FromAngle(m_orientation);
+}
+
 void entity::Polygon::Paint() const
 {
     glBegin(GL_LINE_LOOP);

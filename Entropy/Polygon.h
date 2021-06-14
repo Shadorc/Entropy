@@ -27,6 +27,8 @@ namespace entity
 
 			Vector2 GetSupport(const Vector2& dir) const;
 
+			void Rotate(float angle) override;
+
 			void Paint() const;
 	};
 }

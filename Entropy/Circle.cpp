@@ -25,12 +25,17 @@ EntityType entity::Circle::GetType() const
     return EntityType::CIRCLE;
 }
 
+void entity::Circle::Rotate(float angle)
+{
+    m_orientation += angle;
+}
+
 void entity::Circle::Paint() const
 {
     RenderCircle(position.x, position.y, m_radius);
 
     // Render line within circle so orientation is visible
-    Vector2 radius = Vector2(-sinf(orientation), cosf(orientation));
+    Vector2 radius = Vector2(-sinf(m_orientation), cosf(m_orientation));
     radius *= m_radius;
     radius += position;
     RenderLine(position.x, position.y, radius.x, radius.y);

@@ -13,20 +13,9 @@ Matrix22::Matrix22(float m00, float m01, float m10, float m11)
 {
 }
 
-Matrix22::Matrix22(Vector2& columnX, Vector2& columnY)
-	: columnX(columnX)
-	, columnY(columnY)
-{
-}
-
 Matrix22::Matrix22(float angle)
 {
-	float cos = cosf(angle);
-	float sin = sinf(angle);
-	m00 = cos;
-	m01 = -sin;
-	m10 = sin;
-	m11 = cos;
+	FromAngle(angle);
 }
 
 void Matrix22::Reset()
@@ -35,6 +24,16 @@ void Matrix22::Reset()
 	m01 = 0.0f;
 	m10 = 0.0f;
 	m11 = 0.0f;
+}
+
+void Matrix22::FromAngle(float angle)
+{
+	float cos = cosf(angle);
+	float sin = sinf(angle);
+	m00 = cos;
+	m01 = -sin;
+	m10 = sin;
+	m11 = cos;
 }
 
 Matrix22 Matrix22::Transpose() const
