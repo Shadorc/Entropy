@@ -2,6 +2,9 @@
 
 entity::Polygon::Polygon(float x, float y)
 	: Entity(x, y)
+    , m_vertices()
+    , m_normals()
+    , m_orientationMatrix(0)
 {
 
 }
