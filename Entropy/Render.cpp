@@ -13,7 +13,7 @@ void RenderText(float x, float y, const char* str)
 	glRasterPos2f(x, y);
 	for (int i = 0; i < std::strlen(str); ++i)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *(str + i));
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str[i]);
 	}
 }
 
