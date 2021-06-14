@@ -75,9 +75,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Fichiers sources\entity</Filter>
     </ClCompile>
-    <ClCompile Include="Rectangle.cpp">
-      <Filter>Fichiers sources\entity</Filter>
-    </ClCompile>
     <ClCompile Include="Vector2.cpp">
       <Filter>Fichiers sources\math</Filter>
     </ClCompile>
@@ -126,9 +123,6 @@
       <Filter>Fichiers d%27en-tête\component</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Fichiers d%27en-tête\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Rectangle.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
     <ClInclude Include="Render.h">

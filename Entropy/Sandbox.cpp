@@ -217,15 +217,6 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
             AddEntity(circle);
         }
         break;
-    case GLUT_RIGHT_BUTTON:
-        if (state == GLUT_UP)
-        {
-            entity::Rectangle* rectangle = ENTROPY_NEW(entity::Rectangle, (float) x, (float) y, (float) Rand(30, 80), (float) Rand(30, 80));
-            rectangle->AddComponent(ENTROPY_NEW(RigidbodyComponent, rectangle, MATERIAL_ROCK));
-            rectangle->AddComponent(ENTROPY_NEW(GravityComponent, rectangle));
-            AddEntity(rectangle);
-        }
-        break;
     }
 }
 

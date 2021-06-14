@@ -32,7 +32,6 @@
     <ClCompile Include="Matrix22.cpp" />
     <ClCompile Include="MathIE.cpp" />
     <ClCompile Include="Polygon.cpp" />
-    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />
@@ -59,7 +58,6 @@
     <ClInclude Include="Render.h" />
     <ClInclude Include="GravityComponent.h" />
     <ClInclude Include="QuadTree.h" />
-    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="Vector2.h" />

@@ -25,15 +25,6 @@ void RigidbodyComponent::ComputeMass()
 		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
 		break;
 	}
-	case EntityType::RECTANGLE:
-	{
-		const entity::Rectangle* rectangle = dynamic_cast<entity::Rectangle*>(m_entity);
-		m_massData.mass = rectangle->GetWidth() * rectangle->GetHeight() * m_materialData.density * MASS_METER_SQUARE;
-		m_massData.invMass = (m_massData.mass > 0) ? (1.0f / m_massData.mass) : 0.0f;
-		m_massData.inertia = rectangle->GetWidth() * powf(rectangle->GetHeight(), 3.0f) / 12; // TODO
-		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
-		break;
-	}
 	case EntityType::POLYGON:
 	{
 		const entity::Polygon* polygon = dynamic_cast<entity::Polygon*>(m_entity);

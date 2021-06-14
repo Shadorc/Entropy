@@ -76,7 +76,6 @@ static size_t s_allocatedMemory = 0;
 #include "Matrix22.h"
 #include "Entity.h"
 #include "Circle.h"
-#include "Rectangle.h"
 #include "Polygon.h"
 #include "AABB.h"
 #include "AABBObject.h"

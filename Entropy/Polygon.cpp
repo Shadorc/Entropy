@@ -65,7 +65,8 @@ void entity::Polygon::Paint() const
     for (unsigned int i = 0; i < m_vertices.size(); ++i)
     {
         const Vector2& vector = position + m_orientationMatrix * m_vertices[i];
-        glVertex2f(vector.x, vector.y);
+        const Position& pos = ToNormalizedSpace(vector.x, vector.y);
+        glVertex2f(pos.x, pos.y);
     }
     glEnd();
 }
