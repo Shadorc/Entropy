@@ -128,10 +128,10 @@ void Sandbox::RepaintDebug() const
         for (Entity* entity : m_entities)
         {
             RenderLine(
-                entity->position.x, 
-                entity->position.y,
-                entity->position.x + entity->velocity.x,
-                entity->position.y + entity->velocity.y 
+                entity->GetPosition().x, 
+                entity->GetPosition().y,
+                entity->GetPosition().x + entity->velocity.x,
+                entity->GetPosition().y + entity->velocity.y
             );
         }
     }

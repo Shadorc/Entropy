@@ -63,7 +63,7 @@ void CollisionManager::BroadPhase()
                 continue;
             }
 
-            if (entityA->GetAABB().IntersectsWith(entityB->GetAABB()))
+            if (entityA->GetAABB()->IntersectsWith(entityB->GetAABB()))
             {
                 m_pairs.emplace_back(entityA, entityB);
             }
@@ -127,8 +127,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
     for (const Vector2& contact : collision.contacts)
     {
         // Calculate radii from COM to contact
-        const Vector2& radiusA = contact - entityA->position;
-        const Vector2& radiusB = contact - entityB->position;
+        const Vector2& radiusA = contact - entityA->GetPosition();
+        const Vector2& radiusB = contact - entityB->GetPosition();
 
         const Vector2& relativeVelocity = 
             entityB->velocity + Vector2::Cross(entityB->angularVelocity, radiusB) 
@@ -146,8 +146,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
 
     for (const Vector2& contact : collision.contacts)
     {
-        const Vector2& radiusA = contact - entityA->position;
-        const Vector2& radiusB = contact - entityB->position;
+        const Vector2& radiusA = contact - entityA->GetPosition();
+        const Vector2& radiusB = contact - entityB->GetPosition();
 
         Vector2 relativeVelocity = 
             entityB->velocity + Vector2::Cross(entityB->angularVelocity, radiusB)
@@ -212,8 +212,8 @@ void CollisionManager::CorrectPosition(const Collision& collision)
     const float invMassA = collision.entityA->GetRigidbodyComponent()->GetMassData().invMass;
     const float invMassB = collision.entityB->GetRigidbodyComponent()->GetMassData().invMass;
     const Vector2& correction = (std::max(collision.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * collision.normal * PENETRATION_PERCENT;
-    collision.entityA->position -= correction * invMassA;
-    collision.entityB->position += correction * invMassB;
+    collision.entityA->Translate(- correction * invMassA);
+    collision.entityB->Translate(correction * invMassB);
 }
 
 const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
@@ -224,5 +224,5 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 void CollisionManager::SetRootSize(int width, int height)
 {
     ENTROPY_DELETE(m_quadTree);
-	m_quadTree = ENTROPY_NEW(QuadTree<Entity>, AABB(0.0f, 0.0f, (float) width, (float) height));
+	m_quadTree = ENTROPY_NEW(QuadTree<Entity>, ENTROPY_NEW(AABB, 0.0f, 0.0f, (float) width, (float) height));
 }

@@ -35,11 +35,13 @@ static size_t s_allocatedMemory = 0;
 #ifdef ENTROPY_DEBUG
 #define ENTROPY_DELETE(x) ([&]() {\
 	s_allocatedMemory -= sizeof(x);\
-	return delete x;\
+	delete x;\
+	x = nullptr;\
 })()
 #else
 #define ENTROPY_DELETE(x) ([&]() {\
-	return delete x;\
+	delete x;\
+	x = nullptr;\
 })()
 #endif
 

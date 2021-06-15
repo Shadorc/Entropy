@@ -22,33 +22,33 @@ class QuadTree
 private:
 	const int m_level;
 	std::vector<T*> m_objects;
-	const AABB m_aabb;
+	const AABB* m_aabb;
 	QuadTree<T>* m_nodes[(int) Quadrant::COUNT];
 
 	void Split()
 	{
-		float subWidth = m_aabb.GetWidth() / 2.0f;
-		float subHeight = m_aabb.GetHeight() / 2.0f;
+		float subWidth = m_aabb->GetWidth() / 2.0f;
+		float subHeight = m_aabb->GetHeight() / 2.0f;
 
 		m_nodes[(int) Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.minX, m_aabb.minY, m_aabb.minX + subWidth, m_aabb.minY + subHeight));
+			ENTROPY_NEW(AABB, m_aabb->minX, m_aabb->minY, m_aabb->minX + subWidth, m_aabb->minY + subHeight));
 		m_nodes[(int) Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.minX + subWidth, m_aabb.minY, m_aabb.maxX, m_aabb.minY + subHeight));
+			ENTROPY_NEW(AABB, m_aabb->minX + subWidth, m_aabb->minY, m_aabb->maxX, m_aabb->minY + subHeight));
 		m_nodes[(int)Quadrant::BOTTOM_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.minX, m_aabb.minY + subHeight, m_aabb.minX + subWidth, m_aabb.maxY));
+			ENTROPY_NEW(AABB, m_aabb->minX, m_aabb->minY + subHeight, m_aabb->minX + subWidth, m_aabb->maxY));
 		m_nodes[(int)Quadrant::BOTTOM_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.minX + subWidth, m_aabb.minY + subHeight, m_aabb.maxX, m_aabb.maxY));
+			ENTROPY_NEW(AABB, m_aabb->minX + subWidth, m_aabb->minY + subHeight, m_aabb->maxX, m_aabb->maxY));
 	}
 
 	Quadrant GetQuadrant(const T* object) const
 	{
-		float middleX = m_aabb.GetX() + m_aabb.GetWidth() / 2.0f;
-		float middleY = m_aabb.GetY() + m_aabb.GetHeight() / 2.0f;
+		float middleX = m_aabb->GetX() + m_aabb->GetWidth() / 2.0f;
+		float middleY = m_aabb->GetY() + m_aabb->GetHeight() / 2.0f;
 
-		const AABB& aabb = object->GetAABB();
-		bool topQuadrant = aabb.GetY() + aabb.GetHeight() < middleY;
-		bool bottomQuadrant = aabb.GetY() > middleY;
-		if (aabb.GetX() + aabb.GetWidth() < middleX) 
+		const AABB* aabb = object->GetAABB();
+		bool topQuadrant = aabb->GetY() + aabb->GetHeight() < middleY;
+		bool bottomQuadrant = aabb->GetY() > middleY;
+		if (aabb->GetX() + aabb->GetWidth() < middleX) 
 		{
 			if (topQuadrant) 
 			{
@@ -59,7 +59,7 @@ private:
 				return Quadrant::BOTTOM_LEFT;
 			}
 		}
-		else if (aabb.GetX() > middleX)
+		else if (aabb->GetX() > middleX)
 		{
 			if (topQuadrant)
 			{
@@ -94,7 +94,7 @@ private:
 
 	std::vector<T*> SearchChildren(std::vector<T*>& returnObjects, T* object) const
 	{
-		if (!m_aabb.IntersectsWith(object->GetAABB()))
+		if (!m_aabb->IntersectsWith(object->GetAABB()))
 		{
 			return returnObjects;
 		}
@@ -112,13 +112,13 @@ private:
 	}
 
 public:
-	QuadTree(const AABB& aabb) :
+	QuadTree(const AABB* aabb) :
 		QuadTree(0, aabb)
 	{
 
 	}
 
-	QuadTree(int level, const AABB& aabb) :
+	QuadTree(int level, const AABB* aabb) :
 		m_level(level),
 		m_aabb(aabb),
 		m_nodes(),
@@ -129,6 +129,7 @@ public:
 
 	~QuadTree()
 	{
+		ENTROPY_DELETE(m_aabb);
 		Clear();
 	}
 
@@ -137,7 +138,7 @@ public:
 		return m_nodes[i];
 	}
 
-	const AABB GetAABB() const
+	const AABB* GetAABB() const
 	{
 		return m_aabb;
 	}
@@ -150,9 +151,7 @@ public:
 		{
 			if (m_nodes[i] != nullptr)
 			{
-				m_nodes[i]->Clear();
 				ENTROPY_DELETE(m_nodes[i]);
-				m_nodes[i] = nullptr;
 			}
 		}
 	}

@@ -16,6 +16,6 @@ struct AABB
 	float GetWidth() const;
 	float GetHeight() const;
 
-	bool IntersectsWith(const AABB& other) const;
+	bool IntersectsWith(const AABB* other) const;
 };
 

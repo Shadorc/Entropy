@@ -22,10 +22,11 @@ namespace entity
 			size_t GetVertexCount() const;
 			Vector2 GetVertex(size_t index) const;
 			Vector2 GetNormal(size_t index) const;
-			AABB GetAABB() const override;
 			EntityType GetType() const override;
 
 			Vector2 GetSupport(const Vector2& dir) const;
+
+			AABB* ComputeAABB() const override;
 
 			void Rotate(float angle) override;
 

@@ -29,14 +29,14 @@ float AABB::GetHeight() const
 	return maxY - minY;
 }
 
-bool AABB::IntersectsWith(const AABB& other) const
+bool AABB::IntersectsWith(const AABB* other) const
 {
 	// Exit with no intersection if found separated along an axis
-	if (maxX < other.minX || minX > other.maxX)
+	if (maxX < other->minX || minX > other->maxX)
 	{
 		return false;
 	}
-	if (maxY < other.minY || minY > other.maxY)
+	if (maxY < other->minY || minY > other->maxY)
 	{
 		return false;
 	}

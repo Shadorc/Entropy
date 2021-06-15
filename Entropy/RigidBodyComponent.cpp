@@ -75,7 +75,7 @@ void RigidbodyComponent::Update(float deltaTime)
 	}
 
 	m_entity->velocity += m_entity->force * m_massData.invMass * deltaTime;
-	m_entity->position += m_entity->velocity * deltaTime;
+	m_entity->Translate(m_entity->velocity * deltaTime);
 
 	m_entity->angularVelocity += m_entity->torque * m_massData.invInertia * deltaTime;
 	m_entity->Rotate(m_entity->angularVelocity * deltaTime);

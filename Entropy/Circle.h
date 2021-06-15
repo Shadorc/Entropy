@@ -13,8 +13,9 @@ namespace entity
 			Circle(float x, float y, float radius);
 
 			float GetRadius() const;
-			AABB GetAABB() const override;
 			EntityType GetType() const override;
+
+			AABB* ComputeAABB() const override;
 
 			void Rotate(float angle) override;
 

@@ -43,13 +43,13 @@ void RenderCircle(float x, float y, float radius)
 	glEnd();
 }
 
-void RenderAABB(const AABB& aabb)
+void RenderAABB(const AABB* aabb)
 {
 	RenderRectangle(
-		aabb.GetX() + aabb.GetWidth() / 2.0f, 
-		aabb.GetY() + aabb.GetHeight() / 2.0f, 
-		aabb.GetWidth(),
-		aabb.GetHeight()
+		aabb->GetX() + aabb->GetWidth() / 2.0f,
+		aabb->GetY() + aabb->GetHeight() / 2.0f,
+		aabb->GetWidth(),
+		aabb->GetHeight()
 	);
 }
 

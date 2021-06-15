@@ -4,13 +4,14 @@ static int s_id = 0;
 
 Entity::Entity(float x, float y) 
 	: m_id(s_id++)
-	, position(x, y)
+	, m_position(x, y)
 	, velocity()
 	, force()
 	, m_orientation(0.0f)
 	, angularVelocity(0.0f)
 	, torque(0.0f)
 	, m_rigidbodyComponentCache(nullptr)
+	, m_aabbCache(nullptr)
 {
 
 }
@@ -48,9 +49,29 @@ void Entity::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector)
 	angularVelocity += rigidbody->GetMassData().invInertia * contactVector.Cross(impulse);
 }
 
+void Entity::Translate(const Vector2& vector)
+{
+	ENTROPY_DELETE(m_aabbCache);
+	m_position += vector;
+}
+
 unsigned int Entity::GetId() const
 {
 	return m_id;
+}
+
+const Vector2 Entity::GetPosition() const
+{
+	return m_position;
+}
+
+const AABB* Entity::GetAABB() const
+{
+	if (m_aabbCache == nullptr)
+	{
+		m_aabbCache = ComputeAABB();
+	}
+	return m_aabbCache;
 }
 
 void Entity::Update(float deltaTime)

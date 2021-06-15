@@ -12,15 +12,17 @@ float entity::Circle::GetRadius() const
     return m_radius;
 }
 
-AABB entity::Circle::GetAABB() const
-{
-    return AABB(position.x - m_radius, position.y - m_radius,
-        position.x + m_radius, position.y + m_radius);
-}
-
 EntityType entity::Circle::GetType() const
 {
     return EntityType::CIRCLE;
+}
+
+AABB* entity::Circle::ComputeAABB() const
+{
+    return ENTROPY_NEW(AABB, 
+        m_position.x - m_radius, m_position.y - m_radius,
+        m_position.x + m_radius, m_position.y + m_radius
+    );
 }
 
 void entity::Circle::Rotate(float angle)
@@ -30,11 +32,11 @@ void entity::Circle::Rotate(float angle)
 
 void entity::Circle::Paint() const
 {
-    RenderCircle(position.x, position.y, m_radius);
+    RenderCircle(m_position.x, m_position.y, m_radius);
 
     // Render line within circle so orientation is visible
     Vector2 radius = Vector2(-sinf(m_orientation), cosf(m_orientation));
     radius *= m_radius;
-    radius += position;
-    RenderLine(position.x, position.y, radius.x, radius.y);
+    radius += m_position;
+    RenderLine(m_position.x, m_position.y, radius.x, radius.y);
 }

@@ -138,34 +138,6 @@ Vector2 entity::Polygon::GetNormal(size_t index) const
     return m_normals[index];
 }
 
-AABB entity::Polygon::GetAABB() const
-{
-    float minX = FLT_MAX;
-    float minY = FLT_MAX;
-    float maxX = -FLT_MAX;
-    float maxY = -FLT_MAX;
-    for (const Vector2& vertex : m_vertices) {
-        const Vector2& vector = position + m_orientationMatrix * vertex;
-        if (vector.x < minX)
-        {
-            minX = vector.x;
-        }
-        if (vector.y < minY)
-        {
-            minY = vector.y;
-        }
-        if (vector.x > maxX)
-        {
-            maxX = vector.x;
-        }
-        if (vector.y > maxY)
-        {
-            maxY = vector.y;
-        }
-    }
-	return AABB(minX, minY, maxX, maxY);
-}
-
 EntityType entity::Polygon::GetType() const
 {
 	return EntityType::POLYGON;
@@ -190,6 +162,34 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
     return bestVertex;
 }
 
+AABB* entity::Polygon::ComputeAABB() const
+{
+    float minX = FLT_MAX;
+    float minY = FLT_MAX;
+    float maxX = -FLT_MAX;
+    float maxY = -FLT_MAX;
+    for (const Vector2& vertex : m_vertices) {
+        const Vector2& vector = m_position + m_orientationMatrix * vertex;
+        if (vector.x < minX)
+        {
+            minX = vector.x;
+        }
+        if (vector.y < minY)
+        {
+            minY = vector.y;
+        }
+        if (vector.x > maxX)
+        {
+            maxX = vector.x;
+        }
+        if (vector.y > maxY)
+        {
+            maxY = vector.y;
+        }
+    }
+    return ENTROPY_NEW(AABB, minX, minY, maxX, maxY);
+}
+
 void entity::Polygon::Rotate(float angle)
 {
     m_orientation += angle;
@@ -201,7 +201,7 @@ void entity::Polygon::Paint() const
     glBegin(GL_LINE_LOOP);
     for (const Vector2& vertex : m_vertices)
     {
-        const Vector2& vector = position + m_orientationMatrix * vertex;
+        const Vector2& vector = m_position + m_orientationMatrix * vertex;
         glVertex2f(vector.x, vector.y);
     }
     glEnd();

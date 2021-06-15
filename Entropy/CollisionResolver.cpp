@@ -22,7 +22,7 @@ void CircleToCircle(Collision& collision)
 	const entity::Circle* circleA = dynamic_cast<const entity::Circle*>(collision.entityA);
 	const entity::Circle* circleB = dynamic_cast<const entity::Circle*>(collision.entityB);
 
-	const Vector2& deltaPos = circleB->position - circleA->position;
+	const Vector2& deltaPos = circleB->GetPosition() - circleA->GetPosition();
 	float deltaLenSq = deltaPos.LengthSq();
 	float sumRadius = circleA->GetRadius() + circleB->GetRadius();
 
@@ -35,14 +35,14 @@ void CircleToCircle(Collision& collision)
 	{
 		collision.penetration = circleA->GetRadius();
 		collision.normal = Vector2(1, 0);
-		collision.contacts.push_back(circleA->position);
+		collision.contacts.push_back(circleA->GetPosition());
 	}
 	else
 	{
 		float deltaLen = sqrtf(deltaLenSq);
 		collision.penetration = sumRadius - deltaLen;
 		collision.normal = deltaPos / deltaLen;
-		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->position);
+		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->GetPosition());
 	}
 }
 
@@ -52,7 +52,7 @@ void CircleToPolygon(Collision& collision)
 	entity::Polygon* polygonB = dynamic_cast<entity::Polygon*>(collision.entityB);
 
 	// Transform circle center to Polygon model space
-	const Vector2& center = polygonB->GetOrientationMatrix().Transpose() * (circleA->position - polygonB->position);
+	const Vector2& center = polygonB->GetOrientationMatrix().Transpose() * (circleA->GetPosition() - polygonB->GetPosition());
 
 	// Find edge with minimum penetration
 	// Exact concept as using support points in Polygon vs Polygon
@@ -83,7 +83,7 @@ void CircleToPolygon(Collision& collision)
 	if (IsZero(separation))
 	{
 		collision.normal = -(polygonB->GetOrientationMatrix() * polygonB->GetNormal(faceNormal));
-		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->position);
+		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->GetPosition());
 		collision.penetration = circleA->GetRadius();
 		return;
 	}
@@ -105,7 +105,7 @@ void CircleToPolygon(Collision& collision)
 		n = polygonB->GetOrientationMatrix() * n;
 		n.Normalize();
 		collision.normal = n;
-		v1 = polygonB->GetOrientationMatrix() * v1 + polygonB->position;
+		v1 = polygonB->GetOrientationMatrix() * v1 + polygonB->GetPosition();
 		collision.contacts.push_back(v1);
 	}
 	// Closest to v2
@@ -117,7 +117,7 @@ void CircleToPolygon(Collision& collision)
 		}
 
 		Vector2 n = v2 - center;
-		v2 = polygonB->GetOrientationMatrix() * v2 + polygonB->position;
+		v2 = polygonB->GetOrientationMatrix() * v2 + polygonB->GetPosition();
 		collision.contacts.push_back(v2);
 		n = polygonB->GetOrientationMatrix() * n;
 		n.Normalize();
@@ -134,7 +134,7 @@ void CircleToPolygon(Collision& collision)
 
 		n = polygonB->GetOrientationMatrix() * n;
 		collision.normal = -n;
-		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->position);
+		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->GetPosition());
 	}
 }
 
@@ -211,8 +211,8 @@ void PolygonToPolygon(Collision& collision)
 	Vector2 v2 = polyRef->GetVertex(referenceIndex);
 
 	// Transform vertices to world space
-	v1 = polyRef->GetOrientationMatrix() * v1 + polyRef->position;
-	v2 = polyRef->GetOrientationMatrix() * v2 + polyRef->position;
+	v1 = polyRef->GetOrientationMatrix() * v1 + polyRef->GetPosition();
+	v2 = polyRef->GetOrientationMatrix() * v2 + polyRef->GetPosition();
 
 	// Calculate reference face side normal in world space
 	Vector2 sidePlaneNormal = (v2 - v1);
@@ -284,8 +284,8 @@ float FindAxisLeastPenetration(size_t* faceIdx, entity::Polygon* polygonA, entit
 
 		// Retrieve vertex on face from polygon A, transform into polygon B's model space
 		Vector2 vertex = polygonA->GetVertex(i);
-		vertex = polygonA->GetOrientationMatrix() * vertex + polygonA->position;
-		vertex -= polygonB->position;
+		vertex = polygonA->GetOrientationMatrix() * vertex + polygonA->GetPosition();
+		vertex -= polygonB->GetPosition();
 		vertex = orientationTransposedB * vertex;
 
 		// Compute penetration distance (in polygon B's model space)
@@ -325,9 +325,9 @@ void FindIncidentFace(Vector2 incidentFace[], entity::Polygon* polyRef, entity::
 	}
 
 	// Assign face vertices for incidentFace
-	incidentFace[0] = polyInc->GetOrientationMatrix() * polyInc->GetVertex(incidentFaceIdx) + polyInc->position;
+	incidentFace[0] = polyInc->GetOrientationMatrix() * polyInc->GetVertex(incidentFaceIdx) + polyInc->GetPosition();
 	incidentFaceIdx = (incidentFaceIdx + 1) % polyInc->GetVertexCount();
-	incidentFace[1] = polyInc->GetOrientationMatrix() * polyInc->GetVertex(incidentFaceIdx) + polyInc->position;
+	incidentFace[1] = polyInc->GetOrientationMatrix() * polyInc->GetVertex(incidentFaceIdx) + polyInc->GetPosition();
 }
 
 int Clip(Vector2 n, float c, Vector2 face[])

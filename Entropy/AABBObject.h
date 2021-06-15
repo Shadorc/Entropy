@@ -4,6 +4,6 @@ struct AABB;
 class AABBObject
 {
 public:
-	virtual AABB GetAABB() const = 0;
+	virtual const AABB* GetAABB() const = 0;
 };
 
