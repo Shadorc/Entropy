@@ -7,7 +7,7 @@ DebugMode::DebugMode()
 
 }
 
-void DebugMode::Enable(DebugOption option)
+void DebugMode::Toggle(DebugOption option)
 {
 	m_debugMask ^= 1 << (int) option;
 }

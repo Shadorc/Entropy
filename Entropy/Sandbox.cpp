@@ -255,22 +255,24 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
     {
     case GLUT_KEY_F1:
     {
-        m_debugMode.Enable(DebugOption::PERFORMANCE_INFO);
+        m_debugMode.Toggle(DebugOption::PERFORMANCE_INFO);
         break;
     }
     case GLUT_KEY_F2:
     {
-        m_debugMode.Enable(DebugOption::SHOW_QUADTREE);
+        m_debugMode.Toggle(DebugOption::SHOW_QUADTREE);
         break;
     }
     case GLUT_KEY_F3:
     {
-        m_debugMode.Enable(DebugOption::SHOW_AABB);
+        m_debugMode.Toggle(DebugOption::SHOW_AABB);
         break;
     }
     case GLUT_KEY_F4:
-        m_debugMode.Enable(DebugOption::SHOW_VELOCITY);
+    {
+        m_debugMode.Toggle(DebugOption::SHOW_VELOCITY);
         break;
+    }
     }
 }
 #endif // ENTROPY_DEBUG

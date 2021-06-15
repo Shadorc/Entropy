@@ -18,7 +18,7 @@ private:
 public:
     DebugMode();
 
-    void Enable(DebugOption option);
+    void Toggle(DebugOption option);
     bool IsEnabled(DebugOption option) const;
 };
 #endif // ENTROPY_DEBUG
