@@ -2,31 +2,31 @@
 
 entity::Polygon::Polygon(float x, float y, float width, float height)
 	: Entity(x, y)
-    , m_vertices()
-    , m_normals()
-    , m_orientationMatrix(0)
+    , m_Vertices()
+    , m_Normals()
+    , m_OrientationMatrix(0)
 {
     const float halfW = width / 2.0f;
     const float halfH = height / 2.0f;
 
-    m_vertices.reserve(4);
-    m_vertices.emplace_back(-halfW, -halfH);
-    m_vertices.emplace_back(halfW, -halfH);
-    m_vertices.emplace_back(halfW, halfH);
-    m_vertices.emplace_back(-halfW, halfH);
+    m_Vertices.reserve(4);
+    m_Vertices.emplace_back(-halfW, -halfH);
+    m_Vertices.emplace_back(halfW, -halfH);
+    m_Vertices.emplace_back(halfW, halfH);
+    m_Vertices.emplace_back(-halfW, halfH);
 
-    m_normals.reserve(4);
-    m_normals.emplace_back(0.0f, -1.0f);
-    m_normals.emplace_back(1.0f, 0.0f);
-    m_normals.emplace_back(0.0f, 1.0f);
-    m_normals.emplace_back(-1.0f, 0.0f);
+    m_Normals.reserve(4);
+    m_Normals.emplace_back(0.0f, -1.0f);
+    m_Normals.emplace_back(1.0f, 0.0f);
+    m_Normals.emplace_back(0.0f, 1.0f);
+    m_Normals.emplace_back(-1.0f, 0.0f);
 }
 
 entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
     : Entity(x, y)
-    , m_vertices()
-    , m_normals()
-    , m_orientationMatrix(0)
+    , m_Vertices()
+    , m_Normals()
+    , m_OrientationMatrix(0)
 {
     ENTROPY_ASSERT(vertices.size() > 2, "Number of polygon vertices cannot be less than 2");
 
@@ -99,43 +99,43 @@ entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
     // Copy vertices into shape's vertices
     for (size_t i = 0; i < outCount; ++i)
     {
-        m_vertices.push_back(vertices[hull[i]]);
+        m_Vertices.push_back(vertices[hull[i]]);
     }
 
     // Compute face normals
     for (size_t i1 = 0; i1 < outCount; ++i1)
     {
         size_t i2 = (i1 + 1) % outCount;
-        const Vector2& face = m_vertices[i2] - m_vertices[i1];
+        const Vector2& face = m_Vertices[i2] - m_Vertices[i1];
 
         ENTROPY_ASSERT(!IsZero(face.LengthSq()), "Zero-length edge");
 
         Vector2 normal = -face.Tangent();
         normal.Normalize();
-        m_normals.push_back(normal);
+        m_Normals.push_back(normal);
     }
 }
 
 Matrix22 entity::Polygon::GetOrientationMatrix() const
 {
-    return m_orientationMatrix;
+    return m_OrientationMatrix;
 }
 
 size_t entity::Polygon::GetVertexCount() const
 {
-    return m_vertices.size();
+    return m_Vertices.size();
 }
 
 Vector2 entity::Polygon::GetVertex(size_t index) const
 {
-    ENTROPY_ASSERT(index < m_vertices.size(), "Vertex index " << index << "out of bound (" << m_vertices.size() << ")");
-    return m_vertices[index];
+    ENTROPY_ASSERT(index < m_Vertices.size(), "Vertex index " << index << "out of bound (" << m_Vertices.size() << ")");
+    return m_Vertices[index];
 }
 
 Vector2 entity::Polygon::GetNormal(size_t index) const
 {
-    ENTROPY_ASSERT(index < m_normals.size(), "Normal index " << index << "out of bound (" << m_normals.size() << ")");
-    return m_normals[index];
+    ENTROPY_ASSERT(index < m_Normals.size(), "Normal index " << index << "out of bound (" << m_Normals.size() << ")");
+    return m_Normals[index];
 }
 
 EntityType entity::Polygon::GetType() const
@@ -149,7 +149,7 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
     float bestProjection = -FLT_MAX;
     Vector2 bestVertex;
 
-    for (const Vector2& vertex : m_vertices)
+    for (const Vector2& vertex : m_Vertices)
     {
         const float projection = vertex.Dot(dir);
         if (projection > bestProjection)
@@ -168,8 +168,8 @@ AABB* entity::Polygon::ComputeAABB() const
     float minY = FLT_MAX;
     float maxX = -FLT_MAX;
     float maxY = -FLT_MAX;
-    for (const Vector2& vertex : m_vertices) {
-        const Vector2& vector = m_position + m_orientationMatrix * vertex;
+    for (const Vector2& vertex : m_Vertices) {
+        const Vector2& vector = m_Position + m_OrientationMatrix * vertex;
         if (vector.x < minX)
         {
             minX = vector.x;
@@ -192,16 +192,16 @@ AABB* entity::Polygon::ComputeAABB() const
 
 void entity::Polygon::Rotate(float angle)
 {
-    m_orientation += angle;
-    m_orientationMatrix.FromAngle(m_orientation);
+    m_Orientation += angle;
+    m_OrientationMatrix.FromAngle(m_Orientation);
 }
 
 void entity::Polygon::Paint() const
 {
     glBegin(GL_LINE_LOOP);
-    for (const Vector2& vertex : m_vertices)
+    for (const Vector2& vertex : m_Vertices)
     {
-        const Vector2& vector = m_position + m_orientationMatrix * vertex;
+        const Vector2& vector = m_Position + m_OrientationMatrix * vertex;
         glVertex2f(vector.x, vector.y);
     }
     glEnd();

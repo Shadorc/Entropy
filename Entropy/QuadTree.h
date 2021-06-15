@@ -20,30 +20,30 @@ template<typename T>
 class QuadTree
 {
 private:
-	const int m_level;
-	std::vector<T*> m_objects;
-	const AABB* m_aabb;
-	QuadTree<T>* m_nodes[(int) Quadrant::COUNT];
+	const int m_Level;
+	std::vector<T*> m_Objects;
+	const AABB* m_Aabb;
+	QuadTree<T>* m_Nodes[(int) Quadrant::COUNT];
 
 	void Split()
 	{
-		float subWidth = m_aabb->GetWidth() / 2.0f;
-		float subHeight = m_aabb->GetHeight() / 2.0f;
+		float subWidth = m_Aabb->GetWidth() / 2.0f;
+		float subHeight = m_Aabb->GetHeight() / 2.0f;
 
-		m_nodes[(int) Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			ENTROPY_NEW(AABB, m_aabb->minX, m_aabb->minY, m_aabb->minX + subWidth, m_aabb->minY + subHeight));
-		m_nodes[(int) Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			ENTROPY_NEW(AABB, m_aabb->minX + subWidth, m_aabb->minY, m_aabb->maxX, m_aabb->minY + subHeight));
-		m_nodes[(int)Quadrant::BOTTOM_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			ENTROPY_NEW(AABB, m_aabb->minX, m_aabb->minY + subHeight, m_aabb->minX + subWidth, m_aabb->maxY));
-		m_nodes[(int)Quadrant::BOTTOM_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			ENTROPY_NEW(AABB, m_aabb->minX + subWidth, m_aabb->minY + subHeight, m_aabb->maxX, m_aabb->maxY));
+		m_Nodes[(int) Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight));
+		m_Nodes[(int) Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY, m_Aabb->maxX, m_Aabb->minY + subHeight));
+		m_Nodes[(int)Quadrant::BOTTOM_LEFT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY + subHeight, m_Aabb->minX + subWidth, m_Aabb->maxY));
+		m_Nodes[(int)Quadrant::BOTTOM_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight, m_Aabb->maxX, m_Aabb->maxY));
 	}
 
 	Quadrant GetQuadrant(const T* object) const
 	{
-		float middleX = m_aabb->GetX() + m_aabb->GetWidth() / 2.0f;
-		float middleY = m_aabb->GetY() + m_aabb->GetHeight() / 2.0f;
+		float middleX = m_Aabb->GetX() + m_Aabb->GetWidth() / 2.0f;
+		float middleY = m_Aabb->GetY() + m_Aabb->GetHeight() / 2.0f;
 
 		const AABB* aabb = object->GetAABB();
 		bool topQuadrant = aabb->GetY() + aabb->GetHeight() < middleY;
@@ -83,24 +83,24 @@ private:
 			return SearchChildren(returnObjects, object);
 		}
 
-		if (quadrant != Quadrant::INVALID && m_nodes[0] != nullptr)
+		if (quadrant != Quadrant::INVALID && m_Nodes[0] != nullptr)
 		{
-			m_nodes[(int) quadrant]->Search(returnObjects, object);
+			m_Nodes[(int) quadrant]->Search(returnObjects, object);
 		}
 
-		returnObjects.insert(returnObjects.end(), m_objects.begin(), m_objects.end());
+		returnObjects.insert(returnObjects.end(), m_Objects.begin(), m_Objects.end());
 		return returnObjects;
 	}
 
 	std::vector<T*> SearchChildren(std::vector<T*>& returnObjects, T* object) const
 	{
-		if (!m_aabb->IntersectsWith(object->GetAABB()))
+		if (!m_Aabb->IntersectsWith(object->GetAABB()))
 		{
 			return returnObjects;
 		}
 
-		returnObjects.insert(returnObjects.end(), m_objects.begin(), m_objects.end());
-		for (const QuadTree<T>* node : m_nodes)
+		returnObjects.insert(returnObjects.end(), m_Objects.begin(), m_Objects.end());
+		for (const QuadTree<T>* node : m_Nodes)
 		{
 			if (node != nullptr)
 			{
@@ -119,72 +119,72 @@ public:
 	}
 
 	QuadTree(int level, const AABB* aabb) :
-		m_level(level),
-		m_aabb(aabb),
-		m_nodes(),
-		m_objects()
+		m_Level(level),
+		m_Aabb(aabb),
+		m_Nodes(),
+		m_Objects()
 	{
 
 	}
 
 	~QuadTree()
 	{
-		ENTROPY_DELETE(m_aabb);
+		ENTROPY_DELETE(m_Aabb);
 		Clear();
 	}
 
 	const QuadTree<T>* GetNode(int i) const
 	{
-		return m_nodes[i];
+		return m_Nodes[i];
 	}
 
 	const AABB* GetAABB() const
 	{
-		return m_aabb;
+		return m_Aabb;
 	}
 
 	void Clear()
 	{
-		m_objects.clear();
+		m_Objects.clear();
 
 		for (int i = 0; i < (int) Quadrant::COUNT; ++i)
 		{
-			if (m_nodes[i] != nullptr)
+			if (m_Nodes[i] != nullptr)
 			{
-				ENTROPY_DELETE(m_nodes[i]);
+				ENTROPY_DELETE(m_Nodes[i]);
 			}
 		}
 	}
 
 	void Insert(T* object)
 	{
-		if (m_nodes[0] != nullptr)
+		if (m_Nodes[0] != nullptr)
 		{
 			Quadrant quadrant = GetQuadrant(object);
 			if (quadrant != Quadrant::INVALID)
 			{
-				m_nodes[(int) quadrant]->Insert(object);
+				m_Nodes[(int) quadrant]->Insert(object);
 				return;
 			}
 		}
 
-		m_objects.push_back(object);
+		m_Objects.push_back(object);
 
-		if (m_objects.size() > MAX_OBJECTS && m_level < MAX_LEVELS)
+		if (m_Objects.size() > MAX_OBJECTS && m_Level < MAX_LEVELS)
 		{
-			if (m_nodes[0] == nullptr) 
+			if (m_Nodes[0] == nullptr) 
 			{
 				Split();
 			}
 
 			int i = 0;
-			while (i < m_objects.size()) 
+			while (i < m_Objects.size()) 
 			{
-				Quadrant quadrant = GetQuadrant(m_objects[i]);
+				Quadrant quadrant = GetQuadrant(m_Objects[i]);
 				if (quadrant != Quadrant::INVALID)
 				{
-					m_nodes[(int) quadrant]->Insert(m_objects[i]);
-					m_objects.erase(m_objects.begin() + i);
+					m_Nodes[(int) quadrant]->Insert(m_Objects[i]);
+					m_Objects.erase(m_Objects.begin() + i);
 				}
 				else
 				{

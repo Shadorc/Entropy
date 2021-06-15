@@ -12,9 +12,9 @@ class Entity;
 class RigidbodyComponent: public Component
 {
 private:
-	MassData m_massData;
-	MaterialData m_materialData;
-	FrictionData m_frictionData;
+	MassData m_MassData;
+	MaterialData m_MaterialData;
+	FrictionData m_FrictionData;
 
 	void ComputeMass();
 

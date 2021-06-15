@@ -13,7 +13,7 @@ enum class DebugOption
 class DebugMode
 {
 private:
-    int m_debugMask;
+    int m_Mask;
 
 public:
     DebugMode();

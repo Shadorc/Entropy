@@ -9,9 +9,9 @@ namespace entity
 	class Polygon : public Entity
 	{
 		private:
-			Matrix22 m_orientationMatrix;
-			std::vector<Vector2> m_vertices;
-			std::vector<Vector2> m_normals;
+			Matrix22 m_OrientationMatrix;
+			std::vector<Vector2> m_Vertices;
+			std::vector<Vector2> m_Normals;
 
 		public:
 			// Rectangle

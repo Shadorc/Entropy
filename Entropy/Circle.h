@@ -7,7 +7,7 @@ namespace entity
 	class Circle : public Entity
 	{
 		private:
-			float m_radius;
+			float m_Radius;
 
 		public:
 			Circle(float x, float y, float radius);

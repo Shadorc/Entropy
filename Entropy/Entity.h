@@ -17,14 +17,14 @@ class RigidbodyComponent;
 class Entity: public AABBObject
 {
 private:
-	mutable RigidbodyComponent* m_rigidbodyComponentCache;
-	mutable AABB* m_aabbCache;
+	mutable RigidbodyComponent* m_RigidbodyComponentCache;
+	mutable AABB* m_AabbCache;
 
 protected:
-	const unsigned int m_id;
-	std::vector<Component*> m_components;
-	Vector2 m_position;
-	float m_orientation;
+	const unsigned int m_Id;
+	std::vector<Component*> m_Components;
+	Vector2 m_Position;
+	float m_Orientation;
 
 public:
 	Entity(float x, float y);
@@ -43,7 +43,7 @@ public:
 	template<typename T>
 	T* GetComponent() const
 	{
-		for (Component* itr : m_components)
+		for (Component* itr : m_Components)
 		{
 			T* component = dynamic_cast<T*>(itr);
 			if (component != nullptr)

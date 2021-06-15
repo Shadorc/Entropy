@@ -7,14 +7,14 @@ constexpr float MAX_ACCUMULATOR_TIME = 0.2f;
 Sandbox* Sandbox::instance = nullptr;
 
 Sandbox::Sandbox():
-    m_collisionManager(ENTROPY_NEW(CollisionManager, this))
-    , m_entities()
-    , m_updating(false)
-    , m_fps(0)
-    , m_lastLoopTime(0)
-    , m_accumulatorTime(0)
+    m_CollisionManager(ENTROPY_NEW(CollisionManager, this))
+    , m_Entities()
+    , m_Updating(false)
+    , m_Fps(0)
+    , m_LastLoopTime(0)
+    , m_AccumulatorTime(0)
 #ifdef ENTROPY_DEBUG
-    , m_debugMode()
+    , m_DebugMode()
 #endif // ENTROPY_DEBUG
 {
     instance = this;
@@ -22,14 +22,14 @@ Sandbox::Sandbox():
 
 Sandbox::~Sandbox()
 {
-    ENTROPY_DELETE(m_collisionManager);
+    ENTROPY_DELETE(m_CollisionManager);
     instance = nullptr;
 }
 
 void Sandbox::Start()
 {
-	m_updating = true;
-    m_lastLoopTime = glutGet(GLUT_ELAPSED_TIME);
+	m_Updating = true;
+    m_LastLoopTime = glutGet(GLUT_ELAPSED_TIME);
 
     glutDisplayFunc(&OnLoopWrapper);
     glutVisibilityFunc(&OnVisibleWrapper);
@@ -42,7 +42,7 @@ void Sandbox::Start()
 
 void Sandbox::Stop()
 {
-	m_updating = false;
+	m_Updating = false;
 
     glutDisplayFunc(nullptr);
     glutVisibilityFunc(nullptr);
@@ -56,19 +56,19 @@ void Sandbox::Stop()
 
 void Sandbox::Update(float deltaTime)
 {
-	for (Entity* entity : m_entities)
+	for (Entity* entity : m_Entities)
 	{
 		entity->Update(deltaTime);
 	}
 
-    m_collisionManager->Update();
+    m_CollisionManager->Update();
 }
 
 void Sandbox::Repaint() const
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0f, 1.0f, 0.0f);
-    for (Entity* entity : m_entities)
+    for (Entity* entity : m_Entities)
     {
         entity->Paint();
     }
@@ -98,34 +98,34 @@ void Sandbox::RepaintDebug() const
         RenderText(5.0f, (i + 1) * 15.0f, texts[i]);
     }
 
-    if (m_debugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
+    if (m_DebugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
     {
         glColor3f(0.5f, 0.5f, 0.9f);
-        sprintf_s(s_strBuffer, "FPS: %.0f", round(m_fps));
+        sprintf_s(s_strBuffer, "FPS: %.0f", round(m_Fps));
         RenderText(5.0f, HEIGHT - 20.0f, s_strBuffer);
         sprintf_s(s_strBuffer, "RAM: %zu bytes", s_allocatedMemory);
         RenderText(5.0f, HEIGHT - 5.0f, s_strBuffer);
     }
 
-    if (m_debugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
+    if (m_DebugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
     {
         glColor3f(0.0f, 1.0f, 1.0f);
-        RenderQuadTree(m_collisionManager->GetRootQuadTree());
+        RenderQuadTree(m_CollisionManager->GetRootQuadTree());
     }
 
-    if (m_debugMode.IsEnabled(DebugOption::SHOW_AABB))
+    if (m_DebugMode.IsEnabled(DebugOption::SHOW_AABB))
     {
         glColor3f(1.0f, 0.0f, 0.0f);
-        for (Entity* entity : m_entities)
+        for (Entity* entity : m_Entities)
         {
             RenderAABB(entity->GetAABB());
         }
     }
 
-    if (m_debugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
+    if (m_DebugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
     {
         glColor3f(0.0f, 0.0f, 1.0f);
-        for (Entity* entity : m_entities)
+        for (Entity* entity : m_Entities)
         {
             RenderLine(
                 entity->GetPosition().x, 
@@ -140,20 +140,20 @@ void Sandbox::RepaintDebug() const
 
 std::vector<Entity*> Sandbox::GetEntities() const
 {
-    return m_entities;
+    return m_Entities;
 }
 
 void Sandbox::AddEntity(Entity* entity)
 {
-	m_entities.push_back(entity);
+	m_Entities.push_back(entity);
 }
 
 void Sandbox::RemoveEntity(Entity* entity)
 {
-    auto it = std::find(m_entities.begin(), m_entities.end(), entity);
-    if (it != m_entities.end())
+    auto it = std::find(m_Entities.begin(), m_Entities.end(), entity);
+    if (it != m_Entities.end())
     {
-		m_entities.erase(it);
+		m_Entities.erase(it);
     }
 }
 
@@ -161,27 +161,27 @@ static const float alpha = 0.95f;
 void Sandbox::OnLoop()
 {
     int now = glutGet(GLUT_ELAPSED_TIME);
-    float elapsed = (float) (now - m_lastLoopTime) / CLOCKS_PER_SEC;
+    float elapsed = (float) (now - m_LastLoopTime) / CLOCKS_PER_SEC;
 
 #ifdef ENTROPY_DEBUG
     if (!IsZero(elapsed))
     {
-        m_fps = alpha * m_fps + (1.0f - alpha) * (1.0f / elapsed);
+        m_Fps = alpha * m_Fps + (1.0f - alpha) * (1.0f / elapsed);
     }
 #endif
 
-    m_accumulatorTime += elapsed;
-    m_lastLoopTime = now;
+    m_AccumulatorTime += elapsed;
+    m_LastLoopTime = now;
 
-    if (m_accumulatorTime > MAX_ACCUMULATOR_TIME)
+    if (m_AccumulatorTime > MAX_ACCUMULATOR_TIME)
     {
-        m_accumulatorTime = MAX_ACCUMULATOR_TIME;
+        m_AccumulatorTime = MAX_ACCUMULATOR_TIME;
     }
 
-    while (m_accumulatorTime >= DELTA_TIME)
+    while (m_AccumulatorTime >= DELTA_TIME)
     {
         Update(DELTA_TIME);
-        m_accumulatorTime -= DELTA_TIME;
+        m_AccumulatorTime -= DELTA_TIME;
     }
 
     Repaint();
@@ -255,22 +255,22 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
     {
     case GLUT_KEY_F1:
     {
-        m_debugMode.Toggle(DebugOption::PERFORMANCE_INFO);
+        m_DebugMode.Toggle(DebugOption::PERFORMANCE_INFO);
         break;
     }
     case GLUT_KEY_F2:
     {
-        m_debugMode.Toggle(DebugOption::SHOW_QUADTREE);
+        m_DebugMode.Toggle(DebugOption::SHOW_QUADTREE);
         break;
     }
     case GLUT_KEY_F3:
     {
-        m_debugMode.Toggle(DebugOption::SHOW_AABB);
+        m_DebugMode.Toggle(DebugOption::SHOW_AABB);
         break;
     }
     case GLUT_KEY_F4:
     {
-        m_debugMode.Toggle(DebugOption::SHOW_VELOCITY);
+        m_DebugMode.Toggle(DebugOption::SHOW_VELOCITY);
         break;
     }
     }

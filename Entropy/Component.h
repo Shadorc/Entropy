@@ -4,7 +4,7 @@ class Entity;
 class Component
 {
 protected:
-	Entity* m_entity;
+	Entity* m_Entity;
 
 public:
 	Component(Entity* entity);

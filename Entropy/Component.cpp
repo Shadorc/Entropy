@@ -1,11 +1,11 @@
 #include "Precompiled.h"
 
 Component::Component(Entity* entity)
-	: m_entity(entity)
+	: m_Entity(entity)
 {
 }
 
 const Entity* Component::GetEntity() const
 {
-	return m_entity;
+	return m_Entity;
 }

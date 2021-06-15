@@ -1,26 +1,26 @@
 #include "Precompiled.h"
 
 CollisionManager::CollisionManager(const Sandbox* sandbox) 
-    : m_sandbox(sandbox)
-    , m_quadTree(nullptr)
+    : m_Sandbox(sandbox)
+    , m_QuadTree(nullptr)
 {
     SetRootSize(WIDTH, HEIGHT);
 }
 
 CollisionManager::~CollisionManager()
 {
-    ENTROPY_DELETE(m_quadTree);
+    ENTROPY_DELETE(m_QuadTree);
 }
 
 void CollisionManager::Update()
 {
     // Push all entities with a rigid body inside m_entities
-    m_entities.clear();
-    for (Entity* entity : m_sandbox->GetEntities())
+    m_Entities.clear();
+    for (Entity* entity : m_Sandbox->GetEntities())
     {
         if (entity->GetRigidbodyComponent() != nullptr)
         {
-            m_entities.push_back(entity);
+            m_Entities.push_back(entity);
         }
     }
 
@@ -34,22 +34,22 @@ void CollisionManager::Update()
 
 void CollisionManager::UpdateQuadTree()
 {
-	m_quadTree->Clear();
-	for (Entity* entity : m_entities)
+	m_QuadTree->Clear();
+	for (Entity* entity : m_Entities)
 	{
-	    m_quadTree->Insert(entity);
+	    m_QuadTree->Insert(entity);
 	}
 }
 
 void CollisionManager::BroadPhase()
 {
-    m_pairs.clear(); 
-    m_uniquePairs.clear();
+    m_Pairs.clear(); 
+    m_UniquePairs.clear();
 
     // Detect all colliding entities and push the corresponding pair inside m_pairs
-    for (Entity* entityA : m_entities)
+    for (Entity* entityA : m_Entities)
     {
-        for (Entity* entityB : m_quadTree->Search(entityA))
+        for (Entity* entityB : m_QuadTree->Search(entityA))
         {
             if (entityA == entityB)
             {
@@ -65,26 +65,26 @@ void CollisionManager::BroadPhase()
 
             if (entityA->GetAABB()->IntersectsWith(entityB->GetAABB()))
             {
-                m_pairs.emplace_back(entityA, entityB);
+                m_Pairs.emplace_back(entityA, entityB);
             }
         }
     }
 
     // Sort the m_pairs vector so that all similar pairs follow each other    
-    std::sort(m_pairs.begin(), m_pairs.end(), PairComparator<Entity>);
+    std::sort(m_Pairs.begin(), m_Pairs.end(), PairComparator<Entity>);
 
     // Push non-duplicate pairs inside m_uniquePairs
     int i = 0;
-    while (i < m_pairs.size())
+    while (i < m_Pairs.size())
     {
-        const Pair<Entity>& pair = m_pairs[i];
-        m_uniquePairs.push_back(pair);
+        const Pair<Entity>& pair = m_Pairs[i];
+        m_UniquePairs.push_back(pair);
 
         ++i;
 
-        while (i < m_pairs.size())
+        while (i < m_Pairs.size())
         {
-            const Pair<Entity>& otherPair = m_pairs[i];
+            const Pair<Entity>& otherPair = m_Pairs[i];
             if (pair.left == otherPair.right && pair.right == otherPair.left)
             {
                 ++i;
@@ -99,7 +99,7 @@ void CollisionManager::BroadPhase()
 
 void CollisionManager::SolveCollisions()
 {
-    for (Pair<Entity>& pair : m_uniquePairs)
+    for (Pair<Entity>& pair : m_UniquePairs)
     {
         const Collision& collision = Solve(pair.left, pair.right);
         if (!collision.contacts.empty())
@@ -218,11 +218,11 @@ void CollisionManager::CorrectPosition(const Collision& collision)
 
 const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 {
-    return m_quadTree;
+    return m_QuadTree;
 }
 
 void CollisionManager::SetRootSize(int width, int height)
 {
-    ENTROPY_DELETE(m_quadTree);
-	m_quadTree = ENTROPY_NEW(QuadTree<Entity>, ENTROPY_NEW(AABB, 0.0f, 0.0f, (float) width, (float) height));
+    ENTROPY_DELETE(m_QuadTree);
+	m_QuadTree = ENTROPY_NEW(QuadTree<Entity>, ENTROPY_NEW(AABB, 0.0f, 0.0f, (float) width, (float) height));
 }

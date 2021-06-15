@@ -3,42 +3,42 @@
 static int s_id = 0;
 
 Entity::Entity(float x, float y) 
-	: m_id(s_id++)
-	, m_position(x, y)
+	: m_Id(s_id++)
+	, m_Position(x, y)
 	, velocity()
 	, force()
-	, m_orientation(0.0f)
+	, m_Orientation(0.0f)
 	, angularVelocity(0.0f)
 	, torque(0.0f)
-	, m_rigidbodyComponentCache(nullptr)
-	, m_aabbCache(nullptr)
+	, m_RigidbodyComponentCache(nullptr)
+	, m_AabbCache(nullptr)
 {
 
 }
 
 Entity::~Entity()
 {
-	ENTROPY_DELETE(m_rigidbodyComponentCache);
-	for (Component* component : m_components)
+	ENTROPY_DELETE(m_RigidbodyComponentCache);
+	for (Component* component : m_Components)
 	{
 		ENTROPY_DELETE(component);
 	}
-	m_components.clear();
+	m_Components.clear();
 }
 
 // Cache Rigidbody component
 RigidbodyComponent* Entity::GetRigidbodyComponent() const
 {
-	if (m_rigidbodyComponentCache == nullptr)
+	if (m_RigidbodyComponentCache == nullptr)
 	{
-		m_rigidbodyComponentCache = GetComponent<RigidbodyComponent>();
+		m_RigidbodyComponentCache = GetComponent<RigidbodyComponent>();
 	}
-	return m_rigidbodyComponentCache;
+	return m_RigidbodyComponentCache;
 }
 
 void Entity::AddComponent(Component* component)
 {
-	m_components.push_back(component);
+	m_Components.push_back(component);
 }
 
 void Entity::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector)
@@ -51,32 +51,32 @@ void Entity::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector)
 
 void Entity::Translate(const Vector2& vector)
 {
-	ENTROPY_DELETE(m_aabbCache);
-	m_position += vector;
+	ENTROPY_DELETE(m_AabbCache);
+	m_Position += vector;
 }
 
 unsigned int Entity::GetId() const
 {
-	return m_id;
+	return m_Id;
 }
 
 const Vector2 Entity::GetPosition() const
 {
-	return m_position;
+	return m_Position;
 }
 
 const AABB* Entity::GetAABB() const
 {
-	if (m_aabbCache == nullptr)
+	if (m_AabbCache == nullptr)
 	{
-		m_aabbCache = ComputeAABB();
+		m_AabbCache = ComputeAABB();
 	}
-	return m_aabbCache;
+	return m_AabbCache;
 }
 
 void Entity::Update(float deltaTime)
 {
-	for (Component* component : m_components)
+	for (Component* component : m_Components)
 	{
 		component->Update(deltaTime);
 	}
@@ -84,5 +84,5 @@ void Entity::Update(float deltaTime)
 
 bool Entity::operator==(Entity& other) const
 {
-	return m_id == other.m_id;
+	return m_Id == other.m_Id;
 }

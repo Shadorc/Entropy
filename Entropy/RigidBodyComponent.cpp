@@ -4,30 +4,30 @@ constexpr float MASS_METER_SQUARE = 1.0f / 1000.0f; // kg.m-2
 
 RigidbodyComponent::RigidbodyComponent(Entity* entity, MaterialData materialData)
 	: Component(entity)
-	, m_massData()
-	, m_materialData(materialData)
-	, m_frictionData({ 0.2f, 0.1f })
+	, m_MassData()
+	, m_MaterialData(materialData)
+	, m_FrictionData({ 0.2f, 0.1f })
 {
 	ComputeMass();
 }
 
 void RigidbodyComponent::ComputeMass()
 {
-	switch (m_entity->GetType())
+	switch (m_Entity->GetType())
 	{
 	case EntityType::CIRCLE:
 	{
-		const entity::Circle* circle = dynamic_cast<entity::Circle*>(m_entity);
+		const entity::Circle* circle = dynamic_cast<entity::Circle*>(m_Entity);
 		const float radiusSq = circle->GetRadius() * circle->GetRadius();
-		m_massData.mass = PI * radiusSq * m_materialData.density * MASS_METER_SQUARE;
-		m_massData.invMass = (m_massData.mass > 0) ? (1.0f / m_massData.mass) : 0.0f;
-		m_massData.inertia = m_massData.mass * radiusSq;
-		m_massData.invInertia = (m_massData.inertia > 0) ? (1.0f / m_massData.inertia) : 0.0f;
+		m_MassData.mass = PI * radiusSq * m_MaterialData.density * MASS_METER_SQUARE;
+		m_MassData.invMass = (m_MassData.mass > 0) ? (1.0f / m_MassData.mass) : 0.0f;
+		m_MassData.inertia = m_MassData.mass * radiusSq;
+		m_MassData.invInertia = (m_MassData.inertia > 0) ? (1.0f / m_MassData.inertia) : 0.0f;
 		break;
 	}
 	case EntityType::POLYGON:
 	{
-		const entity::Polygon* polygon = dynamic_cast<entity::Polygon*>(m_entity);
+		const entity::Polygon* polygon = dynamic_cast<entity::Polygon*>(m_Entity);
 
 		// Calculate centroid and moment of interia
 		Vector2 centroid;
@@ -56,10 +56,10 @@ void RigidbodyComponent::ComputeMass()
 
 		centroid /= area;
 
-		m_massData.mass = m_materialData.density * area * MASS_METER_SQUARE;
-		m_massData.invMass = (m_massData.mass > 0.0f) ? (1.0f / m_massData.mass) : 0.0f;
-		m_massData.inertia = inertia * m_materialData.density * MASS_METER_SQUARE;
-		m_massData.invInertia = (m_massData.inertia > 0.0f) ? (1.0f / m_massData.inertia) : 0.0f;
+		m_MassData.mass = m_MaterialData.density * area * MASS_METER_SQUARE;
+		m_MassData.invMass = (m_MassData.mass > 0.0f) ? (1.0f / m_MassData.mass) : 0.0f;
+		m_MassData.inertia = inertia * m_MaterialData.density * MASS_METER_SQUARE;
+		m_MassData.invInertia = (m_MassData.inertia > 0.0f) ? (1.0f / m_MassData.inertia) : 0.0f;
 		break;
 	}
 	default:
@@ -69,38 +69,38 @@ void RigidbodyComponent::ComputeMass()
 
 void RigidbodyComponent::Update(float deltaTime)
 {
-	if (IsZero(m_massData.invMass))
+	if (IsZero(m_MassData.invMass))
 	{
 		return;
 	}
 
-	m_entity->velocity += m_entity->force * m_massData.invMass * deltaTime;
-	m_entity->Translate(m_entity->velocity * deltaTime);
+	m_Entity->velocity += m_Entity->force * m_MassData.invMass * deltaTime;
+	m_Entity->Translate(m_Entity->velocity * deltaTime);
 
-	m_entity->angularVelocity += m_entity->torque * m_massData.invInertia * deltaTime;
-	m_entity->Rotate(m_entity->angularVelocity * deltaTime);
+	m_Entity->angularVelocity += m_Entity->torque * m_MassData.invInertia * deltaTime;
+	m_Entity->Rotate(m_Entity->angularVelocity * deltaTime);
 
-	m_entity->force.Reset();
-	m_entity->torque = 0.0f;
+	m_Entity->force.Reset();
+	m_Entity->torque = 0.0f;
 }
 
 void RigidbodyComponent::AddForce(const Vector2& force)
 {
-	m_entity->force += force;
+	m_Entity->force += force;
 }
 
 MassData RigidbodyComponent::GetMassData() const
 {
-	return m_massData;
+	return m_MassData;
 }
 
 MaterialData RigidbodyComponent::GetMaterialData() const
 {
-	return m_materialData;
+	return m_MaterialData;
 }
 
 FrictionData RigidbodyComponent::GetFrictionData() const
 {
-	return m_frictionData;
+	return m_FrictionData;
 }
 

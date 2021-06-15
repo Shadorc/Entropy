@@ -11,14 +11,14 @@ class Entity;
 class Sandbox
 {
 private:
-	CollisionManager* m_collisionManager;
-	std::vector<Entity*> m_entities;
-	bool m_updating;
-	float m_fps;
-	int m_lastLoopTime;
-	float m_accumulatorTime;
+	CollisionManager* m_CollisionManager;
+	std::vector<Entity*> m_Entities;
+	bool m_Updating;
+	float m_Fps;
+	int m_LastLoopTime;
+	float m_AccumulatorTime;
 #ifdef ENTROPY_DEBUG
-	DebugMode m_debugMode;
+	DebugMode m_DebugMode;
 #endif // ENTROPY_DEBUG
 
 #ifdef ENTROPY_DEBUG

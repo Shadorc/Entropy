@@ -10,13 +10,13 @@ template<class T> struct Pair;
 class CollisionManager
 {
 private:
-	const Sandbox* m_sandbox;
-	QuadTree<Entity>* m_quadTree;
+	const Sandbox* m_Sandbox;
+	QuadTree<Entity>* m_QuadTree;
 
 	// Cached vectors
-	std::vector<Entity*> m_entities;
-	std::vector<Pair<Entity>> m_pairs;
-	std::vector<Pair<Entity>> m_uniquePairs;
+	std::vector<Entity*> m_Entities;
+	std::vector<Pair<Entity>> m_Pairs;
+	std::vector<Pair<Entity>> m_UniquePairs;
 
 	void BroadPhase();
 	void UpdateQuadTree();
