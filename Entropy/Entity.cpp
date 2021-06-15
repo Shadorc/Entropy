@@ -19,6 +19,7 @@ Entity::Entity(float x, float y)
 Entity::~Entity()
 {
 	ENTROPY_DELETE(m_RigidbodyComponentCache);
+	ENTROPY_DELETE(m_AabbCache);
 	for (Component* component : m_Components)
 	{
 		ENTROPY_DELETE(component);
