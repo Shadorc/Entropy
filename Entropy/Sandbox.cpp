@@ -244,7 +244,6 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
     case '\x1B':
     {
         exit(EXIT_SUCCESS);
-        break;
     }
     }
 }
