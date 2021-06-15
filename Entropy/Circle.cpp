@@ -14,10 +14,8 @@ float entity::Circle::GetRadius() const
 
 AABB entity::Circle::GetAABB() const
 {
-    return AABB(
-        Vector2(position.x - m_radius, position.y - m_radius),
-        Vector2(position.x + m_radius, position.y + m_radius)
-    );
+    return AABB(position.x - m_radius, position.y - m_radius,
+        position.x + m_radius, position.y + m_radius);
 }
 
 EntityType entity::Circle::GetType() const

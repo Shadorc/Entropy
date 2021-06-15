@@ -140,28 +140,30 @@ Vector2 entity::Polygon::GetNormal(size_t index) const
 
 AABB entity::Polygon::GetAABB() const
 {
-    Vector2 start(FLT_MAX, FLT_MAX);
-    Vector2 end(-FLT_MAX, -FLT_MAX);
+    float minX = FLT_MAX;
+    float minY = FLT_MAX;
+    float maxX = -FLT_MAX;
+    float maxY = -FLT_MAX;
     for (const Vector2& vertex : m_vertices) {
         const Vector2& vector = position + m_orientationMatrix * vertex;
-        if (vector.x < start.x)
+        if (vector.x < minX)
         {
-            start.x = vector.x;
+            minX = vector.x;
         }
-        if (vector.y < start.y)
+        if (vector.y < minY)
         {
-            start.y = vector.y;
+            minY = vector.y;
         }
-        if (vector.x > end.x)
+        if (vector.x > maxX)
         {
-            end.x = vector.x;
+            maxX = vector.x;
         }
-        if (vector.y > end.y)
+        if (vector.y > maxY)
         {
-            end.y = vector.y;
+            maxY = vector.y;
         }
     }
-	return AABB(start, end);
+	return AABB(minX, minY, maxX, maxY);
 }
 
 EntityType entity::Polygon::GetType() const

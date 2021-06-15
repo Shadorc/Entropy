@@ -31,13 +31,13 @@ private:
 		float subHeight = m_aabb.GetHeight() / 2.0f;
 
 		m_nodes[(int) Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.min, m_aabb.min + Vector2(subWidth, subHeight)));
+			AABB(m_aabb.minX, m_aabb.minY, m_aabb.minX + subWidth, m_aabb.minY + subHeight));
 		m_nodes[(int) Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.min + Vector2(subWidth, 0), m_aabb.max - Vector2(0, subHeight)));
+			AABB(m_aabb.minX + subWidth, m_aabb.minY, m_aabb.maxX, m_aabb.minY + subHeight));
 		m_nodes[(int)Quadrant::BOTTOM_LEFT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.min + Vector2(0, subHeight), m_aabb.max - Vector2(subWidth, 0)));
+			AABB(m_aabb.minX, m_aabb.minY + subHeight, m_aabb.minX + subWidth, m_aabb.maxY));
 		m_nodes[(int)Quadrant::BOTTOM_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_level + 1,
-			AABB(m_aabb.min + Vector2(subWidth, subHeight), m_aabb.max));
+			AABB(m_aabb.minX + subWidth, m_aabb.minY + subHeight, m_aabb.maxX, m_aabb.maxY));
 	}
 
 	Quadrant GetQuadrant(const T* object) const

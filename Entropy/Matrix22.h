@@ -6,11 +6,8 @@ struct Matrix22
 {
 	static const Matrix22 ZERO;
 
-	struct
-	{
-		float m00, m01;
-		float m10, m11;
-	};
+	float m00, m01;
+	float m10, m11;
 
 	Matrix22();
 	Matrix22(float m00, float m01, float m10, float m11);

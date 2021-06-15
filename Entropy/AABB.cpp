@@ -1,40 +1,42 @@
 #include "Precompiled.h"
 
-AABB::AABB(const Vector2& min, const Vector2& max) 
-	: min(min)
-	, max(max)
+AABB::AABB(float minX, float minY, float maxX, float maxY)
+	: minX(minX)
+	, minY(minY)
+	, maxX(maxX)
+	, maxY(maxY)
 {
 
 }
 
 float AABB::GetX() const
 {
-	return min.x;
+	return minX;
 }
 
 float AABB::GetY() const
 {
-	return min.y;
+	return minY;
 }
 
 float AABB::GetWidth() const
 {
-	return max.x - min.x;
+	return maxX - minX;
 }
 
 float AABB::GetHeight() const
 {
-	return max.y - min.y;
+	return maxY - minY;
 }
 
 bool AABB::IntersectsWith(const AABB& other) const
 {
 	// Exit with no intersection if found separated along an axis
-	if (max.x < other.min.x || min.x > other.max.x)
+	if (maxX < other.minX || minX > other.maxX)
 	{
 		return false;
 	}
-	if (max.y < other.min.y || min.y > other.max.y)
+	if (maxY < other.minY || minY > other.maxY)
 	{
 		return false;
 	}

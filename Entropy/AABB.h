@@ -4,10 +4,12 @@
 
 struct AABB
 {
-	const Vector2 min;
-	const Vector2 max;
+	const float minX;
+	const float minY;
+	const float maxX;
+	const float maxY;
 
-	AABB(const Vector2& min, const Vector2& max);
+	AABB(float minX, float minY, float maxX, float maxY);
 
 	float GetX() const;
 	float GetY() const;

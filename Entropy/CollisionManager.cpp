@@ -224,5 +224,5 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 void CollisionManager::SetRootSize(int width, int height)
 {
     ENTROPY_DELETE(m_quadTree);
-	m_quadTree = ENTROPY_NEW(QuadTree<Entity>, AABB(Vector2(), Vector2((float) width, (float) height)));
+	m_quadTree = ENTROPY_NEW(QuadTree<Entity>, AABB(0.0f, 0.0f, (float) width, (float) height));
 }
