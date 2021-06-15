@@ -15,10 +15,6 @@ enum class Quadrant
 	INVALID
 };
 
-/**
- * Source: 
- * https://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
- */
 struct AABB;
 template<typename T>
 class QuadTree
