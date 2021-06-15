@@ -1,9 +1,9 @@
 #pragma once
 
-#include "AABBObject.h"
-#include "Vector2.h"
 #include <vector>
 
+#include "AABBObject.h"
+#include "Vector2.h"
 
 enum class EntityType
 {

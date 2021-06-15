@@ -22,27 +22,30 @@ static size_t s_allocatedMemory = 0;
 #endif
 
 #ifdef ENTROPY_DEBUG
-#define ENTROPY_NEW(x, ...) ([&]() {\
-	s_allocatedMemory += sizeof(x);\
-	return new x(__VA_ARGS__);\
-})()
+#define ENTROPY_NEW(x, ...) \
+	([&]() { \
+		s_allocatedMemory += sizeof(x); \
+		return new x(__VA_ARGS__); \
+	})()
 #else
-#define ENTROPY_NEW(x, ...) ([&]() {\
-	return new x(__VA_ARGS__);\
-})()
+#define ENTROPY_NEW(x, ...) \
+	([&]() { \
+		return new x(__VA_ARGS__); \
+	})()
 #endif
 
 #ifdef ENTROPY_DEBUG
-#define ENTROPY_DELETE(x) ([&]() {\
-	s_allocatedMemory -= sizeof(x);\
-	delete x;\
-	x = nullptr;\
-})()
+#define ENTROPY_DELETE(x) \
+	if (x != nullptr) \
+	{ \
+		s_allocatedMemory -= sizeof(x); \
+		delete x; \
+		x = nullptr; \
+	}
 #else
-#define ENTROPY_DELETE(x) ([&]() {\
-	delete x;\
-	x = nullptr;\
-})()
+#define ENTROPY_DELETE(x) \
+	delete x; \
+	x = nullptr;
 #endif
 
 #ifdef ENTROPY_DEBUG
@@ -59,7 +62,7 @@ static size_t s_allocatedMemory = 0;
 		assert(condition); \
 	}
 #else
-#define ENTROPY_ASSERT(x)
+#define ENTROPY_ASSERT(condition, reason)
 #endif // ENTROPY_DEBUG
 
 #include <math.h>
