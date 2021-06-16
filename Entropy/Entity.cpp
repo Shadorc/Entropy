@@ -56,7 +56,7 @@ void Entity::Translate(const Vector2& vector)
 	m_Position += vector;
 }
 
-unsigned int Entity::GetId() const
+uint Entity::GetId() const
 {
 	return m_Id;
 }

@@ -2,16 +2,16 @@
 
 typedef unsigned int uint;
 
-constexpr unsigned int WIDTH = 720;
-constexpr unsigned int HEIGHT = 720;
+constexpr uint WIDTH = 720;
+constexpr uint HEIGHT = 720;
 
 constexpr float DELTA_TIME = 1.0f / 60.0f;		// Target 60 FPS
 
 constexpr float PENETRATION_PERCENT = 0.4f;		// Penetration percentage to correct
 constexpr float PENETRATION_ALLOWANCE = 0.05f;	// Penetration allowance
-constexpr unsigned int COLLISIONS_SOLVER_ITERATIONS = 10;
+constexpr uint COLLISIONS_SOLVER_ITERATIONS = 10;
 
-constexpr unsigned int CIRCLE_VERTICES = 24;
+constexpr uint CIRCLE_VERTICES = 24;
 
 #ifdef _DEBUG
 #define ENTROPY_DEBUG

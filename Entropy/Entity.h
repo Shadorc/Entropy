@@ -21,7 +21,7 @@ private:
 	mutable AABB* m_AabbCache;
 
 protected:
-	const unsigned int m_Id;
+	const uint m_Id;
 	std::vector<Component*> m_Components;
 	Vector2 m_Position;
 	float m_Orientation;
@@ -35,7 +35,7 @@ public:
 	float angularVelocity;
 	float torque;
 
-	unsigned int GetId() const;
+	uint GetId() const;
 	const Vector2 GetPosition() const;
 	const AABB* GetAABB() const;
 	virtual EntityType GetType() const = 0;
