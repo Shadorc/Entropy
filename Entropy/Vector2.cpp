@@ -69,6 +69,11 @@ float Vector2::DistanceSq(const Vector2& other) const
 	return (float)(pow(static_cast<double>(x) - other.x, 2) + pow(static_cast<double>(y) - other.y, 2));
 }
 
+std::string Vector2::ToString() const
+{
+	return "{" + std::to_string(x) + ", " + std::to_string(y) + "}";
+}
+
 Vector2 Vector2::operator+(const Vector2& other) const
 {
 	return Vector2(x + other.x, y + other.y);
@@ -135,7 +140,7 @@ bool Vector2::operator==(const Vector2& other) const
 
 std::ostream& operator<<(std::ostream& os, const Vector2& vector)
 {
-	return os << "{" << vector.x << ", " << vector.y << "}";
+	return os << vector.ToString();
 }
 
 Vector2 Vector2::Cross(const Vector2& vector, float scalar)

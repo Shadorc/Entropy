@@ -21,6 +21,8 @@ struct Vector2
 	float Distance(const Vector2& other) const;
 	float DistanceSq(const Vector2& other) const;
 
+	std::string ToString() const;
+
 	Vector2 operator+(const Vector2& other) const;
 	Vector2 operator-() const;
 	Vector2 operator-(const Vector2& other) const;

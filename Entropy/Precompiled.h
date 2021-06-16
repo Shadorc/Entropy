@@ -82,6 +82,7 @@ static size_t s_allocatedMemory = 0;
 #include <ostream>
 #include <iostream>
 #include <assert.h>
+#include <string>
 
 #ifdef ENTROPY_DEBUG
 #include "DebugMode.h"
