@@ -4,7 +4,7 @@
 
 constexpr float MAX_ACCUMULATOR_TIME = 0.2f;
 
-Sandbox* Sandbox::instance = nullptr;
+Sandbox* Sandbox::INSTANCE = nullptr;
 
 Sandbox::Sandbox():
     m_CollisionManager(ENTROPY_NEW(CollisionManager, this))
@@ -17,13 +17,13 @@ Sandbox::Sandbox():
     , m_DebugMode()
 #endif // ENTROPY_DEBUG
 {
-    instance = this;
+    INSTANCE = this;
 }
 
 Sandbox::~Sandbox()
 {
     ENTROPY_DELETE(m_CollisionManager);
-    instance = nullptr;
+    INSTANCE = nullptr;
 }
 
 void Sandbox::Start()
@@ -283,32 +283,32 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
 
 void Sandbox::OnLoopWrapper()
 {
-    instance->OnLoop();
+    INSTANCE->OnLoop();
 }
 
 void Sandbox::OnIdleWrapper()
 {
-    instance->OnIdle();
+    INSTANCE->OnIdle();
 }
 
 void Sandbox::OnVisibleWrapper(int visibility)
 {
-    instance->OnVisible(visibility);
+    INSTANCE->OnVisible(visibility);
 }
 
 void Sandbox::OnMouseWrapper(int button, int state, int x, int y)
 {
-    instance->OnMouse(button, state, x, y);
+    INSTANCE->OnMouse(button, state, x, y);
 }
 
 void Sandbox::OnKeyboardWrapper(unsigned char key, int x, int y)
 {
-    instance->OnKeyboard(key, x, y);
+    INSTANCE->OnKeyboard(key, x, y);
 }
 
 #ifdef ENTROPY_DEBUG
 void Sandbox::OnSpecialKeyboardWrapper(int key, int x, int y)
 {
-    instance->OnSpecialKeyboard(key, x, y);
+    INSTANCE->OnSpecialKeyboard(key, x, y);
 }
 #endif // ENTROPY_DEBUG

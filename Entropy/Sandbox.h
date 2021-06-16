@@ -25,10 +25,9 @@ private:
 	void RepaintDebug() const;
 #endif // ENTROPY_DEBUG
 
-protected:
-	static Sandbox* instance;
-
 public:
+	static Sandbox* INSTANCE;
+
 	Sandbox();
 	~Sandbox();
 
