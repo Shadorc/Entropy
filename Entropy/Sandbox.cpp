@@ -23,6 +23,11 @@ Sandbox::Sandbox():
 Sandbox::~Sandbox()
 {
     ENTROPY_DELETE(m_CollisionManager);
+    for (Entity* entity : m_Entities)
+    {
+        ENTROPY_DELETE(entity);
+    }
+    m_Entities.clear();
     INSTANCE = nullptr;
 }
 
