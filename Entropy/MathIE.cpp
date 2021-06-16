@@ -29,5 +29,5 @@ constexpr float k_biasRelative = 0.95f;
 constexpr float k_biasAbsolute = 0.01f;
 bool BiasGreaterThan(float a, float b)
 {
-	return a >= b * k_biasRelative + a * k_biasAbsolute;
+	return a * k_biasRelative > b + k_biasAbsolute;
 }
