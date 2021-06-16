@@ -31,12 +31,11 @@ public:
 	~Entity();
 
 	Vector2 velocity;
-	Vector2 force;
 	float angularVelocity;
-	float torque;
 
 	uint GetId() const;
 	const Vector2 GetPosition() const;
+	const float GetOrientation() const;
 	const AABB* GetAABB() const;
 	virtual EntityType GetType() const = 0;
 
@@ -58,7 +57,6 @@ public:
 	void AddComponent(Component* component);
 	virtual AABB* ComputeAABB() const = 0;
 
-	void ApplyImpulse(const Vector2& impulse, const Vector2& contactVector);
 	void Translate(const Vector2& vector);
 	virtual void Rotate(float angle) = 0;
 

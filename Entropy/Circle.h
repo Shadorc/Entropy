@@ -13,12 +13,10 @@ namespace entity
 			Circle(float x, float y, float radius);
 
 			float GetRadius() const;
+
 			EntityType GetType() const override;
-
 			AABB* ComputeAABB() const override;
-
 			void Rotate(float angle) override;
-
-			void Paint() const;
+			void Paint() const override;
 	};
 }

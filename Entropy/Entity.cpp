@@ -6,10 +6,8 @@ Entity::Entity(float x, float y)
 	: m_Id(s_id++)
 	, m_Position(x, y)
 	, velocity()
-	, force()
 	, m_Orientation(0.0f)
 	, angularVelocity(0.0f)
-	, torque(0.0f)
 	, m_RigidbodyComponentCache(nullptr)
 	, m_AabbCache(nullptr)
 {
@@ -42,14 +40,6 @@ void Entity::AddComponent(Component* component)
 	m_Components.push_back(component);
 }
 
-void Entity::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector)
-{
-	const RigidbodyComponent* rigidbody = GetRigidbodyComponent();
-	ENTROPY_ASSERT(rigidbody, "Rigidbody absent");
-	velocity += rigidbody->GetMassData().invMass * impulse;
-	angularVelocity += rigidbody->GetMassData().invInertia * contactVector.Cross(impulse);
-}
-
 void Entity::Translate(const Vector2& vector)
 {
 	ENTROPY_DELETE(m_AabbCache);
@@ -64,6 +54,11 @@ uint Entity::GetId() const
 const Vector2 Entity::GetPosition() const
 {
 	return m_Position;
+}
+
+const float Entity::GetOrientation() const
+{
+	return m_Orientation;
 }
 
 const AABB* Entity::GetAABB() const

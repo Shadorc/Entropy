@@ -74,19 +74,30 @@ void RigidbodyComponent::Update(float deltaTime)
 		return;
 	}
 
-	m_Entity->velocity += m_Entity->force * m_MassData.invMass * deltaTime;
+	m_Entity->velocity += m_Force * m_MassData.invMass * deltaTime;
 	m_Entity->Translate(m_Entity->velocity * deltaTime);
 
-	m_Entity->angularVelocity += m_Entity->torque * m_MassData.invInertia * deltaTime;
+	m_Entity->angularVelocity += m_Torque * m_MassData.invInertia * deltaTime;
 	m_Entity->Rotate(m_Entity->angularVelocity * deltaTime);
 
-	m_Entity->force.Reset();
-	m_Entity->torque = 0.0f;
+	m_Force.Reset();
+	m_Torque = 0.0f;
+}
+
+void RigidbodyComponent::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector)
+{
+	m_Entity->velocity += m_MassData.invMass * impulse;
+	m_Entity->angularVelocity += m_MassData.invInertia * contactVector.Cross(impulse);
 }
 
 void RigidbodyComponent::AddForce(const Vector2& force)
 {
-	m_Entity->force += force;
+	m_Force += force;
+}
+
+void RigidbodyComponent::AddTorque(float torque)
+{
+	m_Torque += torque;
 }
 
 MassData RigidbodyComponent::GetMassData() const

@@ -171,8 +171,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
         {
             // Apply normal impulse
             const Vector2& normalImpulse = collision.normal * normalImpulseScalar;
-            entityA->ApplyImpulse(-normalImpulse, radiusA);
-            entityB->ApplyImpulse(normalImpulse, radiusB);
+            rigidbodyA->ApplyImpulse(-normalImpulse, radiusA);
+            rigidbodyB->ApplyImpulse(normalImpulse, radiusB);
         }
 
         // Update relative velocity
@@ -201,8 +201,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
             }
 
             // Apply friction impulse
-            entityA->ApplyImpulse(-frictionImpulse, radiusA);
-            entityB->ApplyImpulse(frictionImpulse, radiusB);
+            rigidbodyA->ApplyImpulse(-frictionImpulse, radiusA);
+            rigidbodyB->ApplyImpulse(frictionImpulse, radiusB);
         }
     }
 }
