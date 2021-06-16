@@ -28,7 +28,7 @@ protected:
 
 public:
 	Entity(float x, float y);
-	~Entity();
+	virtual ~Entity();
 
 	Vector2 velocity;
 	float angularVelocity;
