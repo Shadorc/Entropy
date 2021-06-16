@@ -7,6 +7,8 @@ RigidbodyComponent::RigidbodyComponent(Entity* entity, MaterialData materialData
 	, m_MassData()
 	, m_MaterialData(materialData)
 	, m_FrictionData({ 0.2f, 0.1f })
+	, m_Force()
+	, m_Torque(0.0f)
 {
 	ComputeMass();
 }
