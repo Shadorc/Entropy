@@ -30,6 +30,9 @@ entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
 {
 	ENTROPY_ASSERT_WITH_REASON(vertices.size() > 2, "Number of polygon vertices cannot be less than 2");
 
+	m_Vertices.reserve(vertices.size());
+	m_Normals.reserve(vertices.size());
+
 	// Find the right most point on the hull
 	size_t rightMostIdx = 0;
 	float highestXCoord = vertices[0].x;
