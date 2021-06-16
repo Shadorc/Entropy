@@ -366,7 +366,7 @@ int Clip(Vector2 n, float c, Vector2 face[])
 	face[0] = out[0];
 	face[1] = out[1];
 
-	ENTROPY_ASSERT(sp != 3, "");
+	ENTROPY_ASSERT(sp != 3);
 
 	return sp;
 }

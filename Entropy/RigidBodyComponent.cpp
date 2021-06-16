@@ -63,7 +63,7 @@ void RigidbodyComponent::ComputeMass()
 		break;
 	}
 	default:
-		ENTROPY_ASSERT(false, "Unknown entity type");
+		ENTROPY_ASSERT_WITH_REASON(false, "Unknown entity type");
 	}
 }
 

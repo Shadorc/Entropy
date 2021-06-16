@@ -55,14 +55,24 @@ static size_t s_allocatedMemory = 0;
 #endif // ENTROPY_DEBUG
 
 #ifdef ENTROPY_DEBUG
-#define ENTROPY_ASSERT(condition, reason) \
+#define ENTROPY_ASSERT_WITH_REASON(condition, reason) \
 	if (!(condition)) \
 	{ \
 		ENTROPY_LOG(reason); \
 		assert(condition); \
 	}
 #else
-#define ENTROPY_ASSERT(condition, reason)
+#define ENTROPY_ASSERT_WITH_REASON(condition, reason)
+#endif // ENTROPY_DEBUG
+
+#ifdef ENTROPY_DEBUG
+#define ENTROPY_ASSERT(condition) \
+	if (!(condition)) \
+	{ \
+		assert(condition); \
+	}
+#else
+#define ENTROPY_ASSERT(condition)
 #endif // ENTROPY_DEBUG
 
 #include <math.h>

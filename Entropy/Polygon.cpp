@@ -28,7 +28,7 @@ entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
     , m_Normals()
     , m_OrientationMatrix(0)
 {
-    ENTROPY_ASSERT(vertices.size() > 2, "Number of polygon vertices cannot be less than 2");
+    ENTROPY_ASSERT_WITH_REASON(vertices.size() > 2, "Number of polygon vertices cannot be less than 2");
 
     // Find the right most point on the hull
     size_t rightMostIdx = 0;
@@ -108,12 +108,14 @@ entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
         size_t i2 = (i1 + 1) % outCount;
         const Vector2& face = m_Vertices[i2] - m_Vertices[i1];
 
-        ENTROPY_ASSERT(!IsZero(face.LengthSq()), "Zero-length edge");
+        ENTROPY_ASSERT_WITH_REASON(!IsZero(face.LengthSq()), "Zero-length edge");
 
         Vector2 normal = -face.Tangent();
         normal.Normalize();
         m_Normals.push_back(normal);
     }
+
+    ENTROPY_ASSERT(m_Vertices.size() == m_Normals.size());
 }
 
 Matrix22 entity::Polygon::GetOrientationMatrix() const
@@ -128,13 +130,13 @@ size_t entity::Polygon::GetVertexCount() const
 
 Vector2 entity::Polygon::GetVertex(size_t index) const
 {
-    ENTROPY_ASSERT(index < m_Vertices.size(), "Vertex index " << index << "out of bound (" << m_Vertices.size() << ")");
+    ENTROPY_ASSERT_WITH_REASON(index < m_Vertices.size(), "Vertex index " << index << "out of bound (" << m_Vertices.size() << ")");
     return m_Vertices[index];
 }
 
 Vector2 entity::Polygon::GetNormal(size_t index) const
 {
-    ENTROPY_ASSERT(index < m_Normals.size(), "Normal index " << index << "out of bound (" << m_Normals.size() << ")");
+    ENTROPY_ASSERT_WITH_REASON(index < m_Normals.size(), "Normal index " << index << "out of bound (" << m_Normals.size() << ")");
     return m_Normals[index];
 }
 
