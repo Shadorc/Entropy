@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	sandbox.AddEntity(floor);
 
 	sandbox.Start();
-	
+
 	glutMainLoop();
 
 	return EXIT_SUCCESS;

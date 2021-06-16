@@ -9,7 +9,7 @@
 #include "FrictionData.h"
 
 class Entity;
-class RigidbodyComponent: public Component
+class RigidbodyComponent : public Component
 {
 private:
 	MassData m_MassData;

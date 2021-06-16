@@ -6,17 +6,17 @@ namespace entity
 {
 	class Circle : public Entity
 	{
-		private:
-			float m_Radius;
+	private:
+		float m_Radius;
 
-		public:
-			Circle(float x, float y, float radius);
+	public:
+		Circle(float x, float y, float radius);
 
-			float GetRadius() const;
+		float GetRadius() const;
 
-			EntityType GetType() const override;
-			AABB* ComputeAABB() const override;
-			void Rotate(float angle) override;
-			void Paint() const override;
+		EntityType GetType() const override;
+		AABB* ComputeAABB() const override;
+		void Rotate(float angle) override;
+		void Paint() const override;
 	};
 }

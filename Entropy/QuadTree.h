@@ -23,16 +23,16 @@ private:
 	const int m_Level;
 	std::vector<T*> m_Objects;
 	const AABB* m_Aabb;
-	QuadTree<T>* m_Nodes[(int) Quadrant::COUNT];
+	QuadTree<T>* m_Nodes[(int)Quadrant::COUNT];
 
 	void Split()
 	{
 		float subWidth = m_Aabb->GetWidth() / 2.0f;
 		float subHeight = m_Aabb->GetHeight() / 2.0f;
 
-		m_Nodes[(int) Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+		m_Nodes[(int)Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight));
-		m_Nodes[(int) Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+		m_Nodes[(int)Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY, m_Aabb->maxX, m_Aabb->minY + subHeight));
 		m_Nodes[(int)Quadrant::BOTTOM_LEFT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY + subHeight, m_Aabb->minX + subWidth, m_Aabb->maxY));
@@ -48,13 +48,13 @@ private:
 		const AABB* aabb = object->GetAABB();
 		bool topQuadrant = aabb->GetY() + aabb->GetHeight() < middleY;
 		bool bottomQuadrant = aabb->GetY() > middleY;
-		if (aabb->GetX() + aabb->GetWidth() < middleX) 
+		if (aabb->GetX() + aabb->GetWidth() < middleX)
 		{
-			if (topQuadrant) 
+			if (topQuadrant)
 			{
 				return Quadrant::TOP_LEFT;
 			}
-			else if (bottomQuadrant) 
+			else if (bottomQuadrant)
 			{
 				return Quadrant::BOTTOM_LEFT;
 			}
@@ -78,14 +78,14 @@ private:
 		Quadrant quadrant = GetQuadrant(object);
 
 		// If the object is between two or more nodes, we check collisions with all children in this node
-		if (quadrant == Quadrant::INVALID) 
+		if (quadrant == Quadrant::INVALID)
 		{
 			return SearchChildren(returnObjects, object);
 		}
 
 		if (quadrant != Quadrant::INVALID && m_Nodes[0] != nullptr)
 		{
-			m_Nodes[(int) quadrant]->Search(returnObjects, object);
+			m_Nodes[(int)quadrant]->Search(returnObjects, object);
 		}
 
 		returnObjects.insert(returnObjects.end(), m_Objects.begin(), m_Objects.end());
@@ -147,7 +147,7 @@ public:
 	{
 		m_Objects.clear();
 
-		for (int i = 0; i < (int) Quadrant::COUNT; ++i)
+		for (int i = 0; i < (int)Quadrant::COUNT; ++i)
 		{
 			if (m_Nodes[i] != nullptr)
 			{
@@ -163,7 +163,7 @@ public:
 			Quadrant quadrant = GetQuadrant(object);
 			if (quadrant != Quadrant::INVALID)
 			{
-				m_Nodes[(int) quadrant]->Insert(object);
+				m_Nodes[(int)quadrant]->Insert(object);
 				return;
 			}
 		}
@@ -172,18 +172,18 @@ public:
 
 		if (m_Objects.size() > MAX_OBJECTS && m_Level < MAX_LEVELS)
 		{
-			if (m_Nodes[0] == nullptr) 
+			if (m_Nodes[0] == nullptr)
 			{
 				Split();
 			}
 
 			int i = 0;
-			while (i < m_Objects.size()) 
+			while (i < m_Objects.size())
 			{
 				Quadrant quadrant = GetQuadrant(m_Objects[i]);
 				if (quadrant != Quadrant::INVALID)
 				{
-					m_Nodes[(int) quadrant]->Insert(m_Objects[i]);
+					m_Nodes[(int)quadrant]->Insert(m_Objects[i]);
 					m_Objects.erase(m_Objects.begin() + i);
 				}
 				else

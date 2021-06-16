@@ -2,7 +2,7 @@
 
 static int s_id = 0;
 
-Entity::Entity(float x, float y) 
+Entity::Entity(float x, float y)
 	: m_Id(s_id++)
 	, m_Position(x, y)
 	, velocity()

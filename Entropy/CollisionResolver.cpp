@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-CollisionCallback Dispatch[(int) EntityType::COUNT][(int) EntityType::COUNT] =
+CollisionCallback Dispatch[(int)EntityType::COUNT][(int)EntityType::COUNT] =
 {
   {
 	CircleToCircle, CircleToPolygon
@@ -13,7 +13,7 @@ CollisionCallback Dispatch[(int) EntityType::COUNT][(int) EntityType::COUNT] =
 Collision Solve(Entity* entityA, Entity* entityB)
 {
 	Collision collision(entityA, entityB);
-	Dispatch[(int) entityA->GetType()][(int) entityB->GetType()](collision);
+	Dispatch[(int)entityA->GetType()][(int)entityB->GetType()](collision);
 	return collision;
 }
 
@@ -260,7 +260,7 @@ void PolygonToPolygon(Collision& collision)
 		collision.penetration += -separation;
 
 		// Average penetration
-		collision.penetration /= (float) collision.contacts.size();
+		collision.penetration /= (float)collision.contacts.size();
 	}
 }
 
@@ -348,7 +348,7 @@ int Clip(Vector2 n, float c, Vector2 face[])
 	{
 		out[sp++] = face[0];
 	}
-	if (d2 <= 0.0f) 
+	if (d2 <= 0.0f)
 	{
 		out[sp++] = face[1];
 	}

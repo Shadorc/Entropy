@@ -9,11 +9,11 @@ DebugMode::DebugMode()
 
 void DebugMode::Toggle(DebugOption option)
 {
-	m_Mask ^= 1 << (int) option;
+	m_Mask ^= 1 << (int)option;
 }
 
 bool DebugMode::IsEnabled(DebugOption option) const
 {
-	return m_Mask & 1 << (int) option;
+	return m_Mask & 1 << (int)option;
 }
 #endif // ENTROPY_DEBUG

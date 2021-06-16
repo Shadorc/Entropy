@@ -20,7 +20,7 @@ void RenderText(float x, float y, const char* str)
 void RenderRectangle(float x, float y, float width, float height)
 {
 	const float halfW = width / 2.0f;
-	const float halfH = height/ 2.0f;
+	const float halfH = height / 2.0f;
 	glBegin(GL_LINE_LOOP);
 	glVertex2f(x - halfW, y - halfH);
 	glVertex2f(x + halfW, y - halfH);
@@ -55,7 +55,7 @@ void RenderAABB(const AABB* aabb)
 
 void RenderQuadTree(const QuadTree<Entity>* quadtree)
 {
-	for (int i = 0; i < (int) Quadrant::COUNT; ++i)
+	for (int i = 0; i < (int)Quadrant::COUNT; ++i)
 	{
 		const auto node = quadtree->GetNode(i);
 		if (node != nullptr) {

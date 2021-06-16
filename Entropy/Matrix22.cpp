@@ -44,9 +44,9 @@ Matrix22 Matrix22::Transpose() const
 Matrix22 Matrix22::operator+(const Matrix22& other) const
 {
 	return Matrix22(
-		m00 + other.m00, 
-		m01 + other.m01, 
-		m10 + other.m10, 
+		m00 + other.m00,
+		m01 + other.m01,
+		m10 + other.m10,
 		m11 + other.m11
 	);
 }

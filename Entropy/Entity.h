@@ -14,7 +14,7 @@ enum class EntityType
 
 class Component;
 class RigidbodyComponent;
-class Entity: public AABBObject
+class Entity : public AABBObject
 {
 private:
 	mutable RigidbodyComponent* m_RigidbodyComponentCache;
