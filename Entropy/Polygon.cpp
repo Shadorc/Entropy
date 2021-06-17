@@ -28,87 +28,58 @@ entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
 	, m_Normals()
 	, m_OrientationMatrix(0)
 {
-	ENTROPY_ASSERT_WITH_REASON(vertices.size() > 2, "Number of polygon vertices cannot be less than 2");
+	ENTROPY_ASSERT_WITH_REASON(vertices.size() >= 3, "Number of polygon vertices cannot be less than 2");
 
 	m_Vertices.reserve(vertices.size());
 	m_Normals.reserve(vertices.size());
 
-	// Find the right most point on the hull
-	size_t rightMostIdx = 0;
-	float highestXCoord = vertices[0].x;
+	// Find the left most vertex on the hull
+	size_t leftMostIdx = 0;
 	for (size_t i = 1; i < vertices.size(); ++i)
 	{
 		const Vector2& vertex = vertices[i];
-		if (vertex.x > highestXCoord)
+		if (vertex.x < vertices[leftMostIdx].x)
 		{
-			highestXCoord = vertex.x;
-			rightMostIdx = i;
+			leftMostIdx = i;
 		}
-		// If matching x then take farthest negative y
-		else if (x == highestXCoord && vertex.y < vertices[rightMostIdx].y)
+		// If matching x then take smallest y
+		else if (vertex.x == vertices[leftMostIdx].x && vertex.y < vertices[leftMostIdx].y)
 		{
-			rightMostIdx = i;
+			leftMostIdx = i;
 		}
 	}
 
-	size_t hull[24];
-	size_t outCount = 0;
-	size_t hullIdx = rightMostIdx;
-	for (;;)
+	// Convex hull algorithm
+	Vector2 pointOnHull = vertices[leftMostIdx];
+	Vector2 endpoint;
+	do
 	{
-		hull[outCount] = hullIdx;
-
-		// Search for next index that wraps around the hull by computing cross products to find the
-		// most counter-clockwise vertex in the set, given the previos hull index
-		size_t nextHullIdx = 0;
-		for (size_t i = 1; i < vertices.size(); ++i)
+		if (std::find(m_Vertices.begin(), m_Vertices.end(), pointOnHull) != m_Vertices.end())
 		{
-			// Skip if same coordinate as we need three unique
-			// points in the set to perform a cross product
-			if (nextHullIdx == hullIdx)
-			{
-				nextHullIdx = i;
-				continue;
-			}
-
-			// Cross every set of three unique vertices
-			// Record each counter clockwise third vertex and add to the output hull
-			const Vector2& e1 = vertices[nextHullIdx] - vertices[hull[outCount]];
-			const Vector2& e2 = vertices[i] - vertices[hull[outCount]];
-			float c = e1.Cross(e2);
-			if (c < 0.0f)
-			{
-				nextHullIdx = i;
-			}
-
-			// Cross product is zero then e vectors are on same line
-			// therefor want to record vertex farthest along that line
-			if (c == 0.0f && e2.LengthSq() > e1.LengthSq())
-			{
-				nextHullIdx = i;
-			}
+			// Prevent infinite loop when 3 or more vertices are colinear
+			// This is a degenerate configuration that does not work with this convex hull algorithm
+			ENTROPY_ASSERT_WITH_REASON(false, "Some vertices are colinear");
 		}
 
-		++outCount;
-		hullIdx = nextHullIdx;
-
-		// Conclude algorithm upon wrap-around
-		if (nextHullIdx == rightMostIdx)
+		m_Vertices.push_back(pointOnHull);
+		endpoint = vertices[0];
+		for (size_t j = 1; j < vertices.size(); ++j)
 		{
-			break;
+			Vector2 face1 = pointOnHull - endpoint;
+			Vector2 face2 = vertices[j] - endpoint;
+			float cross = face1.Cross(face2);
+			if (endpoint == pointOnHull || cross > 0.0f)
+			{
+				endpoint = vertices[j];
+			}
 		}
-	}
-
-	// Copy vertices into shape's vertices
-	for (size_t i = 0; i < outCount; ++i)
-	{
-		m_Vertices.push_back(vertices[hull[i]]);
-	}
+		pointOnHull = endpoint;
+	} while (endpoint != m_Vertices[0]);
 
 	// Compute face normals
-	for (size_t i1 = 0; i1 < outCount; ++i1)
+	for (size_t i1 = 0; i1 < m_Vertices.size(); ++i1)
 	{
-		size_t i2 = (i1 + 1) % outCount;
+		size_t i2 = (i1 + 1) % m_Vertices.size();
 		const Vector2& face = m_Vertices[i2] - m_Vertices[i1];
 
 		ENTROPY_ASSERT_WITH_REASON(!IsZero(face.LengthSq()), "Zero-length edge");
