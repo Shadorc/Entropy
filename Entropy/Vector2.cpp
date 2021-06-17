@@ -138,6 +138,11 @@ bool Vector2::operator==(const Vector2& other) const
 	return x == other.x && y == other.y;
 }
 
+bool Vector2::operator!=(const Vector2& other) const
+{
+	return x != other.x || y != other.y;
+}
+
 std::ostream& operator<<(std::ostream& os, const Vector2& vector)
 {
 	return os << vector.ToString();
