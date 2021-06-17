@@ -17,36 +17,17 @@ constexpr uint CIRCLE_VERTICES = 24;
 #define ENTROPY_DEBUG
 #endif
 
-#ifdef ENTROPY_DEBUG
-static size_t s_allocatedMemory = 0;
-#endif
-
-#ifdef ENTROPY_DEBUG
-#define ENTROPY_NEW(x, ...) \
-	([&]() { \
-		s_allocatedMemory += sizeof(x); \
-		return new x(__VA_ARGS__); \
-	})()
-#else
 #define ENTROPY_NEW(x, ...) \
 	([&]() { \
 		return new x(__VA_ARGS__); \
 	})()
-#endif
 
-#ifdef ENTROPY_DEBUG
 #define ENTROPY_DELETE(x) \
 	if (x != nullptr) \
 	{ \
-		s_allocatedMemory -= sizeof(x); \
 		delete x; \
 		x = nullptr; \
 	}
-#else
-#define ENTROPY_DELETE(x) \
-	delete x; \
-	x = nullptr;
-#endif
 
 #ifdef ENTROPY_DEBUG
 #define ENTROPY_LOG(x) std::cout << x << std::endl

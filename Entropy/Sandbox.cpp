@@ -108,8 +108,6 @@ void Sandbox::RepaintDebug() const
 		glColor3f(0.5f, 0.5f, 0.9f);
 		sprintf_s(s_strBuffer, "FPS: %.0f", round(m_Fps));
 		RenderText(5.0f, HEIGHT - 20.0f, s_strBuffer);
-		sprintf_s(s_strBuffer, "RAM: %zu bytes", s_allocatedMemory);
-		RenderText(5.0f, HEIGHT - 5.0f, s_strBuffer);
 	}
 
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
