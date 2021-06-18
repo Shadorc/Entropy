@@ -55,6 +55,9 @@
     <Filter Include="Fichiers d%27en-tête\physic\data">
       <UniqueIdentifier>{45237846-8b75-440f-aefe-03e275b14b11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\debug">
+      <UniqueIdentifier>{58558556-fd66-4c76-a4e5-ef2de2ddd6a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -102,11 +105,11 @@
     <ClCompile Include="MathIE.cpp">
       <Filter>Fichiers sources\math</Filter>
     </ClCompile>
-    <ClCompile Include="DebugMode.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Polygon.cpp">
       <Filter>Fichiers sources\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugMode.cpp">
+      <Filter>Fichiers sources\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
