@@ -93,6 +93,7 @@ static std::vector<const char*> texts = {
 	"F2: Show quadtree",
 	"F3: Show AABB",
 	"F4: Show velocity",
+	"Space: Enable steps",
 	"Left click: Spawn circle",
 	"Right click: Spawn polygon"
 };
@@ -185,7 +186,18 @@ void Sandbox::OnLoop()
 
 	while (m_AccumulatorTime >= DELTA_TIME)
 	{
+#ifdef ENTROPY_DEBUG
+		if (m_DebugMode.GetStep() != Step::PAUSE) // CONTINUE || NONE
+		{
+			Update(DELTA_TIME);
+			if (m_DebugMode.GetStep() == Step::CONTINUE)
+			{
+				m_DebugMode.SetStep(Step::PAUSE);
+			}
+		}
+#else
 		Update(DELTA_TIME);
+#endif
 		m_AccumulatorTime -= DELTA_TIME;
 	}
 
@@ -245,7 +257,12 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-		// Exit on escape key press
+	case ' ':
+	{
+		m_DebugMode.SetStep(Step::CONTINUE);
+		break;
+	}
+	// Exit on escape key press
 	case '\x1B':
 	{
 		exit(EXIT_SUCCESS);
