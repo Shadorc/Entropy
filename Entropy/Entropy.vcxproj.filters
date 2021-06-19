@@ -111,6 +111,9 @@
     <ClCompile Include="DebugMode.cpp">
       <Filter>Fichiers sources\debug</Filter>
     </ClCompile>
+    <ClCompile Include="Raycast.cpp">
+      <Filter>Fichiers sources\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sandbox.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="Polygon.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Raycast.h">
+      <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -32,6 +32,7 @@
     <ClCompile Include="Matrix22.cpp" />
     <ClCompile Include="MathIE.cpp" />
     <ClCompile Include="Polygon.cpp" />
+    <ClCompile Include="Raycast.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Sandbox.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="Precompiled.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Raycast.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="GravityComponent.h" />
     <ClInclude Include="QuadTree.h" />

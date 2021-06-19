@@ -69,6 +69,7 @@ constexpr uint CIRCLE_VERTICES = 24;
 #include "DebugMode.h"
 #endif // ENTROPY_DEBUG
 
+#include "Raycast.h"
 #include "Render.h"
 #include "Vector2.h"
 #include "Matrix22.h"

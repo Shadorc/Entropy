@@ -72,6 +72,7 @@ void Sandbox::Update(float deltaTime)
 void Sandbox::Repaint() const
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+
 	glColor3f(1.0f, 1.0f, 0.0f);
 	for (Entity* entity : m_Entities)
 	{
