@@ -19,7 +19,8 @@ private:
 	void ComputeMass();
 
 public:
-	RigidbodyComponent(Entity* entity, MaterialData material);
+	RigidbodyComponent(Entity* entity);
+	RigidbodyComponent(Entity* entity, MaterialData materialData, FrictionData frictionData);
 
 	void ApplyImpulse(const Vector2& impulse, const Vector2& contact);
 	void AddForce(const Vector2& force);

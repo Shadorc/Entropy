@@ -2,11 +2,17 @@
 
 constexpr float MASS_METER_SQUARE = 1.0f / 1000.0f; // kg.m-2
 
-RigidbodyComponent::RigidbodyComponent(Entity* entity, MaterialData materialData)
+RigidbodyComponent::RigidbodyComponent(Entity* entity)
+	: RigidbodyComponent(entity, MATERIAL_ROCK, FRICTION_NORMAL)
+{
+
+}
+
+RigidbodyComponent::RigidbodyComponent(Entity* entity, MaterialData materialData, FrictionData frictionData)
 	: Component(entity)
 	, m_MassData()
 	, m_MaterialData(materialData)
-	, m_FrictionData({ 0.2f, 0.1f })
+	, m_FrictionData(frictionData)
 	, m_Force()
 	, m_Torque(0.0f)
 {

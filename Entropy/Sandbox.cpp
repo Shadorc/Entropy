@@ -229,7 +229,7 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 		if (state == GLUT_UP)
 		{
 			entity::Circle* circle = ENTROPY_NEW(entity::Circle, (float)x, (float)y, (float)Rand(10, 40));
-			circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle, MATERIAL_ROCK));
+			circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle));
 			circle->AddComponent(ENTROPY_NEW(GravityComponent, circle));
 			AddEntity(circle);
 		}
@@ -245,7 +245,7 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 				vertices.emplace_back((float)Rand(-size, size), (float)Rand(-size, size));
 			}
 			entity::Polygon* polygon = ENTROPY_NEW(entity::Polygon, (float)x, (float)y, vertices);
-			polygon->AddComponent(ENTROPY_NEW(RigidbodyComponent, polygon, MATERIAL_ROCK));
+			polygon->AddComponent(ENTROPY_NEW(RigidbodyComponent, polygon));
 			polygon->AddComponent(ENTROPY_NEW(GravityComponent, polygon));
 			AddEntity(polygon);
 		}

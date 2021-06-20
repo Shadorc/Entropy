@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 
 	const float WALL_SIZE = 25.0f;
 	entity::Polygon* floor = ENTROPY_NEW(entity::Polygon, WIDTH / 2.0f, HEIGHT - WALL_SIZE / 2.0f, WIDTH, WALL_SIZE);
-	floor->AddComponent(ENTROPY_NEW(RigidbodyComponent, floor, MATERIAL_STATIC));
+	floor->AddComponent(ENTROPY_NEW(RigidbodyComponent, floor, MATERIAL_STATIC, FRICTION_NORMAL));
 	sandbox.AddEntity(floor);
 
 	sandbox.Start();
