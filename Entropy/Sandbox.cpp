@@ -159,7 +159,7 @@ void Sandbox::RemoveEntity(Entity* entity)
 	if (it != m_Entities.end())
 	{
 		m_Entities.erase(it);
-		ENTROPY_DELETE(entity);
+		ENTROPY_DELETE(*it);
 	}
 }
 
