@@ -24,9 +24,10 @@ namespace entity
 		Vector2 GetVertex(size_t index) const;
 		Vector2 GetNormal(size_t index) const;
 		Vector2 GetSupport(const Vector2& dir) const;
-
 		EntityType GetType() const override;
+
 		AABB* ComputeAABB() const override;
+
 		void Rotate(float angle) override;
 		void Paint() const override;
 	};

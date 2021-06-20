@@ -20,6 +20,8 @@ void RigidbodyComponent::ComputeMass()
 	case EntityType::CIRCLE:
 	{
 		const entity::Circle* circle = dynamic_cast<entity::Circle*>(m_Entity);
+		ENTROPY_ASSERT(circle);
+
 		const float radiusSq = circle->GetRadius() * circle->GetRadius();
 		m_MassData.mass = PI * radiusSq * m_MaterialData.density * MASS_METER_SQUARE;
 		m_MassData.invMass = (m_MassData.mass > 0) ? (1.0f / m_MassData.mass) : 0.0f;
@@ -30,6 +32,7 @@ void RigidbodyComponent::ComputeMass()
 	case EntityType::POLYGON:
 	{
 		const entity::Polygon* polygon = dynamic_cast<entity::Polygon*>(m_Entity);
+		ENTROPY_ASSERT(polygon);
 
 		// Calculate centroid and moment of interia
 		Vector2 centroid;
@@ -43,16 +46,16 @@ void RigidbodyComponent::ComputeMass()
 			size_t vertexIdx2 = (vertexIdx1 + 1) % polygon->GetVertexCount();
 			const Vector2& vertex2 = polygon->GetVertex(vertexIdx2);
 
-			float z = vertex1.Cross(vertex2);
-			float triangleArea = z / 2.0f;
+			const float z = vertex1.Cross(vertex2);
+			const float triangleArea = z / 2.0f;
 
 			area += triangleArea;
 
 			// Use area to weight the centroid average, not just vertex position
 			centroid += triangleArea * (vertex1 + vertex2) / 3.0f;
 
-			float intx2 = vertex1.x * vertex1.x + vertex2.x * vertex1.x + vertex2.x * vertex2.x;
-			float inty2 = vertex1.y * vertex1.y + vertex2.y * vertex1.y + vertex2.y * vertex2.y;
+			const float intx2 = vertex1.x * vertex1.x + vertex2.x * vertex1.x + vertex2.x * vertex2.x;
+			const float inty2 = vertex1.y * vertex1.y + vertex2.y * vertex1.y + vertex2.y * vertex2.y;
 			inertia += z * (intx2 + inty2) / 12.0f;
 		}
 

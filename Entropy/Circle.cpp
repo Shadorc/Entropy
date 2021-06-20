@@ -4,7 +4,7 @@ entity::Circle::Circle(float x, float y, float radius)
 	: Entity(x, y)
 	, m_Radius(radius)
 {
-
+	ENTROPY_ASSERT(radius > 0.0f, "Radius must be positive");
 }
 
 float entity::Circle::GetRadius() const

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Component.h"
 #include "Vector2.h"
 #include "MassData.h"
@@ -23,7 +21,7 @@ private:
 public:
 	RigidbodyComponent(Entity* entity, MaterialData material);
 
-	void ApplyImpulse(const Vector2& impulse, const Vector2& contactVector);
+	void ApplyImpulse(const Vector2& impulse, const Vector2& contact);
 	void AddForce(const Vector2& force);
 	void AddTorque(float torque);
 	void Update(float deltaTime) override;

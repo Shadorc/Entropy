@@ -4,7 +4,7 @@ entity::Polygon::Polygon(float x, float y, float width, float height)
 	: Entity(x, y)
 	, m_Vertices()
 	, m_Normals()
-	, m_OrientationMatrix(0)
+	, m_OrientationMatrix(0.0f)
 {
 	const float halfW = width / 2.0f;
 	const float halfH = height / 2.0f;
@@ -110,13 +110,13 @@ size_t entity::Polygon::GetVertexCount() const
 
 Vector2 entity::Polygon::GetVertex(size_t index) const
 {
-	ENTROPY_ASSERT_WITH_REASON(index < m_Vertices.size(), "Vertex index " << index << "out of bound (" << m_Vertices.size() << ")");
+	ENTROPY_ASSERT_WITH_REASON(index < m_Vertices.size(), "Vertex index " << index << " out of bound (" << m_Vertices.size() << ")");
 	return m_Vertices[index];
 }
 
 Vector2 entity::Polygon::GetNormal(size_t index) const
 {
-	ENTROPY_ASSERT_WITH_REASON(index < m_Normals.size(), "Normal index " << index << "out of bound (" << m_Normals.size() << ")");
+	ENTROPY_ASSERT_WITH_REASON(index < m_Normals.size(), "Normal index " << index << " out of bound (" << m_Normals.size() << ")");
 	return m_Normals[index];
 }
 

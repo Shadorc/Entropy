@@ -59,7 +59,6 @@ public:
 
 	void Translate(const Vector2& vector);
 	virtual void Rotate(float angle) = 0;
-
 	virtual void Update(float deltaTime);
 	virtual void Paint() const = 0;
 

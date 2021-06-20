@@ -1,9 +1,9 @@
 #include "Precompiled.h"
 
-static int s_id = 0;
+static uint s_Id = 0;
 
 Entity::Entity(float x, float y)
-	: m_Id(s_id++)
+	: m_Id(s_Id++)
 	, m_Position(x, y)
 	, velocity()
 	, m_Orientation(0.0f)
