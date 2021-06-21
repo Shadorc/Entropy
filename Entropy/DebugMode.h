@@ -10,7 +10,7 @@ enum class DebugOption
 	COUNT
 };
 
-enum class Step
+enum class PhysicStep
 {
 	CONTINUE,
 	PAUSE,
@@ -21,15 +21,16 @@ class DebugMode
 {
 private:
 	int m_Mask;
-	Step m_Step;
+	PhysicStep m_PhysicStep;
 
 public:
 	DebugMode();
 
-	void SetStep(Step step);
-	void Toggle(DebugOption option);
+	void TogglePhysicStep();
+	void ContinuePhysicStep();
+	bool ShouldContinuePhysicStep();
 
-	Step GetStep() const;
+	void Toggle(DebugOption option);
 	bool IsEnabled(DebugOption option) const;
 };
 #endif // ENTROPY_DEBUG

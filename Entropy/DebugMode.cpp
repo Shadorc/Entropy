@@ -3,24 +3,38 @@
 #ifdef ENTROPY_DEBUG
 DebugMode::DebugMode()
 	: m_Mask(0)
-	, m_Step(Step::NONE)
+	, m_PhysicStep(PhysicStep::NONE)
 {
 
 }
 
-void DebugMode::SetStep(Step step)
+void DebugMode::TogglePhysicStep()
 {
-	m_Step = step;
+	m_PhysicStep = (m_PhysicStep == PhysicStep::NONE) ? PhysicStep::PAUSE : PhysicStep::NONE;
+}
+
+void DebugMode::ContinuePhysicStep()
+{
+	m_PhysicStep = PhysicStep::CONTINUE;
+}
+
+bool DebugMode::ShouldContinuePhysicStep()
+{
+	if (m_PhysicStep == PhysicStep::NONE)
+	{
+		return true;
+	}
+	if (m_PhysicStep == PhysicStep::CONTINUE)
+	{
+		m_PhysicStep = PhysicStep::PAUSE;
+		return true;
+	}
+	return false;
 }
 
 void DebugMode::Toggle(DebugOption option)
 {
 	m_Mask ^= 1 << (int)option;
-}
-
-Step DebugMode::GetStep() const
-{
-	return m_Step;
 }
 
 bool DebugMode::IsEnabled(DebugOption option) const

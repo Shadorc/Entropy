@@ -93,7 +93,8 @@ static std::vector<const char*> texts = {
 	"F2: Show quadtree",
 	"F3: Show AABB",
 	"F4: Show velocity",
-	"Space: Enable steps",
+	"F5: Enable/disable physic steps",
+	"Space: Next physic step",
 	"Left click: Spawn circle",
 	"Right click: Spawn polygon"
 };
@@ -187,17 +188,11 @@ void Sandbox::OnLoop()
 	while (m_AccumulatorTime >= DELTA_TIME)
 	{
 #ifdef ENTROPY_DEBUG
-		if (m_DebugMode.GetStep() != Step::PAUSE) // CONTINUE || NONE
+		if (m_DebugMode.ShouldContinuePhysicStep())
+#endif
 		{
 			Update(DELTA_TIME);
-			if (m_DebugMode.GetStep() == Step::CONTINUE)
-			{
-				m_DebugMode.SetStep(Step::PAUSE);
-			}
 		}
-#else
-		Update(DELTA_TIME);
-#endif
 		m_AccumulatorTime -= DELTA_TIME;
 	}
 
@@ -259,7 +254,7 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
 	{
 	case ' ':
 	{
-		m_DebugMode.SetStep(Step::CONTINUE);
+		m_DebugMode.ContinuePhysicStep();
 		break;
 	}
 	// Exit on escape key press
@@ -293,6 +288,11 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
 	case GLUT_KEY_F4:
 	{
 		m_DebugMode.Toggle(DebugOption::SHOW_VELOCITY);
+		break;
+	}
+	case GLUT_KEY_F5:
+	{
+		m_DebugMode.TogglePhysicStep();
 		break;
 	}
 	}
