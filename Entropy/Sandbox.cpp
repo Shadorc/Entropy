@@ -252,11 +252,13 @@ void Sandbox::OnKeyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
+#ifdef ENTROPY_DEBUG
 	case ' ':
 	{
 		m_DebugMode.ContinuePhysicStep();
 		break;
 	}
+#endif // ENTROPY_DEBUG
 	// Exit on escape key press
 	case '\x1B':
 	{
