@@ -2,7 +2,7 @@
 
 typedef unsigned int uint;
 
-constexpr uint WIDTH = 720;
+constexpr uint WIDTH = 1280;
 constexpr uint HEIGHT = 720;
 
 constexpr float DELTA_TIME = 1.0f / 60.0f;		// Target 60 FPS
