@@ -89,11 +89,12 @@ void Sandbox::Repaint() const
 #ifdef ENTROPY_DEBUG
 static char s_strBuffer[64];
 static std::vector<const char*> texts = {
-	"F1: Show FPS",
-	"F2: Show quadtree",
-	"F3: Show AABB",
-	"F4: Show velocity",
-	"F5: Enable/disable physic steps",
+	"F1: Show commands",
+	"F2: Show FPS",
+	"F3: Show quadtree",
+	"F4: Show AABB",
+	"F5: Show velocity",
+	"F6: Enable/disable physic steps",
 	"Space: Next physic step",
 	"Left click: Spawn circle",
 	"Right click: Spawn polygon"
@@ -101,9 +102,16 @@ static std::vector<const char*> texts = {
 void Sandbox::RepaintDebug() const
 {
 	glColor3f(0.5f, 0.5f, 0.9f);
-	for (int i = 0; i < texts.size(); ++i)
+	if (m_DebugMode.IsEnabled(DebugOption::SHOW_COMMANDS))
 	{
-		RenderText(5.0f, (i + 1) * 15.0f, texts[i]);
+		for (int i = 0; i < texts.size(); ++i)
+		{
+			RenderText(5.0f, (i + 1) * 15.0f, texts[i]);
+		}
+	}
+	else
+	{
+		RenderText(5.0f, 15.0f, texts[0]);
 	}
 
 	if (m_DebugMode.IsEnabled(DebugOption::PERFORMANCE_INFO))
@@ -274,25 +282,30 @@ void Sandbox::OnSpecialKeyboard(int key, int x, int y)
 	{
 	case GLUT_KEY_F1:
 	{
-		m_DebugMode.Toggle(DebugOption::PERFORMANCE_INFO);
+		m_DebugMode.Toggle(DebugOption::SHOW_COMMANDS);
 		break;
 	}
 	case GLUT_KEY_F2:
 	{
-		m_DebugMode.Toggle(DebugOption::SHOW_QUADTREE);
+		m_DebugMode.Toggle(DebugOption::PERFORMANCE_INFO);
 		break;
 	}
 	case GLUT_KEY_F3:
 	{
-		m_DebugMode.Toggle(DebugOption::SHOW_AABB);
+		m_DebugMode.Toggle(DebugOption::SHOW_QUADTREE);
 		break;
 	}
 	case GLUT_KEY_F4:
 	{
-		m_DebugMode.Toggle(DebugOption::SHOW_VELOCITY);
+		m_DebugMode.Toggle(DebugOption::SHOW_AABB);
 		break;
 	}
 	case GLUT_KEY_F5:
+	{
+		m_DebugMode.Toggle(DebugOption::SHOW_VELOCITY);
+		break;
+	}
+	case GLUT_KEY_F6:
 	{
 		m_DebugMode.TogglePhysicStep();
 		break;

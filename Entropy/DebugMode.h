@@ -3,6 +3,7 @@
 #ifdef ENTROPY_DEBUG
 enum class DebugOption
 {
+	SHOW_COMMANDS,
 	PERFORMANCE_INFO,
 	SHOW_QUADTREE,
 	SHOW_AABB,
