@@ -56,84 +56,82 @@ void CircleToPolygon(Collision& collision)
 
 	// Find edge with minimum penetration
 	// Exact concept as using support points in Polygon vs Polygon
-	float separation = -FLT_MAX;
-	size_t faceNormal = 0;
+	float separationMax = -FLT_MAX;
+	size_t faceIdx = 0;
 	for (size_t i = 0; i < polygonB->GetVertexCount(); ++i)
 	{
-		float s = polygonB->GetNormal(i).Dot(center - polygonB->GetVertex(i));
+		float separation = polygonB->GetNormal(i).Dot(center - polygonB->GetVertex(i));
 
-		if (s > circleA->GetRadius())
+		if (separation > circleA->GetRadius())
 		{
 			return;
 		}
 
-		if (s > separation)
+		if (separation > separationMax)
 		{
-			separation = s;
-			faceNormal = i;
+			separationMax = separation;
+			faceIdx = i;
 		}
 	}
 
-	// Grab face's vertices
-	Vector2 v1 = polygonB->GetVertex(faceNormal);
-	size_t i2 = (faceNormal + 1) % polygonB->GetVertexCount();
-	Vector2 v2 = polygonB->GetVertex(i2);
-
 	// Check to see if center is within polygon
-	if (IsZero(separation))
+	if (IsZero(separationMax))
 	{
-		collision.normal = -(polygonB->GetOrientationMatrix() * polygonB->GetNormal(faceNormal));
+		collision.normal = -(polygonB->GetOrientationMatrix() * polygonB->GetNormal(faceIdx));
 		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->GetPosition());
 		collision.penetration = circleA->GetRadius();
 		return;
 	}
 
-	// Determine which voronoi region of the edge center of circle lies within
-	float dot1 = (center - v1).Dot(v2 - v1);
-	float dot2 = (center - v2).Dot(v1 - v2);
-	collision.penetration = circleA->GetRadius() - separation;
+	// Grab face's vertices
+	Vector2 vertex1 = polygonB->GetVertex(faceIdx);
+	const size_t vertex2Idx = (faceIdx + 1) % polygonB->GetVertexCount();
+	Vector2 vertex2 = polygonB->GetVertex(vertex2Idx);
 
-	// Closest to v1
+	// Determine which voronoi region of the edge center of circle lies within
+	float dot1 = (center - vertex1).Dot(vertex2 - vertex1);
+	float dot2 = (center - vertex2).Dot(vertex1 - vertex2);
+	collision.penetration = circleA->GetRadius() - separationMax;
+
+	// Closest to vertex1
 	if (dot1 <= 0.0f)
 	{
-		if (center.DistanceSq(v1) > circleA->GetRadius() * circleA->GetRadius())
+		if (center.DistanceSq(vertex1) > circleA->GetRadius() * circleA->GetRadius())
 		{
 			return;
 		}
 
-		Vector2 n = v1 - center;
-		n = polygonB->GetOrientationMatrix() * n;
-		n.Normalize();
-		collision.normal = n;
-		v1 = polygonB->GetOrientationMatrix() * v1 + polygonB->GetPosition();
-		collision.contacts.push_back(v1);
+		Vector2 normal = polygonB->GetOrientationMatrix() * (vertex1 - center);
+		normal.Normalize();
+		collision.normal = normal;
+		vertex1 = polygonB->GetOrientationMatrix() * vertex1 + polygonB->GetPosition();
+		collision.contacts.push_back(vertex1);
 	}
-	// Closest to v2
+	// Closest to vertex2
 	else if (dot2 <= 0.0f)
 	{
-		if (center.DistanceSq(v2) > circleA->GetRadius() * circleA->GetRadius())
+		if (center.DistanceSq(vertex2) > circleA->GetRadius() * circleA->GetRadius())
 		{
 			return;
 		}
 
-		Vector2 n = v2 - center;
-		v2 = polygonB->GetOrientationMatrix() * v2 + polygonB->GetPosition();
-		collision.contacts.push_back(v2);
-		n = polygonB->GetOrientationMatrix() * n;
-		n.Normalize();
-		collision.normal = n;
+		Vector2 normal = polygonB->GetOrientationMatrix() * (vertex2 - center);
+		normal.Normalize();
+		collision.normal = normal;
+		vertex2 = polygonB->GetOrientationMatrix() * vertex2 + polygonB->GetPosition();
+		collision.contacts.push_back(vertex2);
 	}
 	// Closest to face
 	else
 	{
-		Vector2 n = polygonB->GetNormal(faceNormal);
-		if ((center - v1).Dot(n) > circleA->GetRadius())
+		Vector2 normal = polygonB->GetNormal(faceIdx);
+		if ((center - vertex1).Dot(normal) > circleA->GetRadius())
 		{
 			return;
 		}
 
-		n = polygonB->GetOrientationMatrix() * n;
-		collision.normal = -n;
+		normal = polygonB->GetOrientationMatrix() * normal;
+		collision.normal = -normal;
 		collision.contacts.push_back(collision.normal * circleA->GetRadius() + circleA->GetPosition());
 	}
 }
