@@ -83,6 +83,8 @@ void CircleToPolygon(Collision& collision)
 		return;
 	}
 
+	collision.penetration = circleA->GetRadius() - separationMax;
+
 	// Grab face's vertices
 	Vector2 vertex1 = polygonB->GetVertex(faceIdx);
 	const size_t vertex2Idx = (faceIdx + 1) % polygonB->GetVertexCount();
@@ -91,7 +93,6 @@ void CircleToPolygon(Collision& collision)
 	// Determine which voronoi region of the edge center of circle lies within
 	float dot1 = (center - vertex1).Dot(vertex2 - vertex1);
 	float dot2 = (center - vertex2).Dot(vertex1 - vertex2);
-	collision.penetration = circleA->GetRadius() - separationMax;
 
 	// Closest to vertex1
 	if (dot1 <= 0.0f)

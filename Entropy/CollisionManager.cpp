@@ -212,8 +212,14 @@ void CollisionManager::CorrectPosition(const Collision& collision)
 	const float invMassA = collision.entityA->GetRigidbodyComponent()->GetMassData().invMass;
 	const float invMassB = collision.entityB->GetRigidbodyComponent()->GetMassData().invMass;
 	const Vector2& correction = (std::max(collision.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * collision.normal * PENETRATION_PERCENT;
-	collision.entityA->Translate(-correction * invMassA);
-	collision.entityB->Translate(correction * invMassB);
+	if (!IsZero(invMassA))
+	{
+		collision.entityA->Translate(-correction * invMassA);
+	}
+	if (!IsZero(invMassB))
+	{
+		collision.entityB->Translate(correction * invMassB);
+	}
 }
 
 const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
