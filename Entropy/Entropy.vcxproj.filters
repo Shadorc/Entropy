@@ -60,132 +60,132 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="src\Main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Sandbox.cpp">
+    <ClCompile Include="src\Sandbox.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
+    <ClCompile Include="src\Component\Component.cpp">
       <Filter>Fichiers sources\component</Filter>
     </ClCompile>
-    <ClCompile Include="GravityComponent.cpp">
+    <ClCompile Include="src\Component\GravityComponent.cpp">
       <Filter>Fichiers sources\component</Filter>
     </ClCompile>
-    <ClCompile Include="RigidbodyComponent.cpp">
+    <ClCompile Include="src\Component\RigidbodyComponent.cpp">
       <Filter>Fichiers sources\component</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="src\Entity\Entity.cpp">
       <Filter>Fichiers sources\entity</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
+    <ClCompile Include="src\Math\Vector2.cpp">
       <Filter>Fichiers sources\math</Filter>
     </ClCompile>
-    <ClCompile Include="Circle.cpp">
+    <ClCompile Include="src\Entity\Circle.cpp">
       <Filter>Fichiers sources\entity</Filter>
     </ClCompile>
-    <ClCompile Include="AABB.cpp">
+    <ClCompile Include="src\Quadtree\AABB.cpp">
       <Filter>Fichiers sources\quadtree</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
+    <ClCompile Include="src\Physic\Collision.cpp">
       <Filter>Fichiers sources\physic</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
+    <ClCompile Include="src\Physic\CollisionManager.cpp">
       <Filter>Fichiers sources\physic</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionResolver.cpp">
+    <ClCompile Include="src\Physic\CollisionResolver.cpp">
       <Filter>Fichiers sources\physic</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix22.cpp">
+    <ClCompile Include="src\Math\Matrix22.cpp">
       <Filter>Fichiers sources\math</Filter>
     </ClCompile>
-    <ClCompile Include="Render.cpp">
+    <ClCompile Include="src\Util\Render.cpp">
       <Filter>Fichiers sources\util</Filter>
     </ClCompile>
-    <ClCompile Include="MathIE.cpp">
+    <ClCompile Include="src\Math\MathIE.cpp">
       <Filter>Fichiers sources\math</Filter>
     </ClCompile>
-    <ClCompile Include="Polygon.cpp">
+    <ClCompile Include="src\Entity\Polygon.cpp">
       <Filter>Fichiers sources\entity</Filter>
     </ClCompile>
-    <ClCompile Include="DebugMode.cpp">
+    <ClCompile Include="src\Debug\DebugMode.cpp">
       <Filter>Fichiers sources\debug</Filter>
     </ClCompile>
-    <ClCompile Include="Raycast.cpp">
+    <ClCompile Include="src\Math\Raycast.cpp">
       <Filter>Fichiers sources\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sandbox.h">
+    <ClInclude Include="src\Sandbox.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
+    <ClInclude Include="src\Component\Component.h">
       <Filter>Fichiers d%27en-tête\component</Filter>
     </ClInclude>
-    <ClInclude Include="GravityComponent.h">
+    <ClInclude Include="src\Component\GravityComponent.h">
       <Filter>Fichiers d%27en-tête\component</Filter>
     </ClInclude>
-    <ClInclude Include="RigidbodyComponent.h">
+    <ClInclude Include="src\Component\RigidbodyComponent.h">
       <Filter>Fichiers d%27en-tête\component</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="src\Entity\Entity.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
-    <ClInclude Include="Render.h">
+    <ClInclude Include="src\Util\Render.h">
       <Filter>Fichiers d%27en-tête\util</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
+    <ClInclude Include="src\Math\Vector2.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
-    <ClInclude Include="Circle.h">
+    <ClInclude Include="src\Entity\Circle.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
-    <ClInclude Include="AABBObject.h">
+    <ClInclude Include="src\Quadtree\AABBObject.h">
       <Filter>Fichiers d%27en-tête\quadtree</Filter>
     </ClInclude>
-    <ClInclude Include="QuadTree.h">
+    <ClInclude Include="src\Quadtree\QuadTree.h">
       <Filter>Fichiers d%27en-tête\quadtree</Filter>
     </ClInclude>
-    <ClInclude Include="AABB.h">
+    <ClInclude Include="src\Quadtree\AABB.h">
       <Filter>Fichiers d%27en-tête\quadtree</Filter>
     </ClInclude>
-    <ClInclude Include="Precompiled.h">
+    <ClInclude Include="src\Precompiled.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="DebugMode.h">
+    <ClInclude Include="src\Debug\DebugMode.h">
       <Filter>Fichiers d%27en-tête\debug</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
+    <ClInclude Include="src\Physic\Collision.h">
       <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
+    <ClInclude Include="src\Physic\CollisionManager.h">
       <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionResolver.h">
+    <ClInclude Include="src\Physic\CollisionResolver.h">
       <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
-    <ClInclude Include="Pair.h">
+    <ClInclude Include="src\Util\Pair.h">
       <Filter>Fichiers d%27en-tête\util</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix22.h">
+    <ClInclude Include="src\Math\Matrix22.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
-    <ClInclude Include="MathIE.h">
+    <ClInclude Include="src\Math\MathIE.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
-    <ClInclude Include="FrictionData.h">
+    <ClInclude Include="src\Physic\Data\FrictionData.h">
       <Filter>Fichiers d%27en-tête\physic\data</Filter>
     </ClInclude>
-    <ClInclude Include="MassData.h">
+    <ClInclude Include="src\Physic\Data\MassData.h">
       <Filter>Fichiers d%27en-tête\physic\data</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialData.h">
+    <ClInclude Include="src\Physic\Data\MaterialData.h">
       <Filter>Fichiers d%27en-tête\physic\data</Filter>
     </ClInclude>
-    <ClInclude Include="Polygon.h">
+    <ClInclude Include="src\Entity\Polygon.h">
       <Filter>Fichiers d%27en-tête\entity</Filter>
     </ClInclude>
-    <ClInclude Include="Raycast.h">
+    <ClInclude Include="src\Math\Raycast.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>
   </ItemGroup>

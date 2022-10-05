@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "Vector2.h"
-#include "MathIE.h"
+#include "Math/Vector2.h"
+#include "Math/MathIE.h"
 
 struct Edge
 {

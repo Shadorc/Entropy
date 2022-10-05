@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Component.h"
-#include "Vector2.h"
-#include "MassData.h"
-#include "MaterialData.h"
-#include "FrictionData.h"
+#include "Component/Component.h"
+#include "Math/Vector2.h"
+#include "Physic/Data/MassData.h"
+#include "Physic/Data/MaterialData.h"
+#include "Physic/Data/FrictionData.h"
 
 class Entity;
 class RigidbodyComponent : public Component

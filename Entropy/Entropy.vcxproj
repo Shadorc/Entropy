@@ -19,50 +19,50 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AABB.cpp" />
-    <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
-    <ClCompile Include="CollisionResolver.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="DebugMode.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="GravityComponent.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Matrix22.cpp" />
-    <ClCompile Include="MathIE.cpp" />
-    <ClCompile Include="Polygon.cpp" />
-    <ClCompile Include="Raycast.cpp" />
-    <ClCompile Include="Render.cpp" />
-    <ClCompile Include="RigidbodyComponent.cpp" />
-    <ClCompile Include="Sandbox.cpp" />
-    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="src\Quadtree\AABB.cpp" />
+    <ClCompile Include="src\Entity\Circle.cpp" />
+    <ClCompile Include="src\Physic\CollisionManager.cpp" />
+    <ClCompile Include="src\Physic\CollisionResolver.cpp" />
+    <ClCompile Include="src\Component\Component.cpp" />
+    <ClCompile Include="src\Debug\DebugMode.cpp" />
+    <ClCompile Include="src\Entity\Entity.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Component\GravityComponent.cpp" />
+    <ClCompile Include="src\Physic\Collision.cpp" />
+    <ClCompile Include="src\Math\Matrix22.cpp" />
+    <ClCompile Include="src\Math\MathIE.cpp" />
+    <ClCompile Include="src\Entity\Polygon.cpp" />
+    <ClCompile Include="src\Math\Raycast.cpp" />
+    <ClCompile Include="src\Util\Render.cpp" />
+    <ClCompile Include="src\Component\RigidbodyComponent.cpp" />
+    <ClCompile Include="src\Sandbox.cpp" />
+    <ClCompile Include="src\Math\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AABB.h" />
-    <ClInclude Include="AABBObject.h" />
-    <ClInclude Include="Circle.h" />
-    <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="CollisionResolver.h" />
-    <ClInclude Include="DebugMode.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="FrictionData.h" />
-    <ClInclude Include="MassData.h" />
-    <ClInclude Include="Matrix22.h" />
-    <ClInclude Include="MaterialData.h" />
-    <ClInclude Include="MathIE.h" />
-    <ClInclude Include="Pair.h" />
-    <ClInclude Include="Polygon.h" />
-    <ClInclude Include="Precompiled.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Raycast.h" />
-    <ClInclude Include="Render.h" />
-    <ClInclude Include="GravityComponent.h" />
-    <ClInclude Include="QuadTree.h" />
-    <ClInclude Include="RigidbodyComponent.h" />
-    <ClInclude Include="Sandbox.h" />
-    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="src\Quadtree\AABB.h" />
+    <ClInclude Include="src\Quadtree\AABBObject.h" />
+    <ClInclude Include="src\Entity\Circle.h" />
+    <ClInclude Include="src\Physic\CollisionManager.h" />
+    <ClInclude Include="src\Physic\CollisionResolver.h" />
+    <ClInclude Include="src\Debug\DebugMode.h" />
+    <ClInclude Include="src\Physic\Collision.h" />
+    <ClInclude Include="src\Physic\Data\FrictionData.h" />
+    <ClInclude Include="src\Physic\Data\MassData.h" />
+    <ClInclude Include="src\Math\Matrix22.h" />
+    <ClInclude Include="src\Physic\Data\MaterialData.h" />
+    <ClInclude Include="src\Math\MathIE.h" />
+    <ClInclude Include="src\Util\Pair.h" />
+    <ClInclude Include="src\Entity\Polygon.h" />
+    <ClInclude Include="src\Precompiled.h" />
+    <ClInclude Include="src\Component\Component.h" />
+    <ClInclude Include="src\Entity\Entity.h" />
+    <ClInclude Include="src\Math\Raycast.h" />
+    <ClInclude Include="src\Util\Render.h" />
+    <ClInclude Include="src\Component\GravityComponent.h" />
+    <ClInclude Include="src\Quadtree\QuadTree.h" />
+    <ClInclude Include="src\Component\RigidbodyComponent.h" />
+    <ClInclude Include="src\Sandbox.h" />
+    <ClInclude Include="src\Math\Vector2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -75,26 +75,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -124,13 +124,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\freeglut\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>$(SolutionDir)\freeglut\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(SolutionDir)\freeglut\include;$(SolutionDir)\$(ProjectName)\src;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)\freeglut\lib\x64;$(SolutionDir)\$(ProjectName)\src;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\freeglut\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>$(SolutionDir)\freeglut\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(SolutionDir)\freeglut\include;$(SolutionDir)\$(ProjectName)\src;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)\freeglut\lib\x64;$(SolutionDir)\$(ProjectName)\src;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
