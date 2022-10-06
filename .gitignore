@@ -1,6 +1,5 @@
 # Build results
-Debug/
-Release/
+x64/
 
 # Visual Studio
 .vs/
