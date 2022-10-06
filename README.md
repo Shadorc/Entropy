@@ -1,8 +1,8 @@
 # Entropy
 
-Impulse-based physic engine.
+Impulse-based 2D physic engine.
 
-![Screenshot](https://i.imgur.com/1l2MaMR.png)
+![Screenshot](https://i.imgur.com/0LBXV1w.png)
 
 ## Sources
 - [**How to Create a Custom Physics Engine**](https://gamedevelopment.tutsplus.com/series/how-to-create-a-custom-physics-engine--gamedev-12715) by *Randy Paul*
