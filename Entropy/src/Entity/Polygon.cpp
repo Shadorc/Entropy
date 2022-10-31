@@ -54,7 +54,9 @@ entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
 	Vector2 endpoint;
 	do
 	{
-		if (std::find(m_Vertices.begin(), m_Vertices.end(), pointOnHull) != m_Vertices.end())
+#ifdef ENTROPY_DEBUG
+		if (std::find(m_Vertices.cbegin(), m_Vertices.cend(), pointOnHull) != m_Vertices.cend())
+#endif
 		{
 			// Prevent infinite loop when 3 or more vertices are colinear
 			// This is a degenerate configuration that does not work with this convex hull algorithm

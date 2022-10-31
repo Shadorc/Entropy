@@ -33,7 +33,7 @@ static constexpr float ARC = TWICE_PI / CIRCLE_VERTICES;
 void RenderCircle(float x, float y, float radius)
 {
 	glBegin(GL_LINE_LOOP);
-	for (int i = 0; i < CIRCLE_VERTICES; i++)
+	for (int i = 0; i < CIRCLE_VERTICES; ++i)
 	{
 		const float theta = i * ARC;
 		const float radX = radius * cosf(theta);
@@ -57,7 +57,7 @@ void RenderQuadTree(const QuadTree<Entity>& quadtree)
 {
 	for (int i = 0; i < static_cast<int>(Quadrant::COUNT); ++i)
 	{
-		const auto node = quadtree.GetNode(i);
+		const auto& node = quadtree.GetNode(i);
 		if (node != nullptr) {
 			RenderAABB(*node->GetAABB());
 			RenderQuadTree(*node);

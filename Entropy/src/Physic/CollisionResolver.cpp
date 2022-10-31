@@ -20,7 +20,9 @@ Collision Solve(Entity* entityA, Entity* entityB)
 void CircleToCircle(Collision& collision)
 {
 	const entity::Circle* circleA = dynamic_cast<const entity::Circle*>(collision.entityA);
+	ENTROPY_ASSERT(circleA);
 	const entity::Circle* circleB = dynamic_cast<const entity::Circle*>(collision.entityB);
+	ENTROPY_ASSERT(circleB);
 
 	const Vector2& deltaPos = circleB->GetPosition() - circleA->GetPosition();
 	float deltaLenSq = deltaPos.LengthSq();
@@ -49,7 +51,9 @@ void CircleToCircle(Collision& collision)
 void CircleToPolygon(Collision& collision)
 {
 	entity::Circle* circleA = dynamic_cast<entity::Circle*>(collision.entityA);
+	ENTROPY_ASSERT(circleA);
 	entity::Polygon* polygonB = dynamic_cast<entity::Polygon*>(collision.entityB);
+	ENTROPY_ASSERT(polygonB);
 
 	// Transform circle center to Polygon model space
 	const Vector2& center = polygonB->GetOrientationMatrix().Transpose() * (circleA->GetPosition() - polygonB->GetPosition());
@@ -147,7 +151,9 @@ void PolygonToCircle(Collision& collision)
 void PolygonToPolygon(Collision& collision)
 {
 	entity::Polygon* polygonA = dynamic_cast<entity::Polygon*>(collision.entityA);
+	ENTROPY_ASSERT(polygonA);
 	entity::Polygon* polygonB = dynamic_cast<entity::Polygon*>(collision.entityB);
+	ENTROPY_ASSERT(polygonB);
 
 	// Check for a separating axis with polygon polygon A's face planes
 	size_t faceA;
