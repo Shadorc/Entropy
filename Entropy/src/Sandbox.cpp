@@ -3,11 +3,12 @@
 #include "Precompiled.h"
 
 constexpr float MAX_ACCUMULATOR_TIME = 0.2f;
+constexpr size_t DEFAULT_ENTITIES_CAPACITY= 100;
 
 Sandbox* Sandbox::INSTANCE = nullptr;
 
-Sandbox::Sandbox() :
-	m_CollisionManager(ENTROPY_NEW(CollisionManager, this))
+Sandbox::Sandbox() 
+	: m_CollisionManager(ENTROPY_NEW(CollisionManager, this))
 	, m_Entities()
 	, m_Updating(false)
 	, m_Fps(0)
@@ -18,6 +19,7 @@ Sandbox::Sandbox() :
 #endif // ENTROPY_DEBUG
 {
 	INSTANCE = this;
+	m_Entities.reserve(DEFAULT_ENTITIES_CAPACITY);
 }
 
 Sandbox::~Sandbox()
@@ -159,7 +161,7 @@ std::vector<Entity*> Sandbox::GetEntities() const
 
 void Sandbox::AddEntity(Entity* entity)
 {
-	m_Entities.push_back(entity);
+	m_Entities.push_back(std::move(entity));
 }
 
 void Sandbox::RemoveEntity(Entity* entity)
