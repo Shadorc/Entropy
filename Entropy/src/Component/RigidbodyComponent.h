@@ -22,7 +22,7 @@ public:
 	RigidbodyComponent(Entity* entity);
 	RigidbodyComponent(Entity* entity, MaterialData materialData, FrictionData frictionData);
 
-	void ApplyImpulse(const Vector2& impulse, const Vector2& contact);
+	void ApplyImpulse(const Vector2& impulse, const Vector2& contact) const;
 	void AddForce(const Vector2& force);
 	void AddTorque(float torque);
 	void Update(float deltaTime) override;

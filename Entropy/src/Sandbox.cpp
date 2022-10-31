@@ -126,7 +126,7 @@ void Sandbox::RepaintDebug() const
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
 	{
 		glColor3f(0.0f, 1.0f, 1.0f);
-		RenderQuadTree(m_CollisionManager->GetRootQuadTree());
+		RenderQuadTree(*m_CollisionManager->GetRootQuadTree());
 	}
 
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_AABB))
@@ -134,7 +134,7 @@ void Sandbox::RepaintDebug() const
 		glColor3f(1.0f, 0.0f, 0.0f);
 		for (Entity* entity : m_Entities)
 		{
-			RenderAABB(entity->GetAABB());
+			RenderAABB(*entity->GetAABB());
 		}
 	}
 

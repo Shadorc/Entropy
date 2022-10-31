@@ -149,10 +149,7 @@ public:
 
 		for (int i = 0; i < (int)Quadrant::COUNT; ++i)
 		{
-			if (m_Nodes[i] != nullptr)
-			{
-				ENTROPY_DELETE(m_Nodes[i]);
-			}
+			ENTROPY_DELETE(m_Nodes[i]);
 		}
 	}
 
@@ -188,7 +185,7 @@ public:
 				}
 				else
 				{
-					i++;
+					++i;
 				}
 			}
 		}

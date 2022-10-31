@@ -95,7 +95,7 @@ void RigidbodyComponent::Update(float deltaTime)
 	m_Torque = 0.0f;
 }
 
-void RigidbodyComponent::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector)
+void RigidbodyComponent::ApplyImpulse(const Vector2& impulse, const Vector2& contactVector) const
 {
 	m_Entity->velocity += m_MassData.invMass * impulse;
 	m_Entity->angularVelocity += m_MassData.invInertia * contactVector.Cross(impulse);

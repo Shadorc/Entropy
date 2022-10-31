@@ -35,7 +35,7 @@ public:
 	uint GetId() const;
 	const Vector2 GetPosition() const;
 	const float GetOrientation() const;
-	const AABB* GetAABB() const;
+	const AABB* GetAABB() const override;
 	virtual EntityType GetType() const = 0;
 
 	template<typename T>
