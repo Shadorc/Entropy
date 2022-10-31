@@ -7,20 +7,15 @@ CollisionManager::CollisionManager(const Sandbox* sandbox)
 	SetRootSize(WIDTH, HEIGHT);
 }
 
-CollisionManager::~CollisionManager()
-{
-	ENTROPY_DELETE(m_QuadTree);
-}
-
 void CollisionManager::Update()
 {
-	// Push all entities with a rigid body inside m_entities
+	// Push all entities with a rigidbody inside m_Entities
 	m_Entities.clear();
-	for (Entity* entity : m_Sandbox->GetEntities())
+	for (const auto& entity : m_Sandbox->GetEntities())
 	{
 		if (entity->GetRigidbodyComponent() != nullptr)
 		{
-			m_Entities.push_back(entity);
+			m_Entities.push_back(entity.get());
 		}
 	}
 
@@ -224,11 +219,10 @@ void CollisionManager::CorrectPosition(const Collision& collision)
 
 const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 {
-	return m_QuadTree;
+	return m_QuadTree.get();
 }
 
 void CollisionManager::SetRootSize(int width, int height)
 {
-	ENTROPY_DELETE(m_QuadTree);
-	m_QuadTree = ENTROPY_NEW(QuadTree<Entity>, ENTROPY_NEW(AABB, 0.0f, 0.0f, (float)width, (float)height));
+	m_QuadTree.reset(ENTROPY_NEW(QuadTree<Entity>, ENTROPY_NEW(AABB, 0.0f, 0.0f, (float)width, (float)height)));
 }

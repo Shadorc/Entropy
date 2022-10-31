@@ -10,17 +10,19 @@ RigidbodyComponent::RigidbodyComponent(Entity* entity)
 
 RigidbodyComponent::RigidbodyComponent(Entity* entity, MaterialData materialData, FrictionData frictionData)
 	: Component(entity)
-	, m_MassData()
 	, m_MaterialData(materialData)
 	, m_FrictionData(frictionData)
+	, m_MassData(ComputeMass())
 	, m_Force()
 	, m_Torque(0.0f)
 {
-	ComputeMass();
+
 }
 
-void RigidbodyComponent::ComputeMass()
+MassData RigidbodyComponent::ComputeMass()
 {
+	MassData massData = {};
+
 	switch (m_Entity->GetType())
 	{
 	case EntityType::CIRCLE:
@@ -29,10 +31,11 @@ void RigidbodyComponent::ComputeMass()
 		ENTROPY_ASSERT(circle);
 
 		const float radiusSq = circle->GetRadius() * circle->GetRadius();
-		m_MassData.mass = PI * radiusSq * m_MaterialData.density * MASS_METER_SQUARE;
-		m_MassData.invMass = (m_MassData.mass > 0) ? (1.0f / m_MassData.mass) : 0.0f;
-		m_MassData.inertia = m_MassData.mass * radiusSq;
-		m_MassData.invInertia = (m_MassData.inertia > 0) ? (1.0f / m_MassData.inertia) : 0.0f;
+
+		massData.mass = PI * radiusSq * m_MaterialData.density * MASS_METER_SQUARE;
+		massData.invMass = (massData.mass > 0) ? (1.0f / massData.mass) : 0.0f;
+		massData.inertia = massData.mass * radiusSq;
+		massData.invInertia = (massData.inertia > 0) ? (1.0f / massData.inertia) : 0.0f;
 		break;
 	}
 	case EntityType::POLYGON:
@@ -67,15 +70,17 @@ void RigidbodyComponent::ComputeMass()
 
 		centroid /= area;
 
-		m_MassData.mass = m_MaterialData.density * area * MASS_METER_SQUARE;
-		m_MassData.invMass = (m_MassData.mass > 0.0f) ? (1.0f / m_MassData.mass) : 0.0f;
-		m_MassData.inertia = inertia * m_MaterialData.density * MASS_METER_SQUARE;
-		m_MassData.invInertia = (m_MassData.inertia > 0.0f) ? (1.0f / m_MassData.inertia) : 0.0f;
+		massData.mass = m_MaterialData.density * area * MASS_METER_SQUARE;
+		massData.invMass = (massData.mass > 0.0f) ? (1.0f / massData.mass) : 0.0f;
+		massData.inertia = inertia * m_MaterialData.density * MASS_METER_SQUARE;
+		massData.invInertia = (massData.inertia > 0.0f) ? (1.0f / massData.inertia) : 0.0f;
 		break;
 	}
 	default:
 		ENTROPY_ASSERT_WITH_REASON(false, "Unknown entity type");
 	}
+
+	return massData;
 }
 
 void RigidbodyComponent::Update(float deltaTime)
@@ -111,17 +116,17 @@ void RigidbodyComponent::AddTorque(float torque)
 	m_Torque += torque;
 }
 
-MassData RigidbodyComponent::GetMassData() const
+const MassData& RigidbodyComponent::GetMassData() const
 {
 	return m_MassData;
 }
 
-MaterialData RigidbodyComponent::GetMaterialData() const
+const MaterialData& RigidbodyComponent::GetMaterialData() const
 {
 	return m_MaterialData;
 }
 
-FrictionData RigidbodyComponent::GetFrictionData() const
+const FrictionData& RigidbodyComponent::GetFrictionData() const
 {
 	return m_FrictionData;
 }

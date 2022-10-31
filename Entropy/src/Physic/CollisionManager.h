@@ -11,7 +11,7 @@ class CollisionManager
 {
 private:
 	const Sandbox* m_Sandbox;
-	QuadTree<Entity>* m_QuadTree;
+	std::unique_ptr<QuadTree<Entity>> m_QuadTree;
 
 	// Cached vectors
 	std::vector<Entity*> m_Entities;
@@ -26,7 +26,6 @@ private:
 
 public:
 	CollisionManager(const Sandbox* sandbox);
-	~CollisionManager();
 
 	void Update();
 

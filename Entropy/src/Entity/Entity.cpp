@@ -14,34 +14,24 @@ Entity::Entity(float x, float y)
 
 }
 
-Entity::~Entity()
-{
-	ENTROPY_DELETE(m_AabbCache);
-	for (Component* component : m_Components)
-	{
-		ENTROPY_DELETE(component);
-	}
-	m_Components.clear();
-}
-
 // Cache Rigidbody component
 RigidbodyComponent* Entity::GetRigidbodyComponent() const
 {
 	if (m_RigidbodyComponentCache == nullptr)
 	{
-		m_RigidbodyComponentCache = GetComponent<RigidbodyComponent>();
+		m_RigidbodyComponentCache.reset(GetComponent<RigidbodyComponent>());
 	}
-	return m_RigidbodyComponentCache;
+	return m_RigidbodyComponentCache.get();
 }
 
 void Entity::AddComponent(Component* component)
 {
-	m_Components.push_back(component);
+	m_Components.push_back(std::unique_ptr<Component>(component));
 }
 
 void Entity::Translate(const Vector2& vector)
 {
-	ENTROPY_DELETE(m_AabbCache);
+	m_AabbCache.reset();
 	m_Position += vector;
 }
 
@@ -64,14 +54,14 @@ const AABB* Entity::GetAABB() const
 {
 	if (m_AabbCache == nullptr)
 	{
-		m_AabbCache = ComputeAABB();
+		m_AabbCache.reset(ComputeAABB());
 	}
-	return m_AabbCache;
+	return m_AabbCache.get();
 }
 
 void Entity::Update(float deltaTime)
 {
-	for (Component* component : m_Components)
+	for (const auto& component : m_Components)
 	{
 		component->Update(deltaTime);
 	}

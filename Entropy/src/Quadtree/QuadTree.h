@@ -22,21 +22,21 @@ class QuadTree
 private:
 	const int m_Level;
 	std::vector<T*> m_Objects;
-	const AABB* m_Aabb;
-	QuadTree<T>* m_Nodes[(int)Quadrant::COUNT];
+	std::unique_ptr<AABB> m_Aabb;
+	std::unique_ptr<QuadTree<T>> m_Nodes[(int)Quadrant::COUNT];
 
 	void Split()
 	{
 		float subWidth = m_Aabb->GetWidth() / 2.0f;
 		float subHeight = m_Aabb->GetHeight() / 2.0f;
 
-		m_Nodes[(int)Quadrant::TOP_LEFT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+		m_Nodes[(int)Quadrant::TOP_LEFT] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight));
-		m_Nodes[(int)Quadrant::TOP_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+		m_Nodes[(int)Quadrant::TOP_RIGHT] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY, m_Aabb->maxX, m_Aabb->minY + subHeight));
-		m_Nodes[(int)Quadrant::BOTTOM_LEFT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+		m_Nodes[(int)Quadrant::BOTTOM_LEFT] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY + subHeight, m_Aabb->minX + subWidth, m_Aabb->maxY));
-		m_Nodes[(int)Quadrant::BOTTOM_RIGHT] = ENTROPY_NEW(QuadTree<T>, m_Level + 1,
+		m_Nodes[(int)Quadrant::BOTTOM_RIGHT] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight, m_Aabb->maxX, m_Aabb->maxY));
 	}
 
@@ -100,7 +100,7 @@ private:
 		}
 
 		returnObjects.insert(returnObjects.end(), m_Objects.begin(), m_Objects.end());
-		for (const QuadTree<T>* node : m_Nodes)
+		for (const auto& node : m_Nodes)
 		{
 			if (node != nullptr)
 			{
@@ -112,15 +112,15 @@ private:
 	}
 
 public:
-	QuadTree(const AABB* aabb) :
+	QuadTree(AABB* aabb) :
 		QuadTree(0, aabb)
 	{
 
 	}
 
-	QuadTree(int level, const AABB* aabb) :
+	QuadTree(int level, AABB* aabb) :
 		m_Level(level),
-		m_Aabb(aabb),
+		m_Aabb(std::unique_ptr<AABB>(aabb)),
 		m_Nodes(),
 		m_Objects()
 	{
@@ -129,18 +129,17 @@ public:
 
 	~QuadTree()
 	{
-		ENTROPY_DELETE(m_Aabb);
 		Clear();
 	}
 
 	const QuadTree<T>* GetNode(int i) const
 	{
-		return m_Nodes[i];
+		return m_Nodes[i].get();
 	}
 
 	const AABB* GetAABB() const
 	{
-		return m_Aabb;
+		return m_Aabb.get();
 	}
 
 	void Clear()
@@ -149,7 +148,7 @@ public:
 
 		for (int i = 0; i < (int)Quadrant::COUNT; ++i)
 		{
-			ENTROPY_DELETE(m_Nodes[i]);
+			m_Nodes[i].reset();
 		}
 	}
 

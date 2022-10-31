@@ -22,13 +22,6 @@ constexpr uint CIRCLE_VERTICES = 24;
 		return new x(__VA_ARGS__); \
 	})()
 
-#define ENTROPY_DELETE(x) \
-	if (x != nullptr) \
-	{ \
-		delete x; \
-		x = nullptr; \
-	}
-
 #ifdef ENTROPY_DEBUG
 #define ENTROPY_LOG(x) std::cout << x << std::endl
 #else

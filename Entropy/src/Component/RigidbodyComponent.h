@@ -10,13 +10,13 @@ class Entity;
 class RigidbodyComponent : public Component
 {
 private:
-	MassData m_MassData;
-	MaterialData m_MaterialData;
-	FrictionData m_FrictionData;
+	const MaterialData m_MaterialData;
+	const FrictionData m_FrictionData;
+	const MassData m_MassData;
 	Vector2 m_Force;
 	float m_Torque;
 
-	void ComputeMass();
+	MassData ComputeMass();
 
 public:
 	RigidbodyComponent(Entity* entity);
@@ -27,8 +27,8 @@ public:
 	void AddTorque(float torque);
 	void Update(float deltaTime) override;
 
-	MassData GetMassData() const;
-	MaterialData GetMaterialData() const;
-	FrictionData GetFrictionData() const;
+	const MassData& GetMassData() const;
+	const MaterialData& GetMaterialData() const;
+	const FrictionData& GetFrictionData() const;
 };
 

@@ -16,18 +16,17 @@ class RigidbodyComponent;
 class Entity : public AABBObject
 {
 private:
-	mutable RigidbodyComponent* m_RigidbodyComponentCache;
-	mutable AABB* m_AabbCache;
+	mutable std::unique_ptr<RigidbodyComponent> m_RigidbodyComponentCache;
+	mutable std::unique_ptr<AABB> m_AabbCache;
 
 protected:
 	const uint m_Id;
-	std::vector<Component*> m_Components;
+	std::vector<std::unique_ptr<Component>> m_Components;
 	Vector2 m_Position;
 	float m_Orientation;
 
 public:
 	Entity(float x, float y);
-	virtual ~Entity();
 
 	Vector2 velocity;
 	float angularVelocity;
@@ -41,9 +40,9 @@ public:
 	template<typename T>
 	T* GetComponent() const
 	{
-		for (Component* itr : m_Components)
+		for (const auto& itr : m_Components)
 		{
-			T* component = dynamic_cast<T*>(itr);
+			T* component = dynamic_cast<T*>(itr.get());
 			if (component != nullptr)
 			{
 				return component;

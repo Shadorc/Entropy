@@ -24,12 +24,6 @@ Sandbox::Sandbox()
 
 Sandbox::~Sandbox()
 {
-	ENTROPY_DELETE(m_CollisionManager);
-	for (Entity* entity : m_Entities)
-	{
-		ENTROPY_DELETE(entity);
-	}
-	m_Entities.clear();
 	INSTANCE = nullptr;
 }
 
@@ -63,7 +57,7 @@ void Sandbox::Stop()
 
 void Sandbox::Update(float deltaTime)
 {
-	for (Entity* entity : m_Entities)
+	for (const auto& entity : m_Entities)
 	{
 		entity->Update(deltaTime);
 	}
@@ -76,7 +70,7 @@ void Sandbox::Repaint() const
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glColor3f(1.0f, 1.0f, 0.0f);
-	for (Entity* entity : m_Entities)
+	for (const auto& entity : m_Entities)
 	{
 		entity->Paint();
 	}
@@ -132,7 +126,7 @@ void Sandbox::RepaintDebug() const
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_AABB))
 	{
 		glColor3f(1.0f, 0.0f, 0.0f);
-		for (Entity* entity : m_Entities)
+		for (const auto& entity : m_Entities)
 		{
 			RenderAABB(*entity->GetAABB());
 		}
@@ -141,7 +135,7 @@ void Sandbox::RepaintDebug() const
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_VELOCITY))
 	{
 		glColor3f(0.0f, 0.0f, 1.0f);
-		for (Entity* entity : m_Entities)
+		for (const auto& entity : m_Entities)
 		{
 			RenderLine(
 				entity->GetPosition().x,
@@ -154,24 +148,29 @@ void Sandbox::RepaintDebug() const
 }
 #endif // ENTROPY_DEBUG
 
-std::vector<Entity*> Sandbox::GetEntities() const
+const std::vector<std::unique_ptr<Entity>>& Sandbox::GetEntities() const
 {
 	return m_Entities;
 }
 
 void Sandbox::AddEntity(Entity* entity)
 {
-	m_Entities.push_back(std::move(entity));
+	m_Entities.push_back(std::unique_ptr<Entity>(entity));
 }
 
-void Sandbox::RemoveEntity(Entity* entity)
+bool Sandbox::RemoveEntity(const uint id)
 {
-	auto it = std::find(m_Entities.begin(), m_Entities.end(), entity);
-	if (it != m_Entities.end())
+	for (const auto& entity : m_Entities)
 	{
-		m_Entities.erase(it);
-		ENTROPY_DELETE(*it);
+		if (entity->GetId() == id)
+		{
+			const auto& it = std::find(m_Entities.begin(), m_Entities.end(), entity);
+			m_Entities.erase(it);
+			return true;
+		}
 	}
+	return false;
+
 }
 
 static const float alpha = 0.95f;

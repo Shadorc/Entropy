@@ -92,12 +92,6 @@ entity::Polygon::Polygon(float x, float y, std::vector<Vector2>& vertices)
 	ENTROPY_ASSERT(m_Vertices.size() == m_Normals.size());
 }
 
-entity::Polygon::~Polygon()
-{
-	m_Vertices.clear();
-	m_Normals.clear();
-}
-
 Matrix22 entity::Polygon::GetOrientationMatrix() const
 {
 	return m_OrientationMatrix;
