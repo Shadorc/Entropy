@@ -23,20 +23,20 @@ private:
 	const int m_Level;
 	std::vector<T*> m_Objects;
 	std::unique_ptr<AABB> m_Aabb;
-	std::unique_ptr<QuadTree<T>> m_Nodes[(int)Quadrant::COUNT];
+	std::unique_ptr<QuadTree<T>> m_Nodes[static_cast<int>(Quadrant::COUNT)];
 
 	void Split()
 	{
 		float subWidth = m_Aabb->GetWidth() / 2.0f;
 		float subHeight = m_Aabb->GetHeight() / 2.0f;
 
-		m_Nodes[(int)Quadrant::TOP_LEFT] = std::make_unique<QuadTree<T>>(m_Level + 1,
+		m_Nodes[static_cast<int>(Quadrant::TOP_LEFT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight));
-		m_Nodes[(int)Quadrant::TOP_RIGHT] = std::make_unique<QuadTree<T>>(m_Level + 1,
+		m_Nodes[static_cast<int>(Quadrant::TOP_RIGHT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY, m_Aabb->maxX, m_Aabb->minY + subHeight));
-		m_Nodes[(int)Quadrant::BOTTOM_LEFT] = std::make_unique<QuadTree<T>>(m_Level + 1,
+		m_Nodes[static_cast<int>(Quadrant::BOTTOM_LEFT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY + subHeight, m_Aabb->minX + subWidth, m_Aabb->maxY));
-		m_Nodes[(int)Quadrant::BOTTOM_RIGHT] = std::make_unique<QuadTree<T>>(m_Level + 1,
+		m_Nodes[static_cast<int>(Quadrant::BOTTOM_RIGHT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
 			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight, m_Aabb->maxX, m_Aabb->maxY));
 	}
 
@@ -85,7 +85,7 @@ private:
 
 		if (quadrant != Quadrant::INVALID && m_Nodes[0] != nullptr)
 		{
-			m_Nodes[(int)quadrant]->Search(returnObjects, object);
+			m_Nodes[static_cast<int>(quadrant)]->Search(returnObjects, object);
 		}
 
 		returnObjects.insert(returnObjects.end(), m_Objects.begin(), m_Objects.end());
@@ -146,7 +146,7 @@ public:
 	{
 		m_Objects.clear();
 
-		for (int i = 0; i < (int)Quadrant::COUNT; ++i)
+		for (int i = 0; i < static_cast<int>(Quadrant::COUNT); ++i)
 		{
 			m_Nodes[i].reset();
 		}
@@ -159,7 +159,7 @@ public:
 			Quadrant quadrant = GetQuadrant(object);
 			if (quadrant != Quadrant::INVALID)
 			{
-				m_Nodes[(int)quadrant]->Insert(object);
+				m_Nodes[static_cast<int>(quadrant)]->Insert(object);
 				return;
 			}
 		}
@@ -179,7 +179,7 @@ public:
 				Quadrant quadrant = GetQuadrant(m_Objects[i]);
 				if (quadrant != Quadrant::INVALID)
 				{
-					m_Nodes[(int)quadrant]->Insert(m_Objects[i]);
+					m_Nodes[static_cast<int>(quadrant)]->Insert(m_Objects[i]);
 					m_Objects.erase(m_Objects.begin() + i);
 				}
 				else

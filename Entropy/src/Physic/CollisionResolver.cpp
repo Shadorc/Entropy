@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-CollisionCallback Dispatch[(int)EntityType::COUNT][(int)EntityType::COUNT] =
+CollisionCallback Dispatch[static_cast<int>(EntityType::COUNT)][static_cast<int>(EntityType::COUNT)] =
 {
   {
 	CircleToCircle, CircleToPolygon
@@ -13,7 +13,7 @@ CollisionCallback Dispatch[(int)EntityType::COUNT][(int)EntityType::COUNT] =
 Collision Solve(Entity* entityA, Entity* entityB)
 {
 	Collision collision(entityA, entityB);
-	Dispatch[(int)entityA->GetType()][(int)entityB->GetType()](collision);
+	Dispatch[static_cast<int>(entityA->GetType())][static_cast<int>(entityB->GetType())](collision);
 	return collision;
 }
 
@@ -259,7 +259,7 @@ void PolygonToPolygon(Collision& collision)
 		collision.penetration += -separation;
 
 		// Average penetration
-		collision.penetration /= (float)collision.contacts.size();
+		collision.penetration /= static_cast<float>(collision.contacts.size());
 	}
 }
 

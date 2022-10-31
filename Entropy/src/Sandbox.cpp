@@ -177,7 +177,7 @@ static const float alpha = 0.95f;
 void Sandbox::OnLoop()
 {
 	int now = glutGet(GLUT_ELAPSED_TIME);
-	float elapsed = (float)(now - m_LastLoopTime) / CLOCKS_PER_SEC;
+	float elapsed = static_cast<float>(now - m_LastLoopTime) / CLOCKS_PER_SEC;
 
 #ifdef ENTROPY_DEBUG
 	if (!IsZero(elapsed))
@@ -232,7 +232,7 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_UP)
 		{
-			entity::Circle* circle = ENTROPY_NEW(entity::Circle, (float)x, (float)y, (float)Rand(10, 40));
+			entity::Circle* circle = ENTROPY_NEW(entity::Circle, static_cast<float>(x), static_cast<float>(y), static_cast<float>(Rand(10, 40)));
 			circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle));
 			circle->AddComponent(ENTROPY_NEW(GravityComponent, circle));
 			AddEntity(circle);
@@ -246,9 +246,9 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 			const uint vertexCount = Rand(3, 25);
 			for (uint i = 0; i < vertexCount; ++i)
 			{
-				vertices.emplace_back((float)Rand(-size, size), (float)Rand(-size, size));
+				vertices.emplace_back(Rand(-size, size), Rand(-size, size));
 			}
-			entity::Polygon* polygon = ENTROPY_NEW(entity::Polygon, (float)x, (float)y, vertices);
+			entity::Polygon* polygon = ENTROPY_NEW(entity::Polygon, static_cast<float>(x), static_cast<float>(y), vertices);
 			polygon->AddComponent(ENTROPY_NEW(RigidbodyComponent, polygon));
 			polygon->AddComponent(ENTROPY_NEW(GravityComponent, polygon));
 			AddEntity(polygon);

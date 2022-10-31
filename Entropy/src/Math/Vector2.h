@@ -9,6 +9,7 @@ struct Vector2
 
 	Vector2();
 	Vector2(float x, float y);
+	Vector2(int x, int y);
 
 	void Reset();
 	void Normalize();

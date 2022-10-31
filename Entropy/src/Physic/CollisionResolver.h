@@ -5,7 +5,7 @@ struct Collision;
 
 using CollisionCallback = void (*)(Collision& collision);
 
-extern CollisionCallback Dispatch[(int)EntityType::COUNT][(int)EntityType::COUNT];
+extern CollisionCallback Dispatch[static_cast<int>(EntityType::COUNT)][static_cast<int>(EntityType::COUNT)];
 
 Collision Solve(Entity* entityA, Entity* entityB);
 void CircleToCircle(Collision& collision);

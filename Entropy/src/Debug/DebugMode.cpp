@@ -34,11 +34,11 @@ bool DebugMode::ShouldContinuePhysicStep()
 
 void DebugMode::Toggle(DebugOption option)
 {
-	m_Mask ^= 1 << (int)option;
+	m_Mask ^= 1 << static_cast<int>(option);
 }
 
 bool DebugMode::IsEnabled(DebugOption option) const
 {
-	return m_Mask & 1 << (int)option;
+	return m_Mask & 1 << static_cast<int>(option);
 }
 #endif // ENTROPY_DEBUG
