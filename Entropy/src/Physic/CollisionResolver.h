@@ -3,7 +3,7 @@
 
 struct Collision;
 
-typedef void (*CollisionCallback)(Collision& collision);
+using CollisionCallback = void (*)(Collision& collision);
 
 extern CollisionCallback Dispatch[(int)EntityType::COUNT][(int)EntityType::COUNT];
 

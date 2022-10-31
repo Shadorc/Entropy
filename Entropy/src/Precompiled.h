@@ -1,6 +1,6 @@
 #pragma once
 
-typedef unsigned int uint;
+using uint = unsigned int;
 
 constexpr uint WIDTH = 1280;
 constexpr uint HEIGHT = 720;
