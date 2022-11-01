@@ -1,11 +1,11 @@
 #pragma once
 
+#include "QuadTree/QuadTree.h"
 #include "Physic/Collision.h"
 #include "Util/Pair.h"
 #include "Entity/Entity.h"
 
 class Sandbox;
-template<class T> class QuadTree;
 
 class CollisionManager
 {
@@ -14,12 +14,11 @@ public:
 
 	void Update();
 
-	const QuadTree<Entity>* GetRootQuadTree() const;
-	void SetRootSize(int width, int height);
+	const QuadTree<Entity>& GetRootQuadTree() const;
 
 private:
 	const Sandbox* m_Sandbox;
-	std::unique_ptr<QuadTree<Entity>> m_QuadTree;
+	QuadTree<Entity> m_QuadTree;
 
 	// Cached vectors
 	std::vector<Entity*> m_Entities;

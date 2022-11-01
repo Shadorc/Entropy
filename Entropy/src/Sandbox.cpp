@@ -8,7 +8,7 @@ constexpr size_t DEFAULT_ENTITIES_CAPACITY= 100;
 Sandbox* Sandbox::INSTANCE = nullptr;
 
 Sandbox::Sandbox() 
-	: m_CollisionManager(CollisionManager(this))
+	: m_CollisionManager(this)
 	, m_Entities()
 	, m_Updating(false)
 	, m_Fps(0)
@@ -120,7 +120,7 @@ void Sandbox::RepaintDebug() const
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
 	{
 		glColor3f(0.0f, 1.0f, 1.0f);
-		RenderQuadTree(*m_CollisionManager.GetRootQuadTree());
+		RenderQuadTree(m_CollisionManager.GetRootQuadTree());
 	}
 
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_AABB))

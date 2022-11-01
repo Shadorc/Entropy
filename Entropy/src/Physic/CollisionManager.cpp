@@ -2,9 +2,9 @@
 
 CollisionManager::CollisionManager(const Sandbox* sandbox)
 	: m_Sandbox(sandbox)
-	, m_QuadTree(nullptr)
+	, m_QuadTree(AABB(0.0f, 0.0f, static_cast<float>(WIDTH), static_cast<float>(HEIGHT)))
 {
-	SetRootSize(WIDTH, HEIGHT);
+
 }
 
 void CollisionManager::Update()
@@ -29,10 +29,10 @@ void CollisionManager::Update()
 
 void CollisionManager::UpdateQuadTree()
 {
-	m_QuadTree->Clear();
+	m_QuadTree.Clear();
 	for (Entity* entity : m_Entities)
 	{
-		m_QuadTree->Insert(entity);
+		m_QuadTree.Insert(entity);
 	}
 }
 
@@ -44,7 +44,7 @@ void CollisionManager::BroadPhase()
 	// Detect all colliding entities and push the corresponding pair inside m_pairs
 	for (Entity* entityA : m_Entities)
 	{
-		for (Entity* entityB : m_QuadTree->Search(entityA))
+		for (Entity* entityB : m_QuadTree.Search(entityA))
 		{
 			if (entityA == entityB)
 			{
@@ -218,12 +218,8 @@ void CollisionManager::CorrectPosition(const Collision& collision)
 	}
 }
 
-const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
+const QuadTree<Entity>& CollisionManager::GetRootQuadTree() const
 {
-	return m_QuadTree.get();
+	return m_QuadTree;
 }
 
-void CollisionManager::SetRootSize(int width, int height)
-{
-	m_QuadTree.reset(new QuadTree<Entity>(AABB(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height))));
-}
