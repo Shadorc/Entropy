@@ -8,7 +8,7 @@ constexpr size_t DEFAULT_ENTITIES_CAPACITY= 100;
 Sandbox* Sandbox::INSTANCE = nullptr;
 
 Sandbox::Sandbox() 
-	: m_CollisionManager(ENTROPY_NEW(CollisionManager, this))
+	: m_CollisionManager(CollisionManager(this))
 	, m_Entities()
 	, m_Updating(false)
 	, m_Fps(0)
@@ -62,7 +62,7 @@ void Sandbox::Update(float deltaTime)
 		entity->Update(deltaTime);
 	}
 
-	m_CollisionManager->Update();
+	m_CollisionManager.Update();
 }
 
 void Sandbox::Repaint() const
@@ -120,7 +120,7 @@ void Sandbox::RepaintDebug() const
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
 	{
 		glColor3f(0.0f, 1.0f, 1.0f);
-		RenderQuadTree(*m_CollisionManager->GetRootQuadTree());
+		RenderQuadTree(*m_CollisionManager.GetRootQuadTree());
 	}
 
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_AABB))
@@ -128,7 +128,7 @@ void Sandbox::RepaintDebug() const
 		glColor3f(1.0f, 0.0f, 0.0f);
 		for (const auto& entity : m_Entities)
 		{
-			RenderAABB(*entity->GetAABB());
+			RenderAABB(entity->GetAABB());
 		}
 	}
 
@@ -153,9 +153,9 @@ const std::vector<std::unique_ptr<Entity>>& Sandbox::GetEntities() const
 	return m_Entities;
 }
 
-void Sandbox::AddEntity(Entity* entity)
+void Sandbox::AddEntity(std::unique_ptr<Entity> entity)
 {
-	m_Entities.push_back(std::unique_ptr<Entity>(entity));
+	m_Entities.emplace_back(std::move(entity));
 }
 
 bool Sandbox::RemoveEntity(const uint id)
@@ -232,10 +232,10 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_UP)
 		{
-			entity::Circle* circle = ENTROPY_NEW(entity::Circle, static_cast<float>(x), static_cast<float>(y), static_cast<float>(Rand(10, 40)));
-			circle->AddComponent(ENTROPY_NEW(RigidbodyComponent, circle));
-			circle->AddComponent(ENTROPY_NEW(GravityComponent, circle));
-			AddEntity(circle);
+			std::unique_ptr<Entity> circle = std::make_unique<entity::Circle>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(Rand(10, 40)));
+			circle->AddComponent(std::make_unique<RigidbodyComponent>(circle.get()));
+			circle->AddComponent(std::make_unique<GravityComponent>(circle.get()));
+			AddEntity(std::move(circle));
 		}
 		break;
 	case GLUT_RIGHT_BUTTON:
@@ -248,10 +248,10 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 			{
 				vertices.emplace_back(Rand(-size, size), Rand(-size, size));
 			}
-			entity::Polygon* polygon = ENTROPY_NEW(entity::Polygon, static_cast<float>(x), static_cast<float>(y), vertices);
-			polygon->AddComponent(ENTROPY_NEW(RigidbodyComponent, polygon));
-			polygon->AddComponent(ENTROPY_NEW(GravityComponent, polygon));
-			AddEntity(polygon);
+			std::unique_ptr<Entity> polygon = std::make_unique<entity::Polygon>(static_cast<float>(x), static_cast<float>(y), vertices);
+			polygon->AddComponent(std::make_unique<RigidbodyComponent>(polygon.get()));
+			polygon->AddComponent(std::make_unique<GravityComponent>(polygon.get()));
+			AddEntity(std::move(polygon));
 		}
 		break;
 	}

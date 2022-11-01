@@ -33,7 +33,7 @@ public:
 	uint GetId() const;
 	const Vector2 GetPosition() const;
 	const float GetOrientation() const;
-	const AABB* GetAABB() const override;
+	const AABB& GetAABB() const override;
 	virtual EntityType GetType() const = 0;
 
 	template<typename T>
@@ -51,8 +51,8 @@ public:
 	}
 	RigidbodyComponent* GetRigidbodyComponent() const;
 
-	void AddComponent(Component* component);
-	virtual AABB* ComputeAABB() const = 0;
+	void AddComponent(std::unique_ptr<Component> component);
+	virtual std::unique_ptr<AABB> ComputeAABB() const = 0;
 
 	void Translate(const Vector2& vector);
 	virtual void Rotate(float angle) = 0;

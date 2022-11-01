@@ -140,7 +140,7 @@ Vector2 entity::Polygon::GetSupport(const Vector2& dir) const
 	return bestVertex;
 }
 
-AABB* entity::Polygon::ComputeAABB() const
+std::unique_ptr<AABB> entity::Polygon::ComputeAABB() const
 {
 	float minX = FLT_MAX;
 	float minY = FLT_MAX;
@@ -165,7 +165,7 @@ AABB* entity::Polygon::ComputeAABB() const
 			maxY = vector.y;
 		}
 	}
-	return ENTROPY_NEW(AABB, minX, minY, maxX, maxY);
+	return std::make_unique<AABB>(minX, minY, maxX, maxY);
 }
 
 void entity::Polygon::Rotate(float angle)

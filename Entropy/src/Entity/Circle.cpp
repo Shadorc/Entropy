@@ -17,9 +17,9 @@ EntityType entity::Circle::GetType() const
 	return EntityType::CIRCLE;
 }
 
-AABB* entity::Circle::ComputeAABB() const
+std::unique_ptr<AABB> entity::Circle::ComputeAABB() const
 {
-	return ENTROPY_NEW(AABB,
+	return std::make_unique<AABB>(
 		m_Position.x - m_Radius, m_Position.y - m_Radius,
 		m_Position.x + m_Radius, m_Position.y + m_Radius
 	);

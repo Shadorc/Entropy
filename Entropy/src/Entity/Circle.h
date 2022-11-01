@@ -15,7 +15,7 @@ namespace entity
 		float GetRadius() const;
 		EntityType GetType() const override;
 
-		AABB* ComputeAABB() const override;
+		std::unique_ptr<AABB> ComputeAABB() const override;
 
 		void Rotate(float angle) override;
 		void Paint() const override;

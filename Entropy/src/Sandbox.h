@@ -11,7 +11,7 @@
 class Sandbox
 {
 private:
-	std::unique_ptr<CollisionManager> m_CollisionManager;
+	CollisionManager m_CollisionManager;
 	std::vector<std::unique_ptr<Entity>> m_Entities;
 	bool m_Updating;
 	float m_Fps;
@@ -37,7 +37,7 @@ public:
 	void Stop();
 	void Update(float deltaTime);
 	void Repaint() const;
-	void AddEntity(Entity* entity);
+	void AddEntity(std::unique_ptr<Entity> entity);
 	bool RemoveEntity(const uint id);
 
 	void OnLoop();

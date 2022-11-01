@@ -17,11 +17,6 @@ constexpr uint CIRCLE_VERTICES = 24;
 #define ENTROPY_DEBUG
 #endif
 
-#define ENTROPY_NEW(x, ...) \
-	([&]() { \
-		return new x(__VA_ARGS__); \
-	})()
-
 #ifdef ENTROPY_DEBUG
 #define ENTROPY_LOG(x) std::cout << x << std::endl
 #else

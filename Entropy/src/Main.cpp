@@ -18,9 +18,9 @@ int main(int argc, char** argv)
 	Sandbox sandbox;
 
 	const float WALL_SIZE = 25.0f;
-	entity::Polygon floor(WIDTH / 2.0f, HEIGHT - WALL_SIZE / 2.0f, WIDTH, WALL_SIZE);
-	floor.AddComponent(ENTROPY_NEW(RigidbodyComponent, &floor, MATERIAL_STATIC, FRICTION_NORMAL));
-	sandbox.AddEntity(&floor);
+	std::unique_ptr<Entity> floor = std::make_unique<entity::Polygon>(WIDTH / 2.0f, HEIGHT - WALL_SIZE / 2.0f, static_cast<float>(WIDTH), WALL_SIZE);
+	floor->AddComponent(std::make_unique<RigidbodyComponent>(floor.get(), MATERIAL_STATIC, FRICTION_NORMAL));
+	sandbox.AddEntity(std::move(floor));
 
 	sandbox.Start();
 

@@ -24,7 +24,7 @@ namespace entity
 		Vector2 GetSupport(const Vector2& dir) const;
 		EntityType GetType() const override;
 
-		AABB* ComputeAABB() const override;
+		std::unique_ptr<AABB> ComputeAABB() const override;
 
 		void Rotate(float angle) override;
 		void Paint() const override;

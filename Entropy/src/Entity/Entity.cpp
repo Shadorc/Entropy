@@ -17,16 +17,16 @@ Entity::Entity(float x, float y)
 // Cache Rigidbody component
 RigidbodyComponent* Entity::GetRigidbodyComponent() const
 {
-	if (m_RigidbodyComponentCache == nullptr)
+	if (!m_RigidbodyComponentCache)
 	{
 		m_RigidbodyComponentCache.reset(GetComponent<RigidbodyComponent>());
 	}
 	return m_RigidbodyComponentCache.get();
 }
 
-void Entity::AddComponent(Component* component)
+void Entity::AddComponent(std::unique_ptr<Component> component)
 {
-	m_Components.push_back(std::unique_ptr<Component>(component));
+	m_Components.emplace_back(std::move(component));
 }
 
 void Entity::Translate(const Vector2& vector)
@@ -50,13 +50,13 @@ const float Entity::GetOrientation() const
 	return m_Orientation;
 }
 
-const AABB* Entity::GetAABB() const
+const AABB& Entity::GetAABB() const
 {
-	if (m_AabbCache == nullptr)
+	if (!m_AabbCache)
 	{
-		m_AabbCache.reset(ComputeAABB());
+		m_AabbCache = std::move(ComputeAABB());
 	}
-	return m_AabbCache.get();
+	return *m_AabbCache.get();
 }
 
 void Entity::Update(float deltaTime)

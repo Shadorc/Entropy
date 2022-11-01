@@ -30,13 +30,13 @@ private:
 		float subHeight = m_Aabb->GetHeight() / 2.0f;
 
 		m_Nodes[static_cast<int>(Quadrant::TOP_LEFT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight));
+			std::make_unique<AABB>(m_Aabb->minX, m_Aabb->minY, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight));
 		m_Nodes[static_cast<int>(Quadrant::TOP_RIGHT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY, m_Aabb->maxX, m_Aabb->minY + subHeight));
+			std::make_unique<AABB>(m_Aabb->minX + subWidth, m_Aabb->minY, m_Aabb->maxX, m_Aabb->minY + subHeight));
 		m_Nodes[static_cast<int>(Quadrant::BOTTOM_LEFT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			ENTROPY_NEW(AABB, m_Aabb->minX, m_Aabb->minY + subHeight, m_Aabb->minX + subWidth, m_Aabb->maxY));
+			std::make_unique<AABB>(m_Aabb->minX, m_Aabb->minY + subHeight, m_Aabb->minX + subWidth, m_Aabb->maxY));
 		m_Nodes[static_cast<int>(Quadrant::BOTTOM_RIGHT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			ENTROPY_NEW(AABB, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight, m_Aabb->maxX, m_Aabb->maxY));
+			std::make_unique<AABB>(m_Aabb->minX + subWidth, m_Aabb->minY + subHeight, m_Aabb->maxX, m_Aabb->maxY));
 	}
 
 	Quadrant GetQuadrant(const T* object) const
@@ -44,10 +44,10 @@ private:
 		float middleX = m_Aabb->GetX() + m_Aabb->GetWidth() / 2.0f;
 		float middleY = m_Aabb->GetY() + m_Aabb->GetHeight() / 2.0f;
 
-		const AABB* aabb = object->GetAABB();
-		bool topQuadrant = aabb->GetY() + aabb->GetHeight() < middleY;
-		bool bottomQuadrant = aabb->GetY() > middleY;
-		if (aabb->GetX() + aabb->GetWidth() < middleX)
+		const AABB& aabb = object->GetAABB();
+		bool topQuadrant = aabb.GetY() + aabb.GetHeight() < middleY;
+		bool bottomQuadrant = aabb.GetY() > middleY;
+		if (aabb.GetX() + aabb.GetWidth() < middleX)
 		{
 			if (topQuadrant)
 			{
@@ -58,7 +58,7 @@ private:
 				return Quadrant::BOTTOM_LEFT;
 			}
 		}
-		else if (aabb->GetX() > middleX)
+		else if (aabb.GetX() > middleX)
 		{
 			if (topQuadrant)
 			{
@@ -111,15 +111,15 @@ private:
 	}
 
 public:
-	QuadTree(AABB* aabb) :
-		QuadTree(0, aabb)
+	QuadTree(std::unique_ptr<AABB> aabb) :
+		QuadTree(0, std::move(aabb))
 	{
 
 	}
 
-	QuadTree(int level, AABB* aabb) :
+	QuadTree(int level, std::unique_ptr<AABB> aabb) :
 		m_Level(level),
-		m_Aabb(std::unique_ptr<AABB>(aabb)),
+		m_Aabb(std::move(aabb)),
 		m_Nodes(),
 		m_Objects()
 	{
@@ -167,7 +167,7 @@ public:
 
 		if (m_Objects.size() > MAX_OBJECTS && m_Level < MAX_LEVELS)
 		{
-			if (m_Nodes[0] == nullptr)
+			if (!m_Nodes[0])
 			{
 				Split();
 			}
