@@ -10,21 +10,6 @@
 
 class Sandbox
 {
-private:
-	CollisionManager m_CollisionManager;
-	std::vector<std::unique_ptr<Entity>> m_Entities;
-	bool m_Updating;
-	float m_Fps;
-	int m_LastLoopTime;
-	float m_AccumulatorTime;
-#ifdef ENTROPY_DEBUG
-	DebugMode m_DebugMode;
-#endif // ENTROPY_DEBUG
-
-#ifdef ENTROPY_DEBUG
-	void RepaintDebug() const;
-#endif // ENTROPY_DEBUG
-
 public:
 	static Sandbox* INSTANCE;
 
@@ -57,6 +42,21 @@ public:
 	static void OnKeyboardWrapper(unsigned char key, int x, int y);
 #ifdef ENTROPY_DEBUG
 	static void OnSpecialKeyboardWrapper(int key, int x, int y);
+#endif // ENTROPY_DEBUG
+
+private:
+	CollisionManager m_CollisionManager;
+	std::vector<std::unique_ptr<Entity>> m_Entities;
+	bool m_Updating;
+	float m_Fps;
+	int m_LastLoopTime;
+	float m_AccumulatorTime;
+#ifdef ENTROPY_DEBUG
+	DebugMode m_DebugMode;
+#endif // ENTROPY_DEBUG
+
+#ifdef ENTROPY_DEBUG
+	void RepaintDebug() const;
 #endif // ENTROPY_DEBUG
 };
 

@@ -14,16 +14,6 @@ enum class EntityType
 
 class Entity : public AABBObject
 {
-private:
-	mutable std::unique_ptr<RigidbodyComponent> m_RigidbodyComponentCache;
-	mutable std::unique_ptr<AABB> m_AabbCache;
-
-protected:
-	const uint m_Id;
-	std::vector<std::unique_ptr<Component>> m_Components;
-	Vector2 m_Position;
-	float m_Orientation;
-
 public:
 	Entity(float x, float y);
 
@@ -60,5 +50,14 @@ public:
 	virtual void Paint() const = 0;
 
 	bool operator==(Entity& other) const;
-};
 
+protected:
+	const uint m_Id;
+	std::vector<std::unique_ptr<Component>> m_Components;
+	Vector2 m_Position;
+	float m_Orientation;
+
+private:
+	mutable std::unique_ptr<RigidbodyComponent> m_RigidbodyComponentCache;
+	mutable std::unique_ptr<AABB> m_AabbCache;
+};

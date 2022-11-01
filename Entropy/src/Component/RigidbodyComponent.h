@@ -8,15 +8,6 @@
 
 class RigidbodyComponent : public Component
 {
-private:
-	const MaterialData m_MaterialData;
-	const FrictionData m_FrictionData;
-	const MassData m_MassData;
-	Vector2 m_Force;
-	float m_Torque;
-
-	MassData ComputeMass();
-
 public:
 	RigidbodyComponent(Entity* entity);
 	RigidbodyComponent(Entity* entity, MaterialData materialData, FrictionData frictionData);
@@ -29,5 +20,14 @@ public:
 	const MassData& GetMassData() const;
 	const MaterialData& GetMaterialData() const;
 	const FrictionData& GetFrictionData() const;
+
+private:
+	const MaterialData m_MaterialData;
+	const FrictionData m_FrictionData;
+	const MassData m_MassData;
+	Vector2 m_Force;
+	float m_Torque;
+
+	MassData ComputeMass();
 };
 

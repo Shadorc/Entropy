@@ -6,9 +6,6 @@ namespace entity
 {
 	class Circle : public Entity
 	{
-	private:
-		float m_Radius;
-
 	public:
 		Circle(float x, float y, float radius);
 
@@ -19,5 +16,8 @@ namespace entity
 
 		void Rotate(float angle) override;
 		void Paint() const override;
+
+	private:
+		float m_Radius;
 	};
 }

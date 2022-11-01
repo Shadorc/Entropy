@@ -20,10 +20,6 @@ enum class PhysicStep
 
 class DebugMode
 {
-private:
-	int m_Mask;
-	PhysicStep m_PhysicStep;
-
 public:
 	DebugMode();
 
@@ -33,5 +29,9 @@ public:
 
 	void Toggle(DebugOption option);
 	bool IsEnabled(DebugOption option) const;
+
+private:
+	int m_Mask;
+	PhysicStep m_PhysicStep;
 };
 #endif // ENTROPY_DEBUG

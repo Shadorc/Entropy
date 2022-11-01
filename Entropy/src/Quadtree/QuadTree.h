@@ -18,6 +18,93 @@ enum class Quadrant
 template<typename T>
 class QuadTree
 {
+public:
+	QuadTree(const AABB& aabb) :
+		QuadTree(0, aabb)
+	{
+
+	}
+
+	QuadTree(int level, const AABB& aabb) :
+		m_Level(level),
+		m_Aabb(aabb),
+		m_Nodes(),
+		m_Objects()
+	{
+
+	}
+
+	~QuadTree()
+	{
+		Clear();
+	}
+
+	const QuadTree<T>* GetNode(int i) const
+	{
+		return m_Nodes[i].get();
+	}
+
+	const AABB& GetAABB() const
+	{
+		return m_Aabb;
+	}
+
+	void Clear()
+	{
+		m_Objects.clear();
+
+		for (int i = 0; i < static_cast<int>(Quadrant::COUNT); ++i)
+		{
+			m_Nodes[i].reset();
+		}
+	}
+
+	void Insert(T* object)
+	{
+		if (m_Nodes[0])
+		{
+			Quadrant quadrant = GetQuadrant(object);
+			if (quadrant != Quadrant::INVALID)
+			{
+				m_Nodes[static_cast<int>(quadrant)]->Insert(object);
+				return;
+			}
+		}
+
+		m_Objects.push_back(object);
+
+		if (m_Objects.size() > MAX_OBJECTS && m_Level < MAX_LEVELS)
+		{
+			if (!m_Nodes[0])
+			{
+				Split();
+			}
+
+			int i = 0;
+			while (i < m_Objects.size())
+			{
+				Quadrant quadrant = GetQuadrant(m_Objects[i]);
+				if (quadrant != Quadrant::INVALID)
+				{
+					m_Nodes[static_cast<int>(quadrant)]->Insert(m_Objects[i]);
+					m_Objects.erase(m_Objects.begin() + i);
+				}
+				else
+				{
+					++i;
+				}
+			}
+		}
+	}
+
+	std::vector<T*> Search(T* object) const
+	{
+		std::vector<T*> vector;
+		vector.reserve(MAX_OBJECTS);
+		Search(vector, object);
+		return vector;
+	}
+
 private:
 	const int m_Level;
 	std::vector<T*> m_Objects;
@@ -108,93 +195,6 @@ private:
 		}
 
 		return returnObjects;
-	}
-
-public:
-	QuadTree(const AABB& aabb) :
-		QuadTree(0, aabb)
-	{
-
-	}
-
-	QuadTree(int level, const AABB& aabb) :
-		m_Level(level),
-		m_Aabb(aabb),
-		m_Nodes(),
-		m_Objects()
-	{
-
-	}
-
-	~QuadTree()
-	{
-		Clear();
-	}
-
-	const QuadTree<T>* GetNode(int i) const
-	{
-		return m_Nodes[i].get();
-	}
-
-	const AABB& GetAABB() const
-	{
-		return m_Aabb;
-	}
-
-	void Clear()
-	{
-		m_Objects.clear();
-
-		for (int i = 0; i < static_cast<int>(Quadrant::COUNT); ++i)
-		{
-			m_Nodes[i].reset();
-		}
-	}
-
-	void Insert(T* object)
-	{
-		if (m_Nodes[0])
-		{
-			Quadrant quadrant = GetQuadrant(object);
-			if (quadrant != Quadrant::INVALID)
-			{
-				m_Nodes[static_cast<int>(quadrant)]->Insert(object);
-				return;
-			}
-		}
-
-		m_Objects.push_back(object);
-
-		if (m_Objects.size() > MAX_OBJECTS && m_Level < MAX_LEVELS)
-		{
-			if (!m_Nodes[0])
-			{
-				Split();
-			}
-
-			int i = 0;
-			while (i < m_Objects.size())
-			{
-				Quadrant quadrant = GetQuadrant(m_Objects[i]);
-				if (quadrant != Quadrant::INVALID)
-				{
-					m_Nodes[static_cast<int>(quadrant)]->Insert(m_Objects[i]);
-					m_Objects.erase(m_Objects.begin() + i);
-				}
-				else
-				{
-					++i;
-				}
-			}
-		}
-	}
-
-	std::vector<T*> Search(T* object) const
-	{
-		std::vector<T*> vector;
-		vector.reserve(MAX_OBJECTS);
-		Search(vector, object);
-		return vector;
 	}
 };
 
