@@ -42,7 +42,7 @@ public:
 		for (const auto& itr : m_Components)
 		{
 			T* component = dynamic_cast<T*>(itr.get());
-			if (component != nullptr)
+			if (component)
 			{
 				return component;
 			}

@@ -58,8 +58,9 @@ void RenderQuadTree(const QuadTree<Entity>& quadtree)
 	for (int i = 0; i < static_cast<int>(Quadrant::COUNT); ++i)
 	{
 		const auto& node = quadtree.GetNode(i);
-		if (node != nullptr) {
-			RenderAABB(*node->GetAABB());
+		if (node)
+		{
+			RenderAABB(node->GetAABB());
 			RenderQuadTree(*node);
 		}
 	}

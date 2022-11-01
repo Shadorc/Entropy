@@ -21,28 +21,28 @@ class QuadTree
 private:
 	const int m_Level;
 	std::vector<T*> m_Objects;
-	std::unique_ptr<AABB> m_Aabb;
+	const AABB m_Aabb;
 	std::unique_ptr<QuadTree<T>> m_Nodes[static_cast<int>(Quadrant::COUNT)];
 
 	void Split()
 	{
-		float subWidth = m_Aabb->GetWidth() / 2.0f;
-		float subHeight = m_Aabb->GetHeight() / 2.0f;
+		float subWidth = m_Aabb.GetWidth() / 2.0f;
+		float subHeight = m_Aabb.GetHeight() / 2.0f;
 
 		m_Nodes[static_cast<int>(Quadrant::TOP_LEFT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			std::make_unique<AABB>(m_Aabb->minX, m_Aabb->minY, m_Aabb->minX + subWidth, m_Aabb->minY + subHeight));
+			AABB(m_Aabb.minX, m_Aabb.minY, m_Aabb.minX + subWidth, m_Aabb.minY + subHeight));
 		m_Nodes[static_cast<int>(Quadrant::TOP_RIGHT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			std::make_unique<AABB>(m_Aabb->minX + subWidth, m_Aabb->minY, m_Aabb->maxX, m_Aabb->minY + subHeight));
+			AABB(m_Aabb.minX + subWidth, m_Aabb.minY, m_Aabb.maxX, m_Aabb.minY + subHeight));
 		m_Nodes[static_cast<int>(Quadrant::BOTTOM_LEFT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			std::make_unique<AABB>(m_Aabb->minX, m_Aabb->minY + subHeight, m_Aabb->minX + subWidth, m_Aabb->maxY));
+			AABB(m_Aabb.minX, m_Aabb.minY + subHeight, m_Aabb.minX + subWidth, m_Aabb.maxY));
 		m_Nodes[static_cast<int>(Quadrant::BOTTOM_RIGHT)] = std::make_unique<QuadTree<T>>(m_Level + 1,
-			std::make_unique<AABB>(m_Aabb->minX + subWidth, m_Aabb->minY + subHeight, m_Aabb->maxX, m_Aabb->maxY));
+			AABB(m_Aabb.minX + subWidth, m_Aabb.minY + subHeight, m_Aabb.maxX, m_Aabb.maxY));
 	}
 
 	Quadrant GetQuadrant(const T* object) const
 	{
-		float middleX = m_Aabb->GetX() + m_Aabb->GetWidth() / 2.0f;
-		float middleY = m_Aabb->GetY() + m_Aabb->GetHeight() / 2.0f;
+		float middleX = m_Aabb.GetX() + m_Aabb.GetWidth() / 2.0f;
+		float middleY = m_Aabb.GetY() + m_Aabb.GetHeight() / 2.0f;
 
 		const AABB& aabb = object->GetAABB();
 		bool topQuadrant = aabb.GetY() + aabb.GetHeight() < middleY;
@@ -82,7 +82,7 @@ private:
 			return SearchChildren(returnObjects, object);
 		}
 
-		if (quadrant != Quadrant::INVALID && m_Nodes[0] != nullptr)
+		if (quadrant != Quadrant::INVALID && m_Nodes[0])
 		{
 			m_Nodes[static_cast<int>(quadrant)]->Search(returnObjects, object);
 		}
@@ -93,7 +93,7 @@ private:
 
 	std::vector<T*> SearchChildren(std::vector<T*>& returnObjects, T* object) const
 	{
-		if (!m_Aabb->IntersectsWith(object->GetAABB()))
+		if (!m_Aabb.IntersectsWith(object->GetAABB()))
 		{
 			return returnObjects;
 		}
@@ -101,7 +101,7 @@ private:
 		returnObjects.insert(returnObjects.end(), m_Objects.begin(), m_Objects.end());
 		for (const auto& node : m_Nodes)
 		{
-			if (node != nullptr)
+			if (node)
 			{
 				node->SearchChildren(returnObjects, object);
 			}
@@ -111,15 +111,15 @@ private:
 	}
 
 public:
-	QuadTree(std::unique_ptr<AABB> aabb) :
-		QuadTree(0, std::move(aabb))
+	QuadTree(const AABB& aabb) :
+		QuadTree(0, aabb)
 	{
 
 	}
 
-	QuadTree(int level, std::unique_ptr<AABB> aabb) :
+	QuadTree(int level, const AABB& aabb) :
 		m_Level(level),
-		m_Aabb(std::move(aabb)),
+		m_Aabb(aabb),
 		m_Nodes(),
 		m_Objects()
 	{
@@ -136,9 +136,9 @@ public:
 		return m_Nodes[i].get();
 	}
 
-	const AABB* GetAABB() const
+	const AABB& GetAABB() const
 	{
-		return m_Aabb.get();
+		return m_Aabb;
 	}
 
 	void Clear()
@@ -153,7 +153,7 @@ public:
 
 	void Insert(T* object)
 	{
-		if (m_Nodes[0] != nullptr)
+		if (m_Nodes[0])
 		{
 			Quadrant quadrant = GetQuadrant(object);
 			if (quadrant != Quadrant::INVALID)

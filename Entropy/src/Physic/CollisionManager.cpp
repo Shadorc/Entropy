@@ -13,7 +13,7 @@ void CollisionManager::Update()
 	m_Entities.clear();
 	for (const auto& entity : m_Sandbox->GetEntities())
 	{
-		if (entity->GetRigidbodyComponent() != nullptr)
+		if (entity->GetRigidbodyComponent())
 		{
 			m_Entities.push_back(entity.get());
 		}
@@ -225,5 +225,5 @@ const QuadTree<Entity>* CollisionManager::GetRootQuadTree() const
 
 void CollisionManager::SetRootSize(int width, int height)
 {
-	m_QuadTree.reset(new QuadTree<Entity>(std::make_unique<AABB>(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height))));
+	m_QuadTree.reset(new QuadTree<Entity>(AABB(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height))));
 }
