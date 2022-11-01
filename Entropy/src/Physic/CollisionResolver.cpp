@@ -10,11 +10,9 @@ CollisionCallback Dispatch[static_cast<int>(EntityType::COUNT)][static_cast<int>
   },
 };
 
-Collision Solve(Entity* entityA, Entity* entityB)
+void Solve(Collision& collisionOut)
 {
-	Collision collision(entityA, entityB);
-	Dispatch[static_cast<int>(entityA->GetType())][static_cast<int>(entityB->GetType())](collision);
-	return collision;
+	Dispatch[static_cast<int>(collisionOut.entityA->GetType())][static_cast<int>(collisionOut.entityB->GetType())](collisionOut);
 }
 
 void CircleToCircle(Collision& collision)

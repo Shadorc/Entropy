@@ -192,7 +192,8 @@ public:
 
 	std::vector<T*> Search(T* object) const
 	{
-		auto vector = std::vector<T*>();
+		std::vector<T*> vector;
+		vector.reserve(MAX_OBJECTS);
 		Search(vector, object);
 		return vector;
 	}

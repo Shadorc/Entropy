@@ -7,4 +7,5 @@ Collision::Collision(Entity* entityA, Entity* entityB)
 	, normal(Vector2::ZERO)
 	, contacts()
 {
+
 }

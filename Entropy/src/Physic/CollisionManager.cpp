@@ -96,7 +96,8 @@ void CollisionManager::SolveCollisions()
 {
 	for (Pair<Entity>& pair : m_UniquePairs)
 	{
-		const Collision& collision = Solve(pair.left, pair.right);
+		Collision collision(pair.left, pair.right);
+		Solve(collision);
 		if (!collision.contacts.empty())
 		{
 			ApplyImpulses(collision);

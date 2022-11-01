@@ -7,7 +7,7 @@ using CollisionCallback = void (*)(Collision& collision);
 
 extern CollisionCallback Dispatch[static_cast<int>(EntityType::COUNT)][static_cast<int>(EntityType::COUNT)];
 
-Collision Solve(Entity* entityA, Entity* entityB);
+void Solve(Collision& collisionOut);
 void CircleToCircle(Collision& collision);
 void CircleToPolygon(Collision& collision);
 void PolygonToCircle(Collision& collision);
