@@ -2,7 +2,6 @@
 
 #include "Entity/Entity.h"
 #include "Math/Vector2.h"
-#include <array>
 
 namespace entity
 {

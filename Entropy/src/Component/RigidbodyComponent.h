@@ -6,7 +6,6 @@
 #include "Physic/Data/MaterialData.h"
 #include "Physic/Data/FrictionData.h"
 
-class Entity;
 class RigidbodyComponent : public Component
 {
 private:

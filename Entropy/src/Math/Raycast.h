@@ -1,9 +1,7 @@
 #pragma once
 
 #include <vector>
-
 #include "Math/Vector2.h"
-#include "Math/MathIE.h"
 
 struct Edge
 {

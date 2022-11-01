@@ -1,6 +1,7 @@
 #pragma once
 
-struct AABB;
+#include "Quadtree/AABB.h"
+
 class AABBObject
 {
 public:

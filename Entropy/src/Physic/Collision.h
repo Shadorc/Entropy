@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Math/Vector2.h"
+#include "Entity/Entity.h"
 
-class Entity;
 struct Collision
 {
 	Entity* entityA;

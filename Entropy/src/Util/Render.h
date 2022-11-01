@@ -1,6 +1,7 @@
 #pragma once
 
-struct AABB;
+#include "QuadTree/AABB.h"
+
 template<class T> class QuadTree;
 class Entity;
 

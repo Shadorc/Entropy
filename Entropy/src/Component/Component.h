@@ -1,6 +1,7 @@
 #pragma once
 
-class Entity;
+#include "Entity/Entity.h"
+
 class Component
 {
 protected:

@@ -2,7 +2,6 @@
 
 #include "Component/Component.h"
 
-class Entity;
 class GravityComponent : public Component
 {
 public:

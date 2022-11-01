@@ -1,11 +1,11 @@
 #pragma once
 
+#include "Physic/Collision.h"
+#include "Util/Pair.h"
+#include "Entity/Entity.h"
 
-struct Collision;
 class Sandbox;
-class Entity;
 template<class T> class QuadTree;
-template<class T> struct Pair;
 
 class CollisionManager
 {

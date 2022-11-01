@@ -3,6 +3,7 @@
 #include <vector>
 #include "Quadtree/AABBObject.h"
 #include "Math/Vector2.h"
+#include "Component/RigidBodyComponent.h"
 
 enum class EntityType
 {
@@ -11,8 +12,6 @@ enum class EntityType
 	COUNT
 };
 
-class Component;
-class RigidbodyComponent;
 class Entity : public AABBObject
 {
 private:

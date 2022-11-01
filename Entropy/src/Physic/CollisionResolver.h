@@ -1,7 +1,7 @@
 #pragma once
-#include "Entity/Entity.h"
 
-struct Collision;
+#include "Entity/Entity.h"
+#include "Physic/Collision.h"
 
 using CollisionCallback = void (*)(Collision& collision);
 

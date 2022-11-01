@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Precompiled.h"
+#include "Quadtree/AABB.h"
 
 constexpr int MAX_OBJECTS = 5;
 constexpr int MAX_LEVELS = 10;
@@ -15,7 +15,6 @@ enum class Quadrant
 	INVALID
 };
 
-struct AABB;
 template<typename T>
 class QuadTree
 {

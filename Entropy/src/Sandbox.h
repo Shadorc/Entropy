@@ -1,13 +1,13 @@
 #pragma once
 
 #include <vector>
+#include "Physic/CollisionManager.h"
+#include "Entity/Entity.h"
 
 #ifdef ENTROPY_DEBUG
-class DebugMode;
+#include "Debug/DebugMode.h"
 #endif // ENTROPY_DEBUG
 
-class CollisionManager;
-class Entity;
 class Sandbox
 {
 private:

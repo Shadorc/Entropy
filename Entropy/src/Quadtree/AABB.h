@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Math/Vector2.h"
-
 struct AABB
 {
 	const float minX;
