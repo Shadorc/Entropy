@@ -1,11 +1,7 @@
 #include "Precompiled.h"
 
-Component::Component(Entity* entity)
+Component::Component(const std::weak_ptr<Entity>& entity)
 	: m_Entity(entity)
 {
-}
 
-const Entity* Component::GetEntity() const
-{
-	return m_Entity;
 }

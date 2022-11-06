@@ -16,12 +16,12 @@ class Entity : public AABBObject
 {
 public:
 	Entity(float x, float y);
-
+	
 	Vector2 velocity;
 	float angularVelocity;
 
 	uint GetId() const;
-	const Vector2 GetPosition() const;
+	const Vector2& GetPosition() const;
 	const float GetOrientation() const;
 	const AABB& GetAABB() const override;
 	virtual EntityType GetType() const = 0;
@@ -39,8 +39,7 @@ public:
 		}
 		return nullptr;
 	}
-	RigidbodyComponent* GetRigidbodyComponent() const;
-
+	
 	void AddComponent(std::unique_ptr<Component> component);
 	virtual std::unique_ptr<AABB> ComputeAABB() const = 0;
 
@@ -58,6 +57,5 @@ protected:
 	float m_Orientation;
 
 private:
-	mutable std::unique_ptr<RigidbodyComponent> m_RigidbodyComponentCache;
-	mutable std::unique_ptr<AABB> m_AabbCache;
+	mutable std::unique_ptr<AABB> m_Aabb;
 };

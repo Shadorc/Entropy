@@ -5,13 +5,11 @@
 class Component
 {
 public:
-	Component(Entity* entity);
-
-	const Entity* GetEntity() const;
+	Component(const std::weak_ptr<Entity>& entity);
 
 	virtual void Update(float deltaTime) = 0;
 
 protected:
-	Entity* m_Entity;
+	const std::weak_ptr<Entity> m_Entity;
 };
 

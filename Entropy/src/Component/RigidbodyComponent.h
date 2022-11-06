@@ -9,8 +9,8 @@
 class RigidbodyComponent : public Component
 {
 public:
-	RigidbodyComponent(Entity* entity);
-	RigidbodyComponent(Entity* entity, MaterialData materialData, FrictionData frictionData);
+	RigidbodyComponent(const std::weak_ptr<Entity>& entity);
+	RigidbodyComponent(const std::weak_ptr<Entity>& entity, MaterialData materialData, FrictionData frictionData);
 
 	void ApplyImpulse(const Vector2& impulse, const Vector2& contact) const;
 	void AddForce(const Vector2& force);

@@ -57,9 +57,19 @@ void Sandbox::Stop()
 
 void Sandbox::Update(float deltaTime)
 {
-	for (const auto& entity : m_Entities)
+	auto it = m_Entities.begin();
+	while (it != m_Entities.end())
 	{
-		entity->Update(deltaTime);
+		Entity* entity = (*it).get();
+		if (entity->GetPosition().y > WIDTH)
+		{
+			it = m_Entities.erase(it);
+		}
+		else
+		{
+			entity->Update(deltaTime);
+			++it;
+		}
 	}
 
 	m_CollisionManager.Update();
@@ -86,7 +96,7 @@ void Sandbox::Repaint() const
 static char s_strBuffer[64];
 static std::vector<const char*> texts = {
 	"F1: Show commands",
-	"F2: Show FPS",
+	"F2: Show performances",
 	"F3: Show quadtree",
 	"F4: Show AABB",
 	"F5: Show velocity",
@@ -114,7 +124,9 @@ void Sandbox::RepaintDebug() const
 	{
 		glColor3f(0.5f, 0.5f, 0.9f);
 		sprintf_s(s_strBuffer, "FPS: %.0f", round(m_Fps));
-		RenderText(5.0f, HEIGHT - 20.0f, s_strBuffer);
+		RenderText(5.0f, HEIGHT - 50.0f, s_strBuffer);
+		sprintf_s(s_strBuffer, "Entities: %zu", m_Entities.size());
+		RenderText(5.0f, HEIGHT - 30.0f, s_strBuffer);
 	}
 
 	if (m_DebugMode.IsEnabled(DebugOption::SHOW_QUADTREE))
@@ -148,14 +160,14 @@ void Sandbox::RepaintDebug() const
 }
 #endif // ENTROPY_DEBUG
 
-const std::vector<std::unique_ptr<Entity>>& Sandbox::GetEntities() const
+const std::vector<std::shared_ptr<Entity>>& Sandbox::GetEntities() const
 {
 	return m_Entities;
 }
 
-void Sandbox::AddEntity(std::unique_ptr<Entity> entity)
+void Sandbox::AddEntity(const std::shared_ptr<Entity>& entity)
 {
-	m_Entities.emplace_back(std::move(entity));
+	m_Entities.push_back(entity);
 }
 
 bool Sandbox::RemoveEntity(const uint id)
@@ -232,26 +244,27 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_UP)
 		{
-			std::unique_ptr<Entity> circle = std::make_unique<entity::Circle>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(Rand(10, 40)));
-			circle->AddComponent(std::make_unique<RigidbodyComponent>(circle.get()));
-			circle->AddComponent(std::make_unique<GravityComponent>(circle.get()));
-			AddEntity(std::move(circle));
+			auto circle = std::make_shared<entity::Circle>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(Rand(10, 40)));
+			circle->AddComponent(std::make_unique<RigidbodyComponent>(circle));
+			circle->AddComponent(std::make_unique<GravityComponent>(circle));
+			AddEntity(circle);
 		}
 		break;
 	case GLUT_RIGHT_BUTTON:
 		if (state == GLUT_UP)
 		{
-			std::vector<Vector2> vertices;
 			const int size = Rand(50, 100);
 			const uint vertexCount = Rand(3, 25);
+			std::vector<Vector2> vertices;
+			vertices.reserve(vertexCount);
 			for (uint i = 0; i < vertexCount; ++i)
 			{
 				vertices.emplace_back(Rand(-size, size), Rand(-size, size));
 			}
-			std::unique_ptr<Entity> polygon = std::make_unique<entity::Polygon>(static_cast<float>(x), static_cast<float>(y), vertices);
-			polygon->AddComponent(std::make_unique<RigidbodyComponent>(polygon.get()));
-			polygon->AddComponent(std::make_unique<GravityComponent>(polygon.get()));
-			AddEntity(std::move(polygon));
+			auto polygon = std::make_shared<entity::Polygon>(static_cast<float>(x), static_cast<float>(y), vertices);
+			polygon->AddComponent(std::make_unique<RigidbodyComponent>(polygon));
+			polygon->AddComponent(std::make_unique<GravityComponent>(polygon));
+			AddEntity(polygon);
 		}
 		break;
 	}

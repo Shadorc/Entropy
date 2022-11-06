@@ -13,7 +13,7 @@ void CollisionManager::Update()
 	m_Entities.clear();
 	for (const auto& entity : m_Sandbox->GetEntities())
 	{
-		if (entity->GetRigidbodyComponent())
+		if (entity->GetComponent<RigidbodyComponent>())
 		{
 			m_Entities.push_back(entity.get());
 		}
@@ -52,8 +52,8 @@ void CollisionManager::BroadPhase()
 			}
 
 			// Do not check collisions between static objects
-			if (IsZero(entityA->GetRigidbodyComponent()->GetMassData().mass)
-				&& IsZero(entityB->GetRigidbodyComponent()->GetMassData().mass))
+			if (IsZero(entityA->GetComponent<RigidbodyComponent>()->GetMassData().mass)
+				&& IsZero(entityB->GetComponent<RigidbodyComponent>()->GetMassData().mass))
 			{
 				continue;
 			}
@@ -111,8 +111,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
 	Entity* entityA = collision.entityA;
 	Entity* entityB = collision.entityB;
 
-	const auto& rigidbodyA = entityA->GetRigidbodyComponent();
-	const auto& rigidbodyB = entityB->GetRigidbodyComponent();
+	const auto& rigidbodyA = entityA->GetComponent<RigidbodyComponent>();
+	const auto& rigidbodyB = entityB->GetComponent<RigidbodyComponent>();
 	const MassData& massA = rigidbodyA->GetMassData();
 	const MassData& massB = rigidbodyB->GetMassData();
 
@@ -205,8 +205,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
 
 void CollisionManager::CorrectPosition(const Collision& collision)
 {
-	const float invMassA = collision.entityA->GetRigidbodyComponent()->GetMassData().invMass;
-	const float invMassB = collision.entityB->GetRigidbodyComponent()->GetMassData().invMass;
+	const float invMassA = collision.entityA->GetComponent<RigidbodyComponent>()->GetMassData().invMass;
+	const float invMassB = collision.entityB->GetComponent<RigidbodyComponent>()->GetMassData().invMass;
 	const Vector2& correction = (std::max(collision.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * collision.normal * PENETRATION_PERCENT;
 	if (!IsZero(invMassA))
 	{

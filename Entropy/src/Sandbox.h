@@ -16,13 +16,13 @@ public:
 	Sandbox();
 	~Sandbox();
 
-	const std::vector<std::unique_ptr<Entity>>& GetEntities() const;
+	const std::vector<std::shared_ptr<Entity>>& GetEntities() const;
 
 	void Start();
 	void Stop();
 	void Update(float deltaTime);
 	void Repaint() const;
-	void AddEntity(std::unique_ptr<Entity> entity);
+	void AddEntity(const std::shared_ptr<Entity>& entity);
 	bool RemoveEntity(const uint id);
 
 	void OnLoop();
@@ -46,7 +46,7 @@ public:
 
 private:
 	CollisionManager m_CollisionManager;
-	std::vector<std::unique_ptr<Entity>> m_Entities;
+	std::vector<std::shared_ptr<Entity>> m_Entities;
 	bool m_Updating;
 	float m_Fps;
 	int m_LastLoopTime;
