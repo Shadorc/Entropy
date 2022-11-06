@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <unordered_map>
 #include "Quadtree/AABBObject.h"
 #include "Math/Vector2.h"
 #include "Component/RigidBodyComponent.h"
@@ -26,21 +26,26 @@ public:
 	const AABB& GetAABB() const override;
 	virtual EntityType GetType() const = 0;
 
+	template<typename T, typename... Args>
+	void AddComponent(Args&&... args)
+	{
+		ENTROPY_ASSERT_WITH_REASON(!HasComponent<T>(), "Component already exists");
+		m_Components[typeid(T).name()] = std::make_unique<T>(std::forward<Args>(args)...);
+	}
+
+	template<typename T>
+	bool HasComponent() const
+	{
+		return m_Components.find(typeid(T).name()) != m_Components.cend();
+	}
+
 	template<typename T>
 	T* GetComponent() const
 	{
-		for (const auto& itr : m_Components)
-		{
-			T* component = dynamic_cast<T*>(itr.get());
-			if (component)
-			{
-				return component;
-			}
-		}
-		return nullptr;
+		ENTROPY_ASSERT_WITH_REASON(HasComponent<T>(), "Component not found");
+		return dynamic_cast<T*>(m_Components.at(typeid(T).name()).get());
 	}
 	
-	void AddComponent(std::unique_ptr<Component> component);
 	virtual std::unique_ptr<AABB> ComputeAABB() const = 0;
 
 	void Translate(const Vector2& vector);
@@ -52,7 +57,7 @@ public:
 
 protected:
 	const uint m_Id;
-	std::vector<std::unique_ptr<Component>> m_Components;
+	std::unordered_map<const char*, std::unique_ptr<Component>> m_Components;
 	Vector2 m_Position;
 	float m_Orientation;
 

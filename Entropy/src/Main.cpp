@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 
 	const float WALL_SIZE = 25.0f;
 	auto floor = std::make_shared<entity::Polygon>(WIDTH / 2.0f, HEIGHT - WALL_SIZE / 2.0f, static_cast<float>(WIDTH), WALL_SIZE);
-	floor->AddComponent(std::make_unique<RigidbodyComponent>(floor, MATERIAL_STATIC, FRICTION_NORMAL));
+	floor->AddComponent<RigidbodyComponent>(floor, MATERIAL_STATIC, FRICTION_NORMAL);
 	sandbox.AddEntity(floor);
 
 	sandbox.Start();

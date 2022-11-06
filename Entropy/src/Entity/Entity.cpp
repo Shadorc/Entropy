@@ -13,11 +13,6 @@ Entity::Entity(float x, float y)
 
 }
 
-void Entity::AddComponent(std::unique_ptr<Component> component)
-{
-	m_Components.emplace_back(std::move(component));
-}
-
 void Entity::Translate(const Vector2& vector)
 {
 	m_Aabb.reset();
@@ -50,9 +45,9 @@ const AABB& Entity::GetAABB() const
 
 void Entity::Update(float deltaTime)
 {
-	for (const auto& component : m_Components)
+	for (const auto& pair : m_Components)
 	{
-		component->Update(deltaTime);
+		pair.second->Update(deltaTime);
 	}
 }
 

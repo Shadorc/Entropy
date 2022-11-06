@@ -245,8 +245,8 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 		if (state == GLUT_UP)
 		{
 			auto circle = std::make_shared<entity::Circle>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(Rand(10, 40)));
-			circle->AddComponent(std::make_unique<RigidbodyComponent>(circle));
-			circle->AddComponent(std::make_unique<GravityComponent>(circle));
+			circle->AddComponent<RigidbodyComponent>(circle);
+			circle->AddComponent<GravityComponent>(circle);
 			AddEntity(circle);
 		}
 		break;
@@ -262,8 +262,8 @@ void Sandbox::OnMouse(int button, int state, int x, int y)
 				vertices.emplace_back(Rand(-size, size), Rand(-size, size));
 			}
 			auto polygon = std::make_shared<entity::Polygon>(static_cast<float>(x), static_cast<float>(y), vertices);
-			polygon->AddComponent(std::make_unique<RigidbodyComponent>(polygon));
-			polygon->AddComponent(std::make_unique<GravityComponent>(polygon));
+			polygon->AddComponent<RigidbodyComponent>(polygon);
+			polygon->AddComponent<GravityComponent>(polygon);
 			AddEntity(polygon);
 		}
 		break;
