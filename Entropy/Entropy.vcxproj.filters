@@ -114,6 +114,9 @@
     <ClCompile Include="src\Math\Raycast.cpp">
       <Filter>Fichiers sources\math</Filter>
     </ClCompile>
+    <ClCompile Include="src\Debug\ScopedProfiler.cpp">
+      <Filter>Fichiers sources\debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Sandbox.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="src\Math\Raycast.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\ScopedProfiler.h">
+      <Filter>Fichiers d%27en-tête\debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

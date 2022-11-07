@@ -52,6 +52,7 @@ constexpr uint CIRCLE_VERTICES = 24;
 #include <iostream>
 #include <assert.h>
 #include <string>
+#include <chrono>
 
 #ifdef ENTROPY_DEBUG
 #include "Debug/DebugMode.h"
@@ -78,3 +79,4 @@ constexpr uint CIRCLE_VERTICES = 24;
 #include "Physic/Data/MaterialData.h"
 #include "Util/Pair.h"
 #include "Math/MathIE.h"
+#include "Debug/ScopedProfiler.h"

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Debug\ScopedProfiler.cpp" />
     <ClCompile Include="src\Quadtree\AABB.cpp" />
     <ClCompile Include="src\Entity\Circle.cpp" />
     <ClCompile Include="src\Physic\CollisionManager.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="src\Math\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Debug\ScopedProfiler.h" />
     <ClInclude Include="src\Quadtree\AABB.h" />
     <ClInclude Include="src\Quadtree\AABBObject.h" />
     <ClInclude Include="src\Entity\Circle.h" />

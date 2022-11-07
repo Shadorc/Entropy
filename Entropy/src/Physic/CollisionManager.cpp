@@ -30,6 +30,8 @@ void CollisionManager::Update()
 
 void CollisionManager::UpdateQuadTree()
 {
+	ENTROPY_PROFILE_FUNCTION();
+
 	m_QuadTree.Clear();
 	for (Entity* entity : m_Entities)
 	{
@@ -39,6 +41,8 @@ void CollisionManager::UpdateQuadTree()
 
 void CollisionManager::BroadPhase()
 {
+	ENTROPY_PROFILE_FUNCTION();
+
 	m_Pairs.clear();
 
 	// Detect all colliding entities and push the corresponding pair inside m_pairs
@@ -68,6 +72,8 @@ void CollisionManager::BroadPhase()
 
 void CollisionManager::SolveCollisions()
 {
+	ENTROPY_PROFILE_FUNCTION();
+
 	for (const Pair<Entity>& pair : m_Pairs)
 	{
 		Collision collision(pair.left, pair.right);
