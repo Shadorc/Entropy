@@ -52,8 +52,8 @@ void CollisionManager::BroadPhase()
 			}
 
 			// Do not check collisions between static objects
-			if (IsZero(entityA->GetComponent<RigidbodyComponent>()->GetMassData().mass)
-				&& IsZero(entityB->GetComponent<RigidbodyComponent>()->GetMassData().mass))
+			if (IsZero(entityA->GetComponent<RigidbodyComponent>().GetMassData().mass)
+				&& IsZero(entityB->GetComponent<RigidbodyComponent>().GetMassData().mass))
 			{
 				continue;
 			}
@@ -113,13 +113,13 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
 
 	const auto& rigidbodyA = entityA->GetComponent<RigidbodyComponent>();
 	const auto& rigidbodyB = entityB->GetComponent<RigidbodyComponent>();
-	const MassData& massA = rigidbodyA->GetMassData();
-	const MassData& massB = rigidbodyB->GetMassData();
+	const MassData& massA = rigidbodyA.GetMassData();
+	const MassData& massB = rigidbodyB.GetMassData();
 
-	const float staticFriction = sqrtf(rigidbodyA->GetFrictionData().staticFactor * rigidbodyB->GetFrictionData().staticFactor);
-	const float dynamicFriction = sqrtf(rigidbodyA->GetFrictionData().dynamicFactor * rigidbodyB->GetFrictionData().dynamicFactor);
+	const float staticFriction = sqrtf(rigidbodyA.GetFrictionData().staticFactor * rigidbodyB.GetFrictionData().staticFactor);
+	const float dynamicFriction = sqrtf(rigidbodyA.GetFrictionData().dynamicFactor * rigidbodyB.GetFrictionData().dynamicFactor);
 
-	float restitution = sqrtf(rigidbodyA->GetMaterialData().restitution * rigidbodyB->GetMaterialData().restitution);
+	float restitution = sqrtf(rigidbodyA.GetMaterialData().restitution * rigidbodyB.GetMaterialData().restitution);
 	for (const Vector2& contact : collision.contacts)
 	{
 		// Calculate radii from COM to contact
@@ -167,8 +167,8 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
 		{
 			// Apply normal impulse
 			const Vector2& normalImpulse = collision.normal * normalImpulseScalar;
-			rigidbodyA->ApplyImpulse(-normalImpulse, radiusA);
-			rigidbodyB->ApplyImpulse(normalImpulse, radiusB);
+			rigidbodyA.ApplyImpulse(-normalImpulse, radiusA);
+			rigidbodyB.ApplyImpulse(normalImpulse, radiusB);
 		}
 
 		// Update relative velocity
@@ -197,16 +197,16 @@ void CollisionManager::ApplyImpulses(const Collision& collision)
 			}
 
 			// Apply friction impulse
-			rigidbodyA->ApplyImpulse(-frictionImpulse, radiusA);
-			rigidbodyB->ApplyImpulse(frictionImpulse, radiusB);
+			rigidbodyA.ApplyImpulse(-frictionImpulse, radiusA);
+			rigidbodyB.ApplyImpulse(frictionImpulse, radiusB);
 		}
 	}
 }
 
 void CollisionManager::CorrectPosition(const Collision& collision)
 {
-	const float invMassA = collision.entityA->GetComponent<RigidbodyComponent>()->GetMassData().invMass;
-	const float invMassB = collision.entityB->GetComponent<RigidbodyComponent>()->GetMassData().invMass;
+	const float invMassA = collision.entityA->GetComponent<RigidbodyComponent>().GetMassData().invMass;
+	const float invMassB = collision.entityB->GetComponent<RigidbodyComponent>().GetMassData().invMass;
 	const Vector2& correction = (std::max(collision.penetration - PENETRATION_ALLOWANCE, 0.0f) / (invMassA + invMassB)) * collision.normal * PENETRATION_PERCENT;
 	if (!IsZero(invMassA))
 	{

@@ -13,7 +13,7 @@ void GravityComponent::Update(float deltaTime)
 	const auto& entity = m_Entity.lock();
 	if (entity)
 	{
-		RigidbodyComponent* rigidbody = entity->GetComponent<RigidbodyComponent>();
-		rigidbody->AddForce(rigidbody->GetMassData().mass * GRAVITY);
+		RigidbodyComponent& rigidbody = entity->GetComponent<RigidbodyComponent>();
+		rigidbody.AddForce(rigidbody.GetMassData().mass * GRAVITY);
 	}
 }

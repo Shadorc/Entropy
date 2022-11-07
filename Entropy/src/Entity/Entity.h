@@ -40,10 +40,12 @@ public:
 	}
 
 	template<typename T>
-	T* GetComponent() const
+	T& GetComponent() const
 	{
 		ENTROPY_ASSERT_WITH_REASON(HasComponent<T>(), "Component not found");
-		return dynamic_cast<T*>(m_Components.at(typeid(T).name()).get());
+		const char* key = typeid(T).name();
+		const auto& ptr = m_Components.at(key).get();
+		return dynamic_cast<T&>(*ptr);
 	}
 	
 	virtual std::unique_ptr<AABB> ComputeAABB() const = 0;
