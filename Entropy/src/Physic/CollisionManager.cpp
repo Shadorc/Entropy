@@ -11,9 +11,10 @@ void CollisionManager::Update()
 {
 	// Push all entities with a rigidbody inside m_Entities
 	m_Entities.clear();
+	m_Entities.reserve(m_Sandbox->GetEntities().size());
 	for (const auto& entity : m_Sandbox->GetEntities())
 	{
-		if (entity->GetComponent<RigidbodyComponent>())
+		if (entity->HasComponent<RigidbodyComponent>())
 		{
 			m_Entities.push_back(entity.get());
 		}

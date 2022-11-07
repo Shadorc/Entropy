@@ -1,7 +1,7 @@
 #include "Precompiled.h"
 
 // Source: https://stackoverflow.com/questions/14307158/how-do-you-check-for-intersection-between-a-line-segment-and-a-line-ray-emanatin
-Vector2 Raycast(const Vector2& origin, const Vector2& direction, std::vector<Edge>& edges)
+Vector2 Raycast(const Vector2& origin, const Vector2& direction, const std::vector<Edge>& edges)
 {
 	ENTROPY_ASSERT_WITH_REASON(Equal(direction.LengthSq(), 1.0f), "Direction should be normalized");
 

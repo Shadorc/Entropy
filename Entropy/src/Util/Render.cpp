@@ -8,12 +8,12 @@ void RenderLine(float x1, float y1, float x2, float y2)
 	glEnd();
 }
 
-void RenderText(float x, float y, const char* str)
+void RenderText(float x, float y, const std::string& str)
 {
 	glRasterPos2f(x, y);
-	for (int i = 0; i < std::strlen(str); ++i)
+	for (char character : str)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str[i]);
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, character);
 	}
 }
 

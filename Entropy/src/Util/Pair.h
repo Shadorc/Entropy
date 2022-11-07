@@ -1,6 +1,6 @@
 #pragma once
 
-template<class T>
+template<typename T>
 struct Pair
 {
 	T* left;
@@ -14,7 +14,7 @@ struct Pair
 	}
 };
 
-template<class T>
+template<typename T>
 bool PairComparator(Pair<T> lhs, Pair<T> rhs)
 {
 	if (lhs.left < rhs.left)
