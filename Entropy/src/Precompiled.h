@@ -77,6 +77,5 @@ constexpr uint CIRCLE_VERTICES = 24;
 #include "Sandbox.h"
 #include "Physic/Data/MassData.h"
 #include "Physic/Data/MaterialData.h"
-#include "Util/Pair.h"
 #include "Math/MathIE.h"
 #include "Debug/ScopedProfiler.h"

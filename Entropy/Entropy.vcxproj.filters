@@ -167,9 +167,6 @@
     <ClInclude Include="src\Physic\CollisionResolver.h">
       <Filter>Fichiers d%27en-tête\physic</Filter>
     </ClInclude>
-    <ClInclude Include="src\Util\Pair.h">
-      <Filter>Fichiers d%27en-tête\util</Filter>
-    </ClInclude>
     <ClInclude Include="src\Math\Matrix22.h">
       <Filter>Fichiers d%27en-tête\math</Filter>
     </ClInclude>

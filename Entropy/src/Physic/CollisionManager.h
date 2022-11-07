@@ -2,7 +2,6 @@
 
 #include "QuadTree/QuadTree.h"
 #include "Physic/Collision.h"
-#include "Util/Pair.h"
 #include "Entity/Entity.h"
 
 class Sandbox;
@@ -22,7 +21,7 @@ private:
 
 	// Cached vectors
 	std::vector<Entity*> m_Entities;
-	std::vector<Pair<Entity>> m_Pairs;
+	std::vector<std::tuple<Entity*, Entity*>> m_Pairs;
 
 	void BroadPhase();
 	void UpdateQuadTree();

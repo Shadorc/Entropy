@@ -74,9 +74,9 @@ void CollisionManager::SolveCollisions()
 {
 	ENTROPY_PROFILE_FUNCTION();
 
-	for (const Pair<Entity>& pair : m_Pairs)
+	for (const std::tuple<Entity*, Entity*>& pair : m_Pairs)
 	{
-		Collision collision(pair.left, pair.right);
+		Collision collision(std::get<0>(pair), std::get<1>(pair));
 		Solve(collision);
 		if (!collision.contacts.empty())
 		{
