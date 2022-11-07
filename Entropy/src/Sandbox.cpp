@@ -8,7 +8,7 @@ constexpr size_t DEFAULT_ENTITIES_CAPACITY= 100;
 Sandbox* Sandbox::INSTANCE = nullptr;
 
 Sandbox::Sandbox() 
-	: m_CollisionManager(this)
+	: m_CollisionManager()
 	, m_Entities()
 	, m_Updating(false)
 	, m_Fps(0)

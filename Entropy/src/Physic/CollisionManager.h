@@ -9,14 +9,13 @@ class Sandbox;
 class CollisionManager
 {
 public:
-	CollisionManager(const Sandbox* sandbox);
+	CollisionManager();
 
 	void Update();
 
 	const QuadTree<Entity>& GetRootQuadTree() const;
 
 private:
-	const Sandbox* m_Sandbox;
 	QuadTree<Entity> m_QuadTree;
 
 	// Cached vectors

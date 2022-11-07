@@ -1,18 +1,18 @@
 #include "Precompiled.h"
 
-CollisionManager::CollisionManager(const Sandbox* sandbox)
-	: m_Sandbox(sandbox)
-	, m_QuadTree(AABB(0.0f, 0.0f, static_cast<float>(WIDTH), static_cast<float>(HEIGHT)))
+CollisionManager::CollisionManager()
+	: m_QuadTree(AABB(0.0f, 0.0f, static_cast<float>(WIDTH), static_cast<float>(HEIGHT)))
 {
 
 }
 
 void CollisionManager::Update()
 {
+	const auto& entities = Sandbox::INSTANCE->GetEntities();
 	// Push all entities with a rigidbody inside m_Entities
 	m_Entities.clear();
-	m_Entities.reserve(m_Sandbox->GetEntities().size());
-	for (const auto& entity : m_Sandbox->GetEntities())
+	m_Entities.reserve(entities.size());
+	for (const auto& entity : entities)
 	{
 		if (entity->HasComponent<RigidbodyComponent>())
 		{
