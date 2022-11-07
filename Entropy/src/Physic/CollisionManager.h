@@ -23,7 +23,6 @@ private:
 	// Cached vectors
 	std::vector<Entity*> m_Entities;
 	std::vector<Pair<Entity>> m_Pairs;
-	std::vector<Pair<Entity>> m_UniquePairs;
 
 	void BroadPhase();
 	void UpdateQuadTree();

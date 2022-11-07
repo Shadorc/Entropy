@@ -40,7 +40,6 @@ void CollisionManager::UpdateQuadTree()
 void CollisionManager::BroadPhase()
 {
 	m_Pairs.clear();
-	m_UniquePairs.clear();
 
 	// Detect all colliding entities and push the corresponding pair inside m_pairs
 	for (Entity* entityA : m_Entities)
@@ -65,37 +64,11 @@ void CollisionManager::BroadPhase()
 			}
 		}
 	}
-
-	// Sort the m_pairs vector so that all similar pairs follow each other    
-	std::sort(m_Pairs.begin(), m_Pairs.end(), PairComparator<Entity>);
-
-	// Push non-duplicate pairs inside m_uniquePairs
-	int i = 0;
-	while (i < m_Pairs.size())
-	{
-		const Pair<Entity>& pair = m_Pairs[i];
-		m_UniquePairs.push_back(pair);
-
-		++i;
-
-		while (i < m_Pairs.size())
-		{
-			const Pair<Entity>& otherPair = m_Pairs[i];
-			if (pair.left == otherPair.right && pair.right == otherPair.left)
-			{
-				++i;
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
 }
 
 void CollisionManager::SolveCollisions()
 {
-	for (Pair<Entity>& pair : m_UniquePairs)
+	for (const Pair<Entity>& pair : m_Pairs)
 	{
 		Collision collision(pair.left, pair.right);
 		Solve(collision);
